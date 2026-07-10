@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test, type Page } from "@playwright/test";
 
 // 1. Define defect taxonomy and randomized injection logic based on literature review
 const testScenarios = [
@@ -64,29 +64,82 @@ const testScenarios = [
   })),
 ];
 
+async function dismissGoogleConsent(page: Page) {
+  const consentBanner = page
+    .locator("text=/Before you continue to Google/i")
+    .first();
+  const isVisible = await consentBanner.isVisible().catch(() => false);
+
+  if (!isVisible) {
+    return;
+  }
+
+  const consentButtons = [
+    page.getByRole("button", { name: /Reject all/i }).first(),
+    page.getByRole("button", { name: /Accept all/i }).first(),
+    page.getByRole("button", { name: /I agree/i }).first(),
+    page.getByRole("button", { name: /Agree/i }).first(),
+  ];
+
+  for (const button of consentButtons) {
+    if (await button.isVisible().catch(() => false)) {
+      await button.click({ timeout: 2000 });
+      break;
+    }
+  }
+
+  await consentBanner
+    .waitFor({ state: "hidden", timeout: 3000 })
+    .catch(() => {});
+}
+
 // 2. Data-driven loop to execute all 15 test scenarios automatically
 for (const scenario of testScenarios) {
   test(`Generate video for [${scenario.type}] - ID: ${scenario.id}`, async ({
     page,
   }) => {
-    // Navigate to the baseline target URL
-    await page.goto("https://www.google.com");
-    await page.waitForTimeout(1000); // Wait for page to load
+    // FIX: Pre-set consent state and use a neutral locale to avoid the Google consent screen.
+    await page.context().addCookies([
+      {
+        name: "CONSENT",
+        value: "YES+1",
+        domain: ".google.com",
+        path: "/",
+        secure: true,
+        sameSite: "Lax",
+      },
+      {
+        name: "CONSENT",
+        value: "YES+1",
+        domain: "consent.google.com",
+        path: "/",
+        secure: true,
+        sameSite: "Lax",
+      },
+      {
+        name: "SOCS",
+        value: "CAI",
+        domain: ".google.com",
+        path: "/",
+        secure: true,
+        sameSite: "Lax",
+      },
+      {
+        name: "SOCS",
+        value: "CAI",
+        domain: "consent.google.com",
+        path: "/",
+        secure: true,
+        sameSite: "Lax",
+      },
+    ]);
 
-    // --- 💡 FIX: Handle GDPR/Cookie Consent Pop-up for UK/EU region ---
-    try {
-      // Look for any button that contains "Accept all" or "Read more" or has a role button
-      const cookieButton = page.locator(
-        'button:has-text("Accept all"), button:has-text("I agree"), #L2AGLb',
-      );
-      if (await cookieButton.isVisible()) {
-        await cookieButton.click();
-        await page.waitForTimeout(1000); // Wait for the pop-up animation to disappear
-      }
-    } catch (e) {
-      console.log("No cookie pop-up detected or timed out, proceeding.");
-    }
-    // -----------------------------------------------------------------
+    // Navigate to the baseline target URL
+    await page.goto("https://www.google.com/?hl=en&gl=us", {
+      waitUntil: "domcontentloaded",
+    });
+    await dismissGoogleConsent(page);
+    await page.waitForTimeout(1000); // Wait for page to load
 
     // Dynamically inject the specified CSS/DOM defect into the runtime browser environment
     await page.evaluate(scenario.injectFn);
