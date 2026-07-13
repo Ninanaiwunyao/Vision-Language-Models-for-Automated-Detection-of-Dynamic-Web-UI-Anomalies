@@ -14,9 +14,9 @@ import pixelmatch from "pixelmatch";
 const TARGET_URL =
   process.env.TODOMVC_URL ?? "https://todomvc.com/examples/react/dist/";
 
-/** How many videos to generate per group. */
-const CONTROL_CASES = 5;
-const CASES_PER_BUG = 2;
+/** How many videos to generate per group. 10 + 6 bug types x 5 = 40 cases. */
+const CONTROL_CASES = 10;
+const CASES_PER_BUG = 5;
 
 // ---------------------------------------------------------------------------
 // 1. Scenario diversification — randomized user behavior
@@ -362,6 +362,28 @@ for (const scenario of scenarios) {
           `(${(ratio * 100).toFixed(2)}% < required ${scenario.bug!.minDiffRatio * 100}%) — case rejected`,
       ).toBeGreaterThanOrEqual(scenario.bug!.minDiffRatio);
     }
+
+    // Gate passed → persist the verdict so dataset-collection scripts can
+    // harvest this case (failed cases never write this file).
+    fs.writeFileSync(
+      testInfo.outputPath("gate-report.json"),
+      JSON.stringify(
+        {
+          id: scenario.id,
+          group: scenario.group,
+          bugKey: scenario.bug?.key ?? null,
+          bugLabel: scenario.bug?.label ?? null,
+          diffRatio: ratio,
+          minDiffRatio: scenario.bug?.minDiffRatio ?? 0,
+          targetUrl: TARGET_URL,
+          browser: testInfo.project.name,
+          viewport: page.viewportSize(),
+          generatedAt: new Date().toISOString(),
+        },
+        null,
+        2,
+      ),
+    );
 
     // ── Post-gate interaction: capture dynamic frames for the video ────────
     // (User keeps interacting while the bug is live — or the app has broken
