@@ -1,0 +1,648 @@
+{
+  "createdAt": "2026-07-11T20:19:03.101Z",
+  "totalCases": 40,
+  "normalCases": 10,
+  "buggyCases": 30,
+  "cases": [
+    {
+      "id": "bug_blur_unreadable_1",
+      "group": "bug",
+      "bugKey": "blur_unreadable",
+      "bugLabel": "Whole app blurred beyond readability",
+      "diffRatio": 0.0765295659109035,
+      "minDiffRatio": 0.05,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:40.880Z",
+      "path": "buggy/bug_blur_unreadable_1"
+    },
+    {
+      "id": "bug_blur_unreadable_2",
+      "group": "bug",
+      "bugKey": "blur_unreadable",
+      "bugLabel": "Whole app blurred beyond readability",
+      "diffRatio": 0.08811498065229409,
+      "minDiffRatio": 0.05,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:44.312Z",
+      "path": "buggy/bug_blur_unreadable_2"
+    },
+    {
+      "id": "bug_blur_unreadable_3",
+      "group": "bug",
+      "bugKey": "blur_unreadable",
+      "bugLabel": "Whole app blurred beyond readability",
+      "diffRatio": 0.09283582089552239,
+      "minDiffRatio": 0.05,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:47.075Z",
+      "path": "buggy/bug_blur_unreadable_3"
+    },
+    {
+      "id": "bug_blur_unreadable_4",
+      "group": "bug",
+      "bugKey": "blur_unreadable",
+      "bugLabel": "Whole app blurred beyond readability",
+      "diffRatio": 0.09082651259829883,
+      "minDiffRatio": 0.05,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:48.505Z",
+      "path": "buggy/bug_blur_unreadable_4"
+    },
+    {
+      "id": "bug_blur_unreadable_5",
+      "group": "bug",
+      "bugKey": "blur_unreadable",
+      "bugLabel": "Whole app blurred beyond readability",
+      "diffRatio": 0.08631159272132488,
+      "minDiffRatio": 0.05,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:52.311Z",
+      "path": "buggy/bug_blur_unreadable_5"
+    },
+    {
+      "id": "bug_displaynone_collapse_1",
+      "group": "bug",
+      "bugKey": "displaynone_collapse",
+      "bugLabel": "Key section removed with display:none → content below jumps up",
+      "diffRatio": 0.4682779650136415,
+      "minDiffRatio": 0.12,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:28.709Z",
+      "path": "buggy/bug_displaynone_collapse_1"
+    },
+    {
+      "id": "bug_displaynone_collapse_2",
+      "group": "bug",
+      "bugKey": "displaynone_collapse",
+      "bugLabel": "Key section removed with display:none → content below jumps up",
+      "diffRatio": 0.5442649764874259,
+      "minDiffRatio": 0.12,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:32.286Z",
+      "path": "buggy/bug_displaynone_collapse_2"
+    },
+    {
+      "id": "bug_displaynone_collapse_3",
+      "group": "bug",
+      "bugKey": "displaynone_collapse",
+      "bugLabel": "Key section removed with display:none → content below jumps up",
+      "diffRatio": 0.4670101107366394,
+      "minDiffRatio": 0.12,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:33.004Z",
+      "path": "buggy/bug_displaynone_collapse_3"
+    },
+    {
+      "id": "bug_displaynone_collapse_4",
+      "group": "bug",
+      "bugKey": "displaynone_collapse",
+      "bugLabel": "Key section removed with display:none → content below jumps up",
+      "diffRatio": 0.35306943543153796,
+      "minDiffRatio": 0.12,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:38.187Z",
+      "path": "buggy/bug_displaynone_collapse_4"
+    },
+    {
+      "id": "bug_displaynone_collapse_5",
+      "group": "bug",
+      "bugKey": "displaynone_collapse",
+      "bugLabel": "Key section removed with display:none → content below jumps up",
+      "diffRatio": 0.41675695596093604,
+      "minDiffRatio": 0.12,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:38.439Z",
+      "path": "buggy/bug_displaynone_collapse_5"
+    },
+    {
+      "id": "bug_flicker_seizure_1",
+      "group": "bug",
+      "bugKey": "flicker_seizure",
+      "bugLabel": "Elements flicker violently between two broken states",
+      "diffRatio": 0.521066423607155,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:16.546Z",
+      "path": "buggy/bug_flicker_seizure_1"
+    },
+    {
+      "id": "bug_flicker_seizure_2",
+      "group": "bug",
+      "bugKey": "flicker_seizure",
+      "bugLabel": "Elements flicker violently between two broken states",
+      "diffRatio": 0.5239603509171699,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:21.123Z",
+      "path": "buggy/bug_flicker_seizure_2"
+    },
+    {
+      "id": "bug_flicker_seizure_3",
+      "group": "bug",
+      "bugKey": "flicker_seizure",
+      "bugLabel": "Elements flicker violently between two broken states",
+      "diffRatio": 0.455382347521651,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:20.328Z",
+      "path": "buggy/bug_flicker_seizure_3"
+    },
+    {
+      "id": "bug_flicker_seizure_4",
+      "group": "bug",
+      "bugKey": "flicker_seizure",
+      "bugLabel": "Elements flicker violently between two broken states",
+      "diffRatio": 0.5231969921385439,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:23.331Z",
+      "path": "buggy/bug_flicker_seizure_4"
+    },
+    {
+      "id": "bug_flicker_seizure_5",
+      "group": "bug",
+      "bugKey": "flicker_seizure",
+      "bugLabel": "Elements flicker violently between two broken states",
+      "diffRatio": 0.45552975861433576,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:28.559Z",
+      "path": "buggy/bug_flicker_seizure_5"
+    },
+    {
+      "id": "bug_flyaway_offset_1",
+      "group": "bug",
+      "bugKey": "flyaway_offset",
+      "bugLabel": "App flies off-screen (huge negative margin → massive layout shift)",
+      "diffRatio": 0.6737068474421785,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:04.457Z",
+      "path": "buggy/bug_flyaway_offset_1"
+    },
+    {
+      "id": "bug_flyaway_offset_2",
+      "group": "bug",
+      "bugKey": "flyaway_offset",
+      "bugLabel": "App flies off-screen (huge negative margin → massive layout shift)",
+      "diffRatio": 0.6560487883164821,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:05.506Z",
+      "path": "buggy/bug_flyaway_offset_2"
+    },
+    {
+      "id": "bug_flyaway_offset_3",
+      "group": "bug",
+      "bugKey": "flyaway_offset",
+      "bugLabel": "App flies off-screen (huge negative margin → massive layout shift)",
+      "diffRatio": 0.6765808362766321,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:09.267Z",
+      "path": "buggy/bug_flyaway_offset_3"
+    },
+    {
+      "id": "bug_flyaway_offset_4",
+      "group": "bug",
+      "bugKey": "flyaway_offset",
+      "bugLabel": "App flies off-screen (huge negative margin → massive layout shift)",
+      "diffRatio": 0.6915201390308731,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:11.034Z",
+      "path": "buggy/bug_flyaway_offset_4"
+    },
+    {
+      "id": "bug_flyaway_offset_5",
+      "group": "bug",
+      "bugKey": "flyaway_offset",
+      "bugLabel": "App flies off-screen (huge negative margin → massive layout shift)",
+      "diffRatio": 0.6928695563279493,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:14.042Z",
+      "path": "buggy/bug_flyaway_offset_5"
+    },
+    {
+      "id": "bug_skew_distortion_1",
+      "group": "bug",
+      "bugKey": "skew_distortion",
+      "bugLabel": "Severe geometric distortion (skew + rotate)",
+      "diffRatio": 0.2805491063202506,
+      "minDiffRatio": 0.1,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:26.614Z",
+      "path": "buggy/bug_skew_distortion_1"
+    },
+    {
+      "id": "bug_skew_distortion_2",
+      "group": "bug",
+      "bugKey": "skew_distortion",
+      "bugLabel": "Severe geometric distortion (skew + rotate)",
+      "diffRatio": 0.30215335536060156,
+      "minDiffRatio": 0.1,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:30.553Z",
+      "path": "buggy/bug_skew_distortion_2"
+    },
+    {
+      "id": "bug_skew_distortion_3",
+      "group": "bug",
+      "bugKey": "skew_distortion",
+      "bugLabel": "Severe geometric distortion (skew + rotate)",
+      "diffRatio": 0.28641975308641976,
+      "minDiffRatio": 0.1,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:35.177Z",
+      "path": "buggy/bug_skew_distortion_3"
+    },
+    {
+      "id": "bug_skew_distortion_4",
+      "group": "bug",
+      "bugKey": "skew_distortion",
+      "bugLabel": "Severe geometric distortion (skew + rotate)",
+      "diffRatio": 0.29907227560826005,
+      "minDiffRatio": 0.1,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:37.738Z",
+      "path": "buggy/bug_skew_distortion_4"
+    },
+    {
+      "id": "bug_skew_distortion_5",
+      "group": "bug",
+      "bugKey": "skew_distortion",
+      "bugLabel": "Severe geometric distortion (skew + rotate)",
+      "diffRatio": 0.29509302801063175,
+      "minDiffRatio": 0.1,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:38.410Z",
+      "path": "buggy/bug_skew_distortion_5"
+    },
+    {
+      "id": "bug_vanish_invisible_1",
+      "group": "bug",
+      "bugKey": "vanish_invisible",
+      "bugLabel": "Entire app mysteriously invisible (opacity 0)",
+      "diffRatio": 0.6763786031673693,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:54.009Z",
+      "path": "buggy/bug_vanish_invisible_1"
+    },
+    {
+      "id": "bug_vanish_invisible_2",
+      "group": "bug",
+      "bugKey": "vanish_invisible",
+      "bugLabel": "Entire app mysteriously invisible (opacity 0)",
+      "diffRatio": 0.6317486640869725,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:57.996Z",
+      "path": "buggy/bug_vanish_invisible_2"
+    },
+    {
+      "id": "bug_vanish_invisible_3",
+      "group": "bug",
+      "bugKey": "vanish_invisible",
+      "bugLabel": "Entire app mysteriously invisible (opacity 0)",
+      "diffRatio": 0.6561386615310544,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:57.510Z",
+      "path": "buggy/bug_vanish_invisible_3"
+    },
+    {
+      "id": "bug_vanish_invisible_4",
+      "group": "bug",
+      "bugKey": "vanish_invisible",
+      "bugLabel": "Entire app mysteriously invisible (opacity 0)",
+      "diffRatio": 0.6760567392047396,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:01.605Z",
+      "path": "buggy/bug_vanish_invisible_4"
+    },
+    {
+      "id": "bug_vanish_invisible_5",
+      "group": "bug",
+      "bugKey": "vanish_invisible",
+      "bugLabel": "Entire app mysteriously invisible (opacity 0)",
+      "diffRatio": 0.6887114087098752,
+      "minDiffRatio": 0.15,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:16:02.097Z",
+      "path": "buggy/bug_vanish_invisible_5"
+    },
+    {
+      "id": "control_normal_1",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:07.475Z",
+      "path": "normal/control_normal_1"
+    },
+    {
+      "id": "control_normal_10",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:26.228Z",
+      "path": "normal/control_normal_10"
+    },
+    {
+      "id": "control_normal_2",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:09.246Z",
+      "path": "normal/control_normal_2"
+    },
+    {
+      "id": "control_normal_3",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:09.089Z",
+      "path": "normal/control_normal_3"
+    },
+    {
+      "id": "control_normal_4",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:08.178Z",
+      "path": "normal/control_normal_4"
+    },
+    {
+      "id": "control_normal_5",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:17.796Z",
+      "path": "normal/control_normal_5"
+    },
+    {
+      "id": "control_normal_6",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:16.950Z",
+      "path": "normal/control_normal_6"
+    },
+    {
+      "id": "control_normal_7",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:17.759Z",
+      "path": "normal/control_normal_7"
+    },
+    {
+      "id": "control_normal_8",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:18.930Z",
+      "path": "normal/control_normal_8"
+    },
+    {
+      "id": "control_normal_9",
+      "group": "control",
+      "bugKey": null,
+      "bugLabel": null,
+      "diffRatio": 0,
+      "minDiffRatio": 0,
+      "targetUrl": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "generatedAt": "2026-07-11T20:15:26.574Z",
+      "path": "normal/control_normal_9"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+id,group,bug_key,bug_label,diff_ratio,min_diff_ratio,browser,target_url,generated_at,path
+bug_blur_unreadable_1,bug,blur_unreadable,"Whole app blurred beyond readability",0.076530,0.05,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:40.880Z,buggy/bug_blur_unreadable_1
+bug_blur_unreadable_2,bug,blur_unreadable,"Whole app blurred beyond readability",0.088115,0.05,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:44.312Z,buggy/bug_blur_unreadable_2
+bug_blur_unreadable_3,bug,blur_unreadable,"Whole app blurred beyond readability",0.092836,0.05,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:47.075Z,buggy/bug_blur_unreadable_3
+bug_blur_unreadable_4,bug,blur_unreadable,"Whole app blurred beyond readability",0.090827,0.05,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:48.505Z,buggy/bug_blur_unreadable_4
+bug_blur_unreadable_5,bug,blur_unreadable,"Whole app blurred beyond readability",0.086312,0.05,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:52.311Z,buggy/bug_blur_unreadable_5
+bug_displaynone_collapse_1,bug,displaynone_collapse,"Key section removed with display:none → content below jumps up",0.468278,0.12,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:28.709Z,buggy/bug_displaynone_collapse_1
+bug_displaynone_collapse_2,bug,displaynone_collapse,"Key section removed with display:none → content below jumps up",0.544265,0.12,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:32.286Z,buggy/bug_displaynone_collapse_2
+bug_displaynone_collapse_3,bug,displaynone_collapse,"Key section removed with display:none → content below jumps up",0.467010,0.12,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:33.004Z,buggy/bug_displaynone_collapse_3
+bug_displaynone_collapse_4,bug,displaynone_collapse,"Key section removed with display:none → content below jumps up",0.353069,0.12,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:38.187Z,buggy/bug_displaynone_collapse_4
+bug_displaynone_collapse_5,bug,displaynone_collapse,"Key section removed with display:none → content below jumps up",0.416757,0.12,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:38.439Z,buggy/bug_displaynone_collapse_5
+bug_flicker_seizure_1,bug,flicker_seizure,"Elements flicker violently between two broken states",0.521066,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:16.546Z,buggy/bug_flicker_seizure_1
+bug_flicker_seizure_2,bug,flicker_seizure,"Elements flicker violently between two broken states",0.523960,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:21.123Z,buggy/bug_flicker_seizure_2
+bug_flicker_seizure_3,bug,flicker_seizure,"Elements flicker violently between two broken states",0.455382,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:20.328Z,buggy/bug_flicker_seizure_3
+bug_flicker_seizure_4,bug,flicker_seizure,"Elements flicker violently between two broken states",0.523197,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:23.331Z,buggy/bug_flicker_seizure_4
+bug_flicker_seizure_5,bug,flicker_seizure,"Elements flicker violently between two broken states",0.455530,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:28.559Z,buggy/bug_flicker_seizure_5
+bug_flyaway_offset_1,bug,flyaway_offset,"App flies off-screen (huge negative margin → massive layout shift)",0.673707,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:04.457Z,buggy/bug_flyaway_offset_1
+bug_flyaway_offset_2,bug,flyaway_offset,"App flies off-screen (huge negative margin → massive layout shift)",0.656049,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:05.506Z,buggy/bug_flyaway_offset_2
+bug_flyaway_offset_3,bug,flyaway_offset,"App flies off-screen (huge negative margin → massive layout shift)",0.676581,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:09.267Z,buggy/bug_flyaway_offset_3
+bug_flyaway_offset_4,bug,flyaway_offset,"App flies off-screen (huge negative margin → massive layout shift)",0.691520,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:11.034Z,buggy/bug_flyaway_offset_4
+bug_flyaway_offset_5,bug,flyaway_offset,"App flies off-screen (huge negative margin → massive layout shift)",0.692870,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:14.042Z,buggy/bug_flyaway_offset_5
+bug_skew_distortion_1,bug,skew_distortion,"Severe geometric distortion (skew + rotate)",0.280549,0.1,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:26.614Z,buggy/bug_skew_distortion_1
+bug_skew_distortion_2,bug,skew_distortion,"Severe geometric distortion (skew + rotate)",0.302153,0.1,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:30.553Z,buggy/bug_skew_distortion_2
+bug_skew_distortion_3,bug,skew_distortion,"Severe geometric distortion (skew + rotate)",0.286420,0.1,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:35.177Z,buggy/bug_skew_distortion_3
+bug_skew_distortion_4,bug,skew_distortion,"Severe geometric distortion (skew + rotate)",0.299072,0.1,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:37.738Z,buggy/bug_skew_distortion_4
+bug_skew_distortion_5,bug,skew_distortion,"Severe geometric distortion (skew + rotate)",0.295093,0.1,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:38.410Z,buggy/bug_skew_distortion_5
+bug_vanish_invisible_1,bug,vanish_invisible,"Entire app mysteriously invisible (opacity 0)",0.676379,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:54.009Z,buggy/bug_vanish_invisible_1
+bug_vanish_invisible_2,bug,vanish_invisible,"Entire app mysteriously invisible (opacity 0)",0.631749,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:57.996Z,buggy/bug_vanish_invisible_2
+bug_vanish_invisible_3,bug,vanish_invisible,"Entire app mysteriously invisible (opacity 0)",0.656139,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:57.510Z,buggy/bug_vanish_invisible_3
+bug_vanish_invisible_4,bug,vanish_invisible,"Entire app mysteriously invisible (opacity 0)",0.676057,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:01.605Z,buggy/bug_vanish_invisible_4
+bug_vanish_invisible_5,bug,vanish_invisible,"Entire app mysteriously invisible (opacity 0)",0.688711,0.15,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:16:02.097Z,buggy/bug_vanish_invisible_5
+control_normal_1,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:07.475Z,normal/control_normal_1
+control_normal_10,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:26.228Z,normal/control_normal_10
+control_normal_2,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:09.246Z,normal/control_normal_2
+control_normal_3,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:09.089Z,normal/control_normal_3
+control_normal_4,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:08.178Z,normal/control_normal_4
+control_normal_5,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:17.796Z,normal/control_normal_5
+control_normal_6,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:16.950Z,normal/control_normal_6
+control_normal_7,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:17.759Z,normal/control_normal_7
+control_normal_8,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:18.930Z,normal/control_normal_8
+control_normal_9,control,,"",0.000000,0,chromium,https://todomvc.com/examples/react/dist/,2026-07-11T20:15:26.574Z,normal/control_normal_9
