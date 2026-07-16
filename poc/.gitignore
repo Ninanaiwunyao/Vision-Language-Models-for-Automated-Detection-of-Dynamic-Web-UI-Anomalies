@@ -1,0 +1,8 @@
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# Never commit API keys
+.env
+.env.local
+*.key
