@@ -38,6 +38,50 @@
   - Pipeline verified — safe to start the PoC evaluation.
 
 ### Next Steps
-- [ ] Build the PoC evaluation runner: feed each manifest clip/keyframes to
-      `gemini-3.5-flash`, collect verdicts, and score against `ground_truth`
-      (accuracy, false-positive rate on the 8 normal clips, per-bug-type recall).
+- [x] Build the PoC evaluation runner (superseded by the Stage 3 paired trial below).
+
+## 2026-07-17
+
+### Dataset integrity incident: dataset_v1 videos did not contain their defects
+
+While preparing Stage 3, frame-level inspection revealed that many dataset_v1
+*videos* never show the labelled bug: **0/5 flyaway_offset and 3/5
+vanish_invisible clips end on a perfectly normal-looking app** (verified by
+frame montage + a dark-pixel "ink" metric). Root cause: Playwright's recorder
+only receives frames on repaint and finalises asynchronously on close; a static
+broken state (vanished/off-screen app) emits one defect frame that often loses
+the close race. Animated bugs (flicker) always survived — the tell.
+The pixelmatch gate missed all of this because it compared screenshots and
+never decoded the video.
+
+Fixes (branch feat/poc-pretrial):
+- Injection spec: 7s fixed post-injection hold (identical for both groups so
+  duration cannot leak the label) + a "screencast heartbeat" dot outside the
+  app clip region forcing ~4fps through static broken states.
+- New **video-level quality gate** (`poc/gate_videos.py`): last decoded frame
+  must resemble buggy.png, not normal.png. dataset_v1 would have failed it;
+  dataset_v2 passes 40/40 (30/30 buggy defects provably on video).
+- MutationObserver DOM traces (`domtrace.json`) recorded per clip — the DOM
+  half of the dual-path signal. Injected CSS lives in <head> and is not
+  observed, so the trace cannot leak the injection.
+- **Label-leak fix**: post-injection typing used to type the scenario id
+  (including the bug name!) into the on-screen input. Now types neutral todo
+  phrases.
+- dataset_v2 regenerated (40 cases), manifest rebuilt against it.
+
+### Stage 3 pipeline built (paired Baseline-vs-Ours trial)
+
+- `poc/keyframes.py` — decode + uniform sampling (baseline) and sustained-
+  transition change-point selection + final settled frame (ours). Pixel-only
+  probe confirmed the classes are NOT separable by change magnitude (normal
+  typing produces bigger diffs than several bugs), so the structural signal
+  does not leak the answer.
+- `poc/run_trial.py` — both conditions per clip, interleaved, cached in
+  poc/results/raw/ (quota-crash resumable); cheapest model frozen for the whole
+  trial; per-clip ground truth never enters any prompt. `--dry-run` builds all
+  payloads without API calls.
+- `poc/score_trial.py` — accuracy + Wilson CI, FPR on normals, per-bug recall,
+  exact McNemar on discordant pairs.
+
+### Next Steps
+- [ ] Run `python3 poc/run_trial.py` with the API key, then `score_trial.py`.

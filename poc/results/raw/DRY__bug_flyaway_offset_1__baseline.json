@@ -1,0 +1,33 @@
+{
+  "id": "bug_flyaway_offset_1",
+  "condition": "baseline",
+  "dry_run": true,
+  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
+  "n_images": 6,
+  "meta": {
+    "transition_time_s": 6.0,
+    "signal": {
+      "change_ratio": 0.1797,
+      "changed_region": {
+        "x": 0.042,
+        "y": 0.022,
+        "w": 0.955,
+        "h": 0.969,
+        "area_fraction": 0.926
+      },
+      "large_transition_count": 12,
+      "post_state_persistence": 1.0,
+      "clip_duration_s": 13.56
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 173,
+      "mutations_near_transition": 78,
+      "near_breakdown": {
+        "attributes:input": 77,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 113
+  }
+}

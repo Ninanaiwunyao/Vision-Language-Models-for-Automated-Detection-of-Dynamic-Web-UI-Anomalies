@@ -1,0 +1,35 @@
+{
+  "id": "control_normal_6",
+  "condition": "baseline",
+  "dry_run": true,
+  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
+  "n_images": 6,
+  "meta": {
+    "transition_time_s": 4.92,
+    "signal": {
+      "change_ratio": 0.1641,
+      "changed_region": {
+        "x": 0.011,
+        "y": 0.031,
+        "w": 0.827,
+        "h": 0.938,
+        "area_fraction": 0.776
+      },
+      "large_transition_count": 10,
+      "post_state_persistence": 0.987,
+      "clip_duration_s": 13.92
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 210,
+      "mutations_near_transition": 57,
+      "near_breakdown": {
+        "attributes:input": 43,
+        "childList:ul": 9,
+        "attributes:a": 4,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 116
+  }
+}

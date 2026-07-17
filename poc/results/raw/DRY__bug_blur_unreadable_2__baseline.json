@@ -1,0 +1,36 @@
+{
+  "id": "bug_blur_unreadable_2",
+  "condition": "baseline",
+  "dry_run": true,
+  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
+  "n_images": 6,
+  "meta": {
+    "transition_time_s": 2.16,
+    "signal": {
+      "change_ratio": 0.0884,
+      "changed_region": {
+        "x": 0.394,
+        "y": 0.071,
+        "w": 0.447,
+        "h": 0.84,
+        "area_fraction": 0.375
+      },
+      "large_transition_count": 10,
+      "post_state_persistence": 0.938,
+      "clip_duration_s": 12.24
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 182,
+      "mutations_near_transition": 59,
+      "near_breakdown": {
+        "attributes:input": 48,
+        "characterData:#text": 5,
+        "childList:ul": 4,
+        "attributes:li": 1,
+        "attributes:button": 1
+      }
+    },
+    "n_frames_decoded": 102
+  }
+}

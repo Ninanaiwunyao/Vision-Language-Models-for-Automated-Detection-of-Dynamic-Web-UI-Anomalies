@@ -1,0 +1,7 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "baseline_frames": 6,
+  "frame_width": 640,
+  "dom_window_ms": 1200,
+  "manifest_total": 16
+}

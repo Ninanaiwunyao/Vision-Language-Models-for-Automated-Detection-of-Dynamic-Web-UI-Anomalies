@@ -25,14 +25,29 @@ from __future__ import annotations
 
 import csv
 import json
+import sys
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Paths — resolved relative to the repository root so the script is portable.
+# The dataset defaults to the newest version present; pass a dir name to pin
+# one explicitly:  python3 poc/build_manifest.py dataset_v1
 # ---------------------------------------------------------------------------
 POC_DIR = Path(__file__).resolve().parent
 REPO_ROOT = POC_DIR.parent
-DATASET_DIR = REPO_ROOT / "dataset_v1"
+
+
+def _default_dataset() -> Path:
+    for name in ("dataset_v2", "dataset_v1"):
+        if (REPO_ROOT / name / "metadata.json").exists():
+            return REPO_ROOT / name
+    raise SystemExit("No dataset with metadata.json found in the repo root")
+
+
+DATASET_DIR = (
+    REPO_ROOT / sys.argv[1] if len(sys.argv) > 1 else _default_dataset()
+)
+DATASET_NAME = DATASET_DIR.name
 DATASET_META = DATASET_DIR / "metadata.json"
 
 MANIFEST_JSON = POC_DIR / "manifest.json"
@@ -106,20 +121,22 @@ def numeric_suffix(case_id: str) -> int:
     return int(case_id.rsplit("_", 1)[-1])
 
 
-def verify_assets(case_path: str) -> dict[str, str]:
+def verify_assets(case_path: str) -> dict[str, str | None]:
     """Confirm the video + keyframes exist and return their repo-relative paths.
     A manifest that points at missing files is worse than useless, so we fail
     loudly here rather than at evaluation time."""
-    base = DATASET_DIR / case_path
-    assets = {
-        "video": f"dataset_v1/{case_path}/video.webm",
-        "normal_frame": f"dataset_v1/{case_path}/normal.png",
-        "buggy_frame": f"dataset_v1/{case_path}/buggy.png",
-        "diff_frame": f"dataset_v1/{case_path}/diff.png",
+    assets: dict[str, str | None] = {
+        "video": f"{DATASET_NAME}/{case_path}/video.webm",
+        "normal_frame": f"{DATASET_NAME}/{case_path}/normal.png",
+        "buggy_frame": f"{DATASET_NAME}/{case_path}/buggy.png",
+        "diff_frame": f"{DATASET_NAME}/{case_path}/diff.png",
     }
     for name, rel in assets.items():
         if not (REPO_ROOT / rel).exists():
             raise SystemExit(f"Missing {name} for {case_path}: {rel}")
+    # DOM mutation trace: present from dataset_v2 onward, optional before.
+    trace = f"{DATASET_NAME}/{case_path}/domtrace.json"
+    assets["dom_trace"] = trace if (REPO_ROOT / trace).exists() else None
     return assets
 
 
@@ -164,6 +181,7 @@ def to_entry(case: dict) -> dict:
         "bug_label": case.get("bugLabel"),
         "expectation": EXPECTED_SYMPTOM[bug_key] if is_anomaly else NORMAL_EXPECTATION,
         "video_path": assets["video"],
+        "dom_trace_path": assets["dom_trace"],
         "keyframes": {
             "normal": assets["normal_frame"],
             "buggy": assets["buggy_frame"],
@@ -179,9 +197,9 @@ def to_entry(case: dict) -> dict:
 def write_json(entries: list[dict]) -> None:
     n_anom = sum(1 for e in entries if e["is_anomaly"])
     doc = {
-        "schema_version": 1,
-        "description": "PoC pre-trial ground-truth manifest (balanced subset of dataset_v1).",
-        "source": "dataset_v1/metadata.json",
+        "schema_version": 2,
+        "description": f"PoC pre-trial ground-truth manifest (balanced subset of {DATASET_NAME}).",
+        "source": f"{DATASET_NAME}/metadata.json",
         "total": len(entries),
         "normal": len(entries) - n_anom,
         "anomaly": n_anom,

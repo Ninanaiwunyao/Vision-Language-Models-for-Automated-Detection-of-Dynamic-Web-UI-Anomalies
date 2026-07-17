@@ -1,0 +1,33 @@
+{
+  "id": "bug_skew_distortion_1",
+  "condition": "baseline",
+  "dry_run": true,
+  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
+  "n_images": 6,
+  "meta": {
+    "transition_time_s": 4.92,
+    "signal": {
+      "change_ratio": 0.1803,
+      "changed_region": {
+        "x": 0.012,
+        "y": 0.0,
+        "w": 0.984,
+        "h": 0.992,
+        "area_fraction": 0.975
+      },
+      "large_transition_count": 4,
+      "post_state_persistence": 0.995,
+      "clip_duration_s": 12.72
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 167,
+      "mutations_near_transition": 82,
+      "near_breakdown": {
+        "attributes:input": 81,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 106
+  }
+}

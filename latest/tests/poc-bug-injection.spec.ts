@@ -18,6 +18,24 @@ const TARGET_URL =
 const CONTROL_CASES = 10;
 const CASES_PER_BUG = 5;
 
+/**
+ * How long the post-gate (defective) state is held on screen, in ms.
+ *
+ * Playwright finalises the recording asynchronously when the context closes,
+ * so the tail of the video can be lost. dataset_v1 was silently corrupted this
+ * way: the defect lived only in the final ~2.5s, and in several clips
+ * (notably every flyaway_offset and 3/5 vanish_invisible) that window was
+ * truncated away — leaving a video labelled "anomaly" that shows a perfectly
+ * normal app. Holding far longer than any observed truncation keeps the defect
+ * unmistakably present in the surviving footage.
+ *
+ * This window is applied identically to BOTH groups: if buggy clips ran shorter
+ * than control clips (as they did in v1, because typing is skipped when the app
+ * is invisible), clip duration would itself correlate with the label and leak
+ * the answer to anything that samples frames.
+ */
+const DEFECT_HOLD_MS = 7000;
+
 // ---------------------------------------------------------------------------
 // 1. Scenario diversification — randomized user behavior
 //    Even within the same page, each run performs a different interaction
@@ -247,6 +265,64 @@ interface ClipRegion {
   height: number;
 }
 
+// ---------------------------------------------------------------------------
+// 3b. DOM signal capture (Path B's structural channel)
+// ---------------------------------------------------------------------------
+
+interface DomMutation {
+  t: number;
+  type: string;
+  tag: string | null;
+  cls: string | null;
+  attr: string | null;
+  added: number;
+  removed: number;
+}
+
+/**
+ * Install a MutationObserver that timestamps every DOM mutation in the app.
+ *
+ * IMPORTANT: we observe document.body only. page.addStyleTag() appends the
+ * malicious stylesheet to <head>, so the injection itself is structurally
+ * invisible to this trace and cannot leak the answer. What remains is the
+ * legitimate signal: DOM activity caused by real user actions.
+ */
+async function installDomRecorder(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const trace: DomMutation[] = [];
+    (window as unknown as { __domTrace: DomMutation[] }).__domTrace = trace;
+    const t0 = performance.now();
+    const observer = new MutationObserver((records) => {
+      for (const r of records) {
+        if (trace.length >= 3000) return; // cap: keep the artifact small
+        const el = r.target as HTMLElement;
+        // The screencast heartbeat dot flips its style 4x/second; recording
+        // that would drown the real user-driven signal.
+        if (el && el.id === "__rec_heartbeat") continue;
+        trace.push({
+          t: Math.round(performance.now() - t0),
+          type: r.type,
+          tag: el.nodeName ? el.nodeName.toLowerCase() : null,
+          cls:
+            typeof el.className === "string" ? el.className.slice(0, 80) : null,
+          attr: r.attributeName ?? null,
+          added: r.addedNodes.length,
+          removed: r.removedNodes.length,
+        });
+      }
+    });
+    const start = () =>
+      observer.observe(document.body, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        characterData: true,
+      });
+    if (document.body) start();
+    else document.addEventListener("DOMContentLoaded", start);
+  });
+}
+
 /**
  * Fixed rectangle around the app's pre-injection position (plus padding),
  * clamped to the viewport. Diffing only this region keeps the metric about
@@ -281,6 +357,38 @@ async function captureScreenshot(
   return path;
 }
 
+/**
+ * Keep screencast frames flowing while the defective state is held.
+ *
+ * Playwright's recorder only receives a frame when the page repaints. A static
+ * broken state (vanished app, app pushed off-screen) stops repainting after
+ * the injection, so the whole hold window produces zero frames and the single
+ * defect frame can still lose the async close race — the exact corruption the
+ * hold was meant to prevent (and why animated bugs like flicker always
+ * survived while vanish/flyaway did not).
+ *
+ * The heartbeat is a small grey dot in the bottom-right viewport corner that
+ * toggles shade 4x/second, forcing a steady ~4fps into the encoder. It is
+ * fair and non-leaking by construction: injected AFTER the gate screenshots
+ * (pixelmatch never sees it), outside the app clip region (the video gate
+ * never sees it), identical in both groups, and filtered from the DOM trace.
+ */
+async function installScreencastHeartbeat(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    const dot = document.createElement("div");
+    dot.id = "__rec_heartbeat";
+    dot.style.cssText =
+      "position:fixed;right:6px;bottom:6px;width:10px;height:10px;" +
+      "border-radius:50%;background:#999;z-index:2147483647;pointer-events:none;";
+    document.body.appendChild(dot);
+    let on = false;
+    setInterval(() => {
+      on = !on;
+      dot.style.background = on ? "#999" : "#ccc";
+    }, 250);
+  });
+}
+
 // ---------------------------------------------------------------------------
 // 4. Test scenario list: control group + bug matrix, all data-driven
 // ---------------------------------------------------------------------------
@@ -312,7 +420,10 @@ for (const scenario of scenarios) {
       : `[Bug/${scenario.bug!.label}] ${scenario.id}`;
 
   test(title, async ({ page }, testInfo) => {
-    test.setTimeout(90_000);
+    test.setTimeout(120_000);
+
+    // Must be installed before navigation so the observer sees the whole session.
+    await installDomRecorder(page);
 
     await page.goto(TARGET_URL, { waitUntil: "networkidle" });
 
@@ -378,6 +489,10 @@ for (const scenario of scenarios) {
           targetUrl: TARGET_URL,
           browser: testInfo.project.name,
           viewport: page.viewportSize(),
+          // The video gate needs this to map a decoded frame back onto the
+          // exact region normal.png / buggy.png cover.
+          clip,
+          defectHoldMs: DEFECT_HOLD_MS,
           generatedAt: new Date().toISOString(),
         },
         null,
@@ -385,17 +500,48 @@ for (const scenario of scenarios) {
       ),
     );
 
-    // ── Post-gate interaction: capture dynamic frames for the video ────────
-    // (User keeps interacting while the bug is live — or the app has broken
-    // so badly that interaction is impossible, which is itself good footage.)
-    const input = page.locator(".new-todo");
-    if (await input.isVisible().catch(() => false)) {
-      await input.pressSequentially(`post-injection check ${scenario.id}`, {
-        delay: randInt(40, 90),
-      });
-    }
-    await page.waitForTimeout(2000);
+    // ── Post-gate: hold the (defective) state on screen ────────────────────
+    // The window is a fixed wall-clock duration for BOTH groups. Interaction
+    // is attempted but is best-effort: a vanished or flown-away app cannot be
+    // typed into, and in v1 that shortened those clips — making duration
+    // correlate with the label. Here the hold length is independent of whether
+    // typing succeeded, so both groups yield comparable footage.
+    await installScreencastHeartbeat(page);
 
-    console.log(`[SUCCESS] Video generated for scenario: ${scenario.id}`);
+    const holdUntil = Date.now() + DEFECT_HOLD_MS;
+    const input = page.locator(".new-todo");
+    // The typed text MUST NOT identify the scenario: typing the scenario id
+    // (as an earlier version did) paints the ground-truth label — including
+    // the bug name — into the video for any model that can read the screen.
+    if (await input.isVisible().catch(() => false)) {
+      await input
+        .pressSequentially(sample(TODO_PHRASES, 1)[0], {
+          delay: randInt(40, 90),
+          // Don't let Playwright's default 30s retry loop stall the clip when
+          // the app is too broken to reach (e.g. pushed off-screen).
+          timeout: 5000,
+        })
+        .catch(() => {
+          /* app too broken to type into — that is itself valid footage */
+        });
+    }
+    const remaining = holdUntil - Date.now();
+    if (remaining > 0) await page.waitForTimeout(remaining);
+
+    // Persist the DOM signal alongside the pixels. Note this trace contains
+    // only body mutations (user-driven activity); the injected stylesheet lives
+    // in <head> and is deliberately not observed.
+    const domTrace = await page.evaluate(
+      () => (window as unknown as { __domTrace?: DomMutation[] }).__domTrace ?? [],
+    );
+    fs.writeFileSync(
+      testInfo.outputPath("domtrace.json"),
+      JSON.stringify(domTrace),
+    );
+
+    console.log(
+      `[SUCCESS] ${scenario.id}: video held ${DEFECT_HOLD_MS}ms post-injection, ` +
+        `${domTrace.length} DOM mutations recorded`,
+    );
   });
 }

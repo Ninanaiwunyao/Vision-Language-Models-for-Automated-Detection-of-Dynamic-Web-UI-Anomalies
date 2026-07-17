@@ -1,0 +1,39 @@
+{
+  "id": "control_normal_3",
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The observed visual transitions correspond with expected DOM activity for adding and completing items in the TodoMVC application, and the final state remains consistent with the expected interface.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The observed visual transitions correspond with expected DOM activity for adding and completing items in the TodoMVC application, and the final state remains consistent with the expected interface.\", \"defect_type\": null}",
+  "latency_s": 1.0,
+  "meta": {
+    "transition_time_s": 2.64,
+    "signal": {
+      "change_ratio": 0.0691,
+      "changed_region": {
+        "x": 0.398,
+        "y": 0.172,
+        "w": 0.44,
+        "h": 0.572,
+        "area_fraction": 0.252
+      },
+      "large_transition_count": 7,
+      "post_state_persistence": 0.975,
+      "clip_duration_s": 12.36
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 168,
+      "mutations_near_transition": 61,
+      "near_breakdown": {
+        "attributes:input": 52,
+        "characterData:#text": 4,
+        "childList:ul": 2,
+        "attributes:li": 2,
+        "attributes:button": 1
+      }
+    },
+    "n_frames_decoded": 103
+  }
+}

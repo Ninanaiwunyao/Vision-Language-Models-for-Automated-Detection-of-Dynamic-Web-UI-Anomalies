@@ -72,8 +72,61 @@ If **every** candidate returns 429, the key/project has no free-tier quota left:
 enable billing on the Google Cloud project, wait for the daily reset, or set
 `GEMINI_MODEL` to a model you have quota for.
 
+## Stage 3 — Paired two-condition trial (the PoC core)
+
+```bash
+python3 poc/run_trial.py --dry-run   # build every payload, zero API calls
+python3 poc/run_trial.py             # the real thing (needs GOOGLE_API_KEY)
+python3 poc/score_trial.py           # metrics + McNemar paired test
+```
+
+Every manifest clip runs under BOTH conditions (a paired design):
+
+| | sampling | images | prompt |
+|---|---|---|---|
+| **baseline** | uniform over the clip | 6 | naive "is there a visual bug?" |
+| **ours** | strongest sustained pixel transition (before/after) + final settled state | 3 | dual-path: generic expected-appearance reference + structural pixel signals + DOM-mutation correlation |
+
+Fairness rules (enforced in code):
+- One model — the **cheapest** available (`*-flash-lite` tier first) — resolved
+  once and frozen for all calls; 429s retry the same model, never switch.
+- The manifest's per-clip `expectation` never enters any prompt; the expected-
+  appearance text in `ours` is generic and identical for every clip.
+- Keyframe selection reads only pixels/DOM, never the label.
+- Conditions are interleaved per clip, and responses are cached in
+  `poc/results/raw/` — a quota crash mid-run resumes without losing pairing.
+
+`score_trial.py` reports accuracy (with Wilson 95% CI), false-positive rate on
+the normal clips, per-bug-type recall, and an exact McNemar test on the
+discordant pairs. With n=16 treat the p-value as a sanity check, not a claim.
+
+## Dataset integrity: why dataset_v2 exists
+
+dataset_v1's *videos* frequently did not contain the labelled defect: Playwright
+only receives a frame when the page repaints, and its recorder finalises
+asynchronously on close — so a static broken state (vanished app, off-screen
+app) emitted a single defect frame that often lost the close race. Every
+`flyaway_offset` clip and 3/5 `vanish_invisible` clips were corrupted this way,
+while animated bugs (`flicker`) always survived. The screenshot-level pixelmatch
+gate could not see this because it never decoded the video.
+
+Three fixes in `latest/tests/poc-bug-injection.spec.ts` + `poc/gate_videos.py`:
+1. a 7s fixed post-injection hold, identical for both groups (so clip duration
+   cannot leak the label);
+2. a "screencast heartbeat" — a tiny grey dot outside the app region toggling
+   4x/s — keeping frames flowing through static broken states;
+3. a **video-level gate**: the final decoded frame must resemble `buggy.png`,
+   not `normal.png`, or the case is rejected (`video-gate-report.json`).
+
+dataset_v2 also records a MutationObserver trace (`domtrace.json`) per clip —
+the DOM half of the dual-path signal. The post-injection typing was switched to
+neutral phrases after we found the original typed the scenario id (including
+the bug name!) into the on-screen input — a direct label leak to any model that
+reads the screen.
+
 ### Requirements
 
-Python 3 with `google-generativeai`, `pillow`, and `requests` (already present
-in this environment). You must supply your own Gemini API key via the
-environment — for security it is never stored in the repo.
+Python 3 with `google-generativeai`, `pillow`, `requests`, `numpy`, and
+`imageio-ffmpeg` (all present in this environment). You must supply your own
+Gemini API key via the environment — for security it is never stored in the
+repo.
