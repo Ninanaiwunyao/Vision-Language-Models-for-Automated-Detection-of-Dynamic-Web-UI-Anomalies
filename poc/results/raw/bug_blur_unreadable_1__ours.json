@@ -1,9 +1,12 @@
 {
   "id": "bug_blur_unreadable_1",
-  "condition": "baseline",
-  "dry_run": true,
-  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
-  "n_images": 6,
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the todo list card and text content have suddenly become blurred and unreadable, which deviates from the expected crisp and clear rendering of the application.",
+  "defect_type": "blur_unreadable",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the todo list card and text content have suddenly become blurred and unreadable, which deviates from the expected crisp and clear rendering of the application.\", \"defect_type\": \"blur_unreadable\"}",
+  "latency_s": 1.11,
   "meta": {
     "transition_time_s": 2.04,
     "signal": {

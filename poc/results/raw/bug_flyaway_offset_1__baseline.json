@@ -1,9 +1,12 @@
 {
   "id": "bug_flyaway_offset_1",
   "condition": "baseline",
-  "dry_run": true,
-  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
-  "n_images": 6,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence of frames demonstrates a standard interaction with a todo list application where items are added, selected, and then deleted, resulting in the correct UI state.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence of frames demonstrates a standard interaction with a todo list application where items are added, selected, and then deleted, resulting in the correct UI state.\"}",
+  "latency_s": 1.17,
   "meta": {
     "transition_time_s": 6.0,
     "signal": {

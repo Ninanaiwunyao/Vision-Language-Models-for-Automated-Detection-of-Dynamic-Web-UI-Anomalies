@@ -1,0 +1,37 @@
+{
+  "id": "bug_flicker_seizure_1",
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits a visual state where background elements are incorrectly rendered in a bright red color, deviating significantly from the expected white card design.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits a visual state where background elements are incorrectly rendered in a bright red color, deviating significantly from the expected white card design.\", \"defect_type\": \"flicker_seizure\"}",
+  "latency_s": 1.18,
+  "meta": {
+    "transition_time_s": 3.36,
+    "signal": {
+      "change_ratio": 0.1473,
+      "changed_region": {
+        "x": 0.4,
+        "y": 0.178,
+        "w": 0.469,
+        "h": 0.356,
+        "area_fraction": 0.167
+      },
+      "large_transition_count": 6,
+      "post_state_persistence": 0.975,
+      "clip_duration_s": 12.24
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 153,
+      "mutations_near_transition": 49,
+      "near_breakdown": {
+        "attributes:input": 44,
+        "attributes:a": 4,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 102
+  }
+}

@@ -83,5 +83,36 @@ Fixes (branch feat/poc-pretrial):
 - `poc/score_trial.py` — accuracy + Wilson CI, FPR on normals, per-bug recall,
   exact McNemar on discordant pairs.
 
+### Stage 3 trial results (model: gemini-3.1-flash-lite, 16 clips x 2 conditions)
+
+| metric | baseline (uniform x6 + naive) | ours (smart keyframes x3 + dual-path) |
+|---|---|---|
+| accuracy | 0.75 [CI 0.51-0.90] | **0.94** [CI 0.72-0.99] |
+| false-positive rate (8 normal) | 0.125 | **0.0** |
+| anomaly recall (8 buggy) | 0.625 | **0.875** |
+| defect-type match | — | 5/7 |
+
+Paired: ours-only-correct **3**, baseline-only-correct **0** (strict dominance;
+McNemar exact p=0.25 — direction fully consistent, n=16 too small for
+significance, as expected for a pre-trial). Model selection needed a quota
+probe at connect time: this key's gemini-2.0 family has `limit: 0` and
+gemini-2.5-flash-lite 404s for new accounts; first servable candidate was
+gemini-3.1-flash-lite.
+
+Failure analysis:
+- `bug_displaynone_collapse_1` missed by BOTH conditions: a collapsed todo card
+  (input + footer, list hidden) looks like a legitimately empty list; nearby
+  typing mutations made `ours` read it as a user edit. The one genuinely hard
+  case — keep for the full study.
+- `control_normal_5` false-positived by baseline only ("duplicate entries"
+  hallucinated from context-free uniform frames); `ours` correctly used the
+  transition pair + DOM evidence. This is the FP-suppression story in one clip.
+- `flyaway_offset` + one blur misclassified as `vanish_invisible` in the type
+  field — semantically adjacent (app gone from view), verdicts still correct.
+
 ### Next Steps
-- [ ] Run `python3 poc/run_trial.py` with the API key, then `score_trial.py`.
+- [ ] Scale beyond the 16-clip pre-trial (full 40, more replicates per bug
+      type) so McNemar has power; consider a second model for generality.
+- [ ] Investigate displaynone_collapse: both conditions blind to "section
+      legitimately-looking removed" — candidate for DOM-signal refinement
+      (removal without user input event nearby).

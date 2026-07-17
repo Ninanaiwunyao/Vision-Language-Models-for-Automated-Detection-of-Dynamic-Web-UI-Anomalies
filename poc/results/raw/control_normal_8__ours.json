@@ -1,9 +1,12 @@
 {
   "id": "control_normal_8",
-  "condition": "baseline",
-  "dry_run": true,
-  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
-  "n_images": 6,
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The observed changes, including item removal and text updates in the todo list, correspond with valid DOM mutations and result in an expected, stable end state.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The observed changes, including item removal and text updates in the todo list, correspond with valid DOM mutations and result in an expected, stable end state.\", \"defect_type\": null}",
+  "latency_s": 61.29,
   "meta": {
     "transition_time_s": 2.76,
     "signal": {

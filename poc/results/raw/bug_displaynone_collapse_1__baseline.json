@@ -1,9 +1,12 @@
 {
   "id": "bug_displaynone_collapse_1",
   "condition": "baseline",
-  "dry_run": true,
-  "prompt": "You are shown 6 frames sampled uniformly from a screen recording of a web application session. Decide whether the recording shows a visual bug or rendering defect. Respond with ONLY a JSON object, no prose, no code fence: {\"verdict\": \"anomaly\" | \"normal\", \"reason\": \"<one sentence>\"}",
-  "n_images": 6,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The session recording demonstrates the expected behavior of a to-do list application where a user types and adds a new task.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The session recording demonstrates the expected behavior of a to-do list application where a user types and adds a new task.\"}",
+  "latency_s": 1.17,
   "meta": {
     "transition_time_s": 3.72,
     "signal": {

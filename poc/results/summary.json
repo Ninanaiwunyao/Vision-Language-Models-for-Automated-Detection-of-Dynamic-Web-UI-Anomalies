@@ -1,0 +1,49 @@
+{
+  "conditions": {
+    "baseline": {
+      "clips_scored": 16,
+      "accuracy": 0.75,
+      "accuracy_ci95": [
+        0.505,
+        0.898
+      ],
+      "false_positive_rate": 0.125,
+      "anomaly_recall": 0.625,
+      "recall_by_bug_type": {
+        "blur_unreadable": "2/2",
+        "displaynone_collapse": "0/1",
+        "flicker_seizure": "1/1",
+        "flyaway_offset": "0/1",
+        "skew_distortion": "1/2",
+        "vanish_invisible": "1/1"
+      },
+      "invalid_responses": 0
+    },
+    "ours": {
+      "clips_scored": 16,
+      "accuracy": 0.938,
+      "accuracy_ci95": [
+        0.717,
+        0.989
+      ],
+      "false_positive_rate": 0.0,
+      "anomaly_recall": 0.875,
+      "recall_by_bug_type": {
+        "blur_unreadable": "2/2",
+        "displaynone_collapse": "0/1",
+        "flicker_seizure": "1/1",
+        "flyaway_offset": "1/1",
+        "skew_distortion": "2/2",
+        "vanish_invisible": "1/1"
+      },
+      "invalid_responses": 0,
+      "defect_type_match": "5/7"
+    }
+  },
+  "paired": {
+    "clips_paired": 16,
+    "baseline_only_correct": 0,
+    "ours_only_correct": 3,
+    "mcnemar_exact_p": 0.25
+  }
+}
