@@ -1,0 +1,36 @@
+{
+  "id": "bug_flyaway_offset_1",
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The entire to-do list component unexpectedly disappears from the screen, leaving only the sidebar, which deviates from the expected appearance of the TodoMVC application.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The entire to-do list component unexpectedly disappears from the screen, leaving only the sidebar, which deviates from the expected appearance of the TodoMVC application.\", \"defect_type\": \"vanish_invisible\"}",
+  "latency_s": 0.98,
+  "meta": {
+    "transition_time_s": 6.0,
+    "signal": {
+      "change_ratio": 0.1797,
+      "changed_region": {
+        "x": 0.042,
+        "y": 0.022,
+        "w": 0.955,
+        "h": 0.969,
+        "area_fraction": 0.926
+      },
+      "large_transition_count": 12,
+      "post_state_persistence": 1.0,
+      "clip_duration_s": 13.56
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 173,
+      "mutations_near_transition": 78,
+      "near_breakdown": {
+        "attributes:input": 77,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 113
+  }
+}

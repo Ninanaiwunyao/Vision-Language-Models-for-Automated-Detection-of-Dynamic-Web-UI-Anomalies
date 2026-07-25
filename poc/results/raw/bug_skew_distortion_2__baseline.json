@@ -1,0 +1,38 @@
+{
+  "id": "bug_skew_distortion_2",
+  "condition": "baseline",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The to-do list container is rendered with an extreme, unintended perspective distortion that makes the UI difficult to interact with.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The to-do list container is rendered with an extreme, unintended perspective distortion that makes the UI difficult to interact with.\"}",
+  "latency_s": 1.1,
+  "meta": {
+    "transition_time_s": 5.04,
+    "signal": {
+      "change_ratio": 0.2152,
+      "changed_region": {
+        "x": 0.011,
+        "y": 0.0,
+        "w": 0.986,
+        "h": 0.992,
+        "area_fraction": 0.978
+      },
+      "large_transition_count": 4,
+      "post_state_persistence": 0.995,
+      "clip_duration_s": 13.32
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 213,
+      "mutations_near_transition": 93,
+      "near_breakdown": {
+        "attributes:input": 88,
+        "childList:ul": 2,
+        "attributes:a": 2,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 111
+  }
+}

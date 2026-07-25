@@ -1,0 +1,40 @@
+{
+  "id": "bug_blur_unreadable_1",
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the todo list card and text content have suddenly become blurred and unreadable, which deviates from the expected crisp and clear rendering of the application.",
+  "defect_type": "blur_unreadable",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the todo list card and text content have suddenly become blurred and unreadable, which deviates from the expected crisp and clear rendering of the application.\", \"defect_type\": \"blur_unreadable\"}",
+  "latency_s": 1.11,
+  "meta": {
+    "transition_time_s": 2.04,
+    "signal": {
+      "change_ratio": 0.0677,
+      "changed_region": {
+        "x": 0.398,
+        "y": 0.172,
+        "w": 0.44,
+        "h": 0.739,
+        "area_fraction": 0.325
+      },
+      "large_transition_count": 10,
+      "post_state_persistence": 0.908,
+      "clip_duration_s": 12.12
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 200,
+      "mutations_near_transition": 80,
+      "near_breakdown": {
+        "attributes:input": 63,
+        "characterData:#text": 7,
+        "childList:ul": 6,
+        "attributes:main": 1,
+        "attributes:footer": 1,
+        "attributes:li": 1
+      }
+    },
+    "n_frames_decoded": 101
+  }
+}

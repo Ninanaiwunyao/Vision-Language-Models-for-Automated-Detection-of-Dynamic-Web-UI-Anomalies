@@ -1,0 +1,38 @@
+{
+  "id": "control_normal_6",
+  "condition": "baseline",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The session recording demonstrates standard todo list functionality, where adding an item to the list updates the UI correctly without any rendering defects.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The session recording demonstrates standard todo list functionality, where adding an item to the list updates the UI correctly without any rendering defects.\"}",
+  "latency_s": 1.49,
+  "meta": {
+    "transition_time_s": 4.92,
+    "signal": {
+      "change_ratio": 0.1641,
+      "changed_region": {
+        "x": 0.011,
+        "y": 0.031,
+        "w": 0.827,
+        "h": 0.938,
+        "area_fraction": 0.776
+      },
+      "large_transition_count": 10,
+      "post_state_persistence": 0.987,
+      "clip_duration_s": 13.92
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 210,
+      "mutations_near_transition": 57,
+      "near_breakdown": {
+        "attributes:input": 43,
+        "childList:ul": 9,
+        "attributes:a": 4,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 116
+  }
+}

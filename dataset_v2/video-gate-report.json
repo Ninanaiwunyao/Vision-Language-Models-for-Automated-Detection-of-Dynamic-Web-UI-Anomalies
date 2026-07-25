@@ -1,0 +1,304 @@
+{
+  "results": [
+    {
+      "id": "bug_blur_unreadable_1",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.1228,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_blur_unreadable_2",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.1194,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_blur_unreadable_3",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.1175,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_blur_unreadable_4",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.1186,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_blur_unreadable_5",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.1223,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_displaynone_collapse_1",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.4017,
+      "diff_vs_buggy": 0.0605,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_displaynone_collapse_2",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5775,
+      "diff_vs_buggy": 0.0372,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_displaynone_collapse_3",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.4612,
+      "diff_vs_buggy": 0.0385,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_displaynone_collapse_4",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5113,
+      "diff_vs_buggy": 0.0324,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_displaynone_collapse_5",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5503,
+      "diff_vs_buggy": 0.0417,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flicker_seizure_1",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5133,
+      "diff_vs_buggy": 0.0833,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flicker_seizure_2",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5511,
+      "diff_vs_buggy": 0.083,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flicker_seizure_3",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6242,
+      "diff_vs_buggy": 0.1162,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flicker_seizure_4",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6016,
+      "diff_vs_buggy": 0.1192,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flicker_seizure_5",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6009,
+      "diff_vs_buggy": 0.1128,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flyaway_offset_1",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6312,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flyaway_offset_2",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5992,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flyaway_offset_3",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6768,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flyaway_offset_4",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.677,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_flyaway_offset_5",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6769,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_skew_distortion_1",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.3323,
+      "diff_vs_buggy": 0.037,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_skew_distortion_2",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.3619,
+      "diff_vs_buggy": 0.0985,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_skew_distortion_3",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.3427,
+      "diff_vs_buggy": 0.0818,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_skew_distortion_4",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.3411,
+      "diff_vs_buggy": 0.0481,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_skew_distortion_5",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.3407,
+      "diff_vs_buggy": 0.0486,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_vanish_invisible_1",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6564,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_vanish_invisible_2",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6921,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_vanish_invisible_3",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.5998,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_vanish_invisible_4",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6928,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "bug_vanish_invisible_5",
+      "group": "bug",
+      "passed": true,
+      "diff_vs_normal": 0.6317,
+      "diff_vs_buggy": 0.0,
+      "reason": "last frame resembles the defective state"
+    },
+    {
+      "id": "control_normal_1",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_10",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_2",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_3",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_4",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_5",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_6",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_7",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_8",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    },
+    {
+      "id": "control_normal_9",
+      "group": "control",
+      "passed": true,
+      "reason": "control: no defect to verify"
+    }
+  ]
+}

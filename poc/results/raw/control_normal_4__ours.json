@@ -1,0 +1,38 @@
+{
+  "id": "control_normal_4",
+  "condition": "ours",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The observed transition is a standard user interaction where the filter selection is toggled, as confirmed by the corresponding DOM mutations in the filter anchors.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The observed transition is a standard user interaction where the filter selection is toggled, as confirmed by the corresponding DOM mutations in the filter anchors.\", \"defect_type\": null}",
+  "latency_s": 1.04,
+  "meta": {
+    "transition_time_s": 4.2,
+    "signal": {
+      "change_ratio": 0.197,
+      "changed_region": {
+        "x": 0.394,
+        "y": 0.172,
+        "w": 0.452,
+        "h": 0.739,
+        "area_fraction": 0.334
+      },
+      "large_transition_count": 8,
+      "post_state_persistence": 0.798,
+      "clip_duration_s": 13.8
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 192,
+      "mutations_near_transition": 45,
+      "near_breakdown": {
+        "attributes:input": 29,
+        "childList:ul": 11,
+        "attributes:a": 4,
+        "characterData:#text": 1
+      }
+    },
+    "n_frames_decoded": 115
+  }
+}

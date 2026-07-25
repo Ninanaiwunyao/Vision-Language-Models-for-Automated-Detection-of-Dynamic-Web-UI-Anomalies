@@ -30,7 +30,14 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    video: "on",
+    /*
+     * Record at the viewport's native size. Playwright otherwise scales video
+     * down to fit 800x800 (giving 800x450 here), which both softens subtle
+     * defects like blur and forces the video gate to guess a scale factor when
+     * mapping a frame back onto the screenshot clip region. 1:1 removes both
+     * problems.
+     */
+    video: { mode: "on", size: { width: 1280, height: 720 } },
   },
 
   /* Configure projects for major browsers */

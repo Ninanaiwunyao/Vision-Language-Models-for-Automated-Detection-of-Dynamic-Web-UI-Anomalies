@@ -1,0 +1,36 @@
+{
+  "id": "bug_displaynone_collapse_1",
+  "condition": "baseline",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The session recording demonstrates the expected behavior of a to-do list application where a user types and adds a new task.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The session recording demonstrates the expected behavior of a to-do list application where a user types and adds a new task.\"}",
+  "latency_s": 1.17,
+  "meta": {
+    "transition_time_s": 3.72,
+    "signal": {
+      "change_ratio": 0.0962,
+      "changed_region": {
+        "x": 0.395,
+        "y": 0.175,
+        "w": 0.602,
+        "h": 0.817,
+        "area_fraction": 0.492
+      },
+      "large_transition_count": 8,
+      "post_state_persistence": 0.993,
+      "clip_duration_s": 11.76
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 120,
+      "mutations_near_transition": 62,
+      "near_breakdown": {
+        "attributes:input": 61,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 98
+  }
+}

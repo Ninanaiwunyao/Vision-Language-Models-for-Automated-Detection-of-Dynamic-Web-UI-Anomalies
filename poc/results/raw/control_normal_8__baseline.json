@@ -1,0 +1,38 @@
+{
+  "id": "control_normal_8",
+  "condition": "baseline",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows a standard interaction where a user adds a new todo item to a list and completes the input process.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows a standard interaction where a user adds a new todo item to a list and completes the input process.\"}",
+  "latency_s": 1.57,
+  "meta": {
+    "transition_time_s": 2.76,
+    "signal": {
+      "change_ratio": 0.0639,
+      "changed_region": {
+        "x": 0.398,
+        "y": 0.171,
+        "w": 0.44,
+        "h": 0.66,
+        "area_fraction": 0.29
+      },
+      "large_transition_count": 9,
+      "post_state_persistence": 0.985,
+      "clip_duration_s": 11.64
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 162,
+      "mutations_near_transition": 63,
+      "near_breakdown": {
+        "attributes:input": 56,
+        "childList:ul": 3,
+        "characterData:#text": 3,
+        "childList:body": 1
+      }
+    },
+    "n_frames_decoded": 97
+  }
+}

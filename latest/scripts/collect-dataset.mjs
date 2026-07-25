@@ -45,6 +45,12 @@ for (const entry of fs.readdirSync(resultsDir, { withFileTypes: true })) {
   for (const png of ["normal.png", "buggy.png", "diff.png"]) {
     fs.copyFileSync(path.join(caseDir, png), path.join(destDir, png));
   }
+  // DOM mutation trace (Path B's structural channel). Optional so the script
+  // still works on captures made before the recorder existed.
+  const trace = path.join(caseDir, "domtrace.json");
+  if (fs.existsSync(trace)) {
+    fs.copyFileSync(trace, path.join(destDir, "domtrace.json"));
+  }
 
   records.push({ ...report, path: path.join(group, report.id) });
 }

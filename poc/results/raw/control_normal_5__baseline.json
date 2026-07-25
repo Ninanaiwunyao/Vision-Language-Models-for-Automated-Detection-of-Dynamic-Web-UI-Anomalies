@@ -1,0 +1,40 @@
+{
+  "id": "control_normal_5",
+  "condition": "baseline",
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The to-do list application displays duplicate entries for 'Read one chapter of the textbook' after an item is added, indicating a state management or rendering bug.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The to-do list application displays duplicate entries for 'Read one chapter of the textbook' after an item is added, indicating a state management or rendering bug.\"}",
+  "latency_s": 1.34,
+  "meta": {
+    "transition_time_s": 2.64,
+    "signal": {
+      "change_ratio": 0.0616,
+      "changed_region": {
+        "x": 0.397,
+        "y": 0.172,
+        "w": 0.441,
+        "h": 0.658,
+        "area_fraction": 0.291
+      },
+      "large_transition_count": 10,
+      "post_state_persistence": 0.931,
+      "clip_duration_s": 12.36
+    },
+    "dom": {
+      "available": true,
+      "total_mutations": 199,
+      "mutations_near_transition": 49,
+      "near_breakdown": {
+        "attributes:input": 36,
+        "childList:ul": 4,
+        "attributes:a": 4,
+        "characterData:#text": 3,
+        "attributes:li": 1,
+        "attributes:button": 1
+      }
+    },
+    "n_frames_decoded": 103
+  }
+}
