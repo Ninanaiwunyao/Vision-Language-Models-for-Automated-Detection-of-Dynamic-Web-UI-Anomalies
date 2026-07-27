@@ -1,0 +1,209 @@
+{
+  "$schema_version": 1,
+  "experiment_id": "EXP001",
+  "title": "Dual-path VLM detection of dynamic UI rendering defects — main paired trial",
+  "status": "frozen",
+  "frozen_at": "2026-07-25",
+  "frozen_from_commit": "44356d7e90c9908acafec9c3f50d1dd81513a63d",
+  "branch": "exp/formal-trial-v1",
+
+  "freeze_policy": {
+    "rule": "Once status is 'frozen', no field below may change while EXP001 results are being collected. Any change requires a new experiment_id and a fresh run of ALL clips under BOTH conditions — partial re-runs break the paired design.",
+    "rationale": "The PoC's headline comparison (baseline 75.0% vs ours 93.8%) is only attributable if both arms saw the same judge, the same decoding, and the same prompts. Mid-run drift in any of them makes the difference uninterpretable.",
+    "unfrozen_by_design": [
+      "poc/score_trial.py — scoring is a pure function of the cached raw responses and may be corrected or extended after the run without invalidating it."
+    ]
+  },
+
+  "model": {
+    "provider": "Google Gemini API",
+    "model_id": "gemini-3.1-flash-lite",
+    "pinned": true,
+    "pin_mechanism": "GEMINI_MODEL environment variable, verified by vlm_client.connect() against the account's live model list",
+    "fallback_on_quota": "none — a 429 retries the SAME model with backoff; if the model is unavailable the run ABORTS",
+    "_change_required": "vlm_client.connect() currently auto-probes the cheapest *-flash model when GEMINI_MODEL is unset. For EXP001 the pin is mandatory, not optional — an unset GEMINI_MODEL must be a hard error, not a fallback to auto-selection.",
+    "_poc_note": "The PoC resolved this same id by auto-probing (poc/results/trial-config.json). EXP001 pins it explicitly so the judge cannot silently change between clips or between sessions.",
+    "sdk": "google-generativeai==0.8.6"
+  },
+
+  "generation_params": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 1,
+    "max_output_tokens": 512,
+    "candidate_count": 1,
+    "repeats_per_call": 1,
+    "_change_required": "vlm_client.call_json() currently calls generate_content(parts) with NO generation_config, so the PoC ran at the SDK default (temperature 1.0 — stochastic sampling). EXP001 must pass these values explicitly on every call and record them in the per-clip raw JSON.",
+    "_determinism_caveat": "temperature=0 makes the decoder greedy but the Gemini API does not guarantee bit-identical output across sessions. Treat residual variation as measurement noise, not as a broken pin; if it matters, raise repeats_per_call and report majority vote plus disagreement rate."
+  },
+
+  "prompts": {
+    "_integrity": "SHA-256 of the exact template string as it appears in poc/run_trial.py (before .format()). Verify these before the run; a mismatch means the prompt drifted.",
+    "baseline": {
+      "version": "baseline/v1",
+      "source": "poc/run_trial.py::BASELINE_PROMPT",
+      "sha256": "4ede14402fe3372089cd28333542702d0b3d1a843727c1ed05d9066a93571f3f",
+      "length_chars": 287
+    },
+    "ours": {
+      "version": "ours/v1",
+      "source": "poc/run_trial.py::OURS_PROMPT",
+      "sha256": "9f42bb8a1a1d52f1fe0a8ba77c12ca92a55df007059a66eca2db6d58f3133043",
+      "length_chars": 1491
+    },
+    "expected_appearance_block": {
+      "version": "expected/v1",
+      "source": "poc/run_trial.py::EXPECTED_APPEARANCE",
+      "sha256": "0a8ffb24f0cdf4231d3583729c9c93feaa44420ccaef8d24e2ba88abee43d9a8",
+      "length_chars": 534,
+      "leakage_rule": "Generic and byte-identical for every clip. The manifest's per-clip `expectation` field must NEVER be interpolated into any prompt."
+    }
+  },
+
+  "conditions": {
+    "_design": "Paired / within-clip: every clip is evaluated under both conditions, interleaved per clip, so a quota failure mid-run costs both arms the same clips and pairing survives.",
+    "C1_BASELINE": {
+      "code": "C1",
+      "label": "Uniform sampling + naive prompt",
+      "role": "control — replicates the brute-force 'feed the model some frames' approach",
+      "frame_selection": "uniform over the whole clip",
+      "n_images": 6,
+      "prompt_version": "baseline/v1",
+      "dom_signal": false,
+      "structural_signal": false
+    },
+    "C2_OURS": {
+      "code": "C2",
+      "label": "Intelligent keyframe selection + dual-path prompt",
+      "role": "treatment — the proposed method",
+      "frame_selection": "strongest sustained pixel transition (before/after pair) + final settled frame",
+      "n_images": 3,
+      "prompt_version": "ours/v1",
+      "dom_signal": true,
+      "structural_signal": true,
+      "extra_output_field": "defect_type (6-way classification, nullable)"
+    },
+    "shared_controls": {
+      "_why": "Held identical across arms so the only difference is selection strategy + prompt, never image fidelity or cost.",
+      "frame_width_px": 640,
+      "image_format": "JPEG quality 90",
+      "decode_stride": 3,
+      "label_blindness": "Keyframe selection reads pixels and DOM only; it never sees ground_truth."
+    }
+  },
+
+  "dataset": {
+    "name": "dataset_v3",
+    "status": "to_be_generated",
+    "target_total_clips": 120,
+    "normal_clips": 60,
+    "anomaly_clips": 60,
+    "anomaly_normal_ratio": "50 / 50",
+    "_ratio_rationale": "Equal split makes false-positive rate and recall carry equal uncertainty, and matches the PoC's 8/8 split so EXP001 is directly comparable to it.",
+    "balancing_strategy": {
+      "type": "stratified, equal allocation",
+      "clips_per_bug_type": 10,
+      "bug_types": [
+        "skew_distortion",
+        "blur_unreadable",
+        "vanish_invisible",
+        "flyaway_offset",
+        "flicker_seizure",
+        "displaynone_collapse"
+      ],
+      "_change_from_poc": "The PoC deliberately oversampled the two lowest-diff types (blur, skew ×2) because n=16 could not carry every type. At n=120 equal allocation is used instead: per-type recall becomes a reportable number (10 clips/type) and the aggregate anomaly recall is no longer skewed toward the hard types.",
+      "evaluation_subset": "none — all 120 clips are evaluated. build_manifest.py's N_CONTROLS / BUG_SELECTION subsetting is bypassed for EXP001, removing subset-selection as a variable."
+    },
+    "subject_application": {
+      "name": "TodoMVC (React)",
+      "url": "https://todomvc.com/examples/react/dist/",
+      "_scope_note": "Single implementation by design — the only manipulated variable is the condition. Cross-framework generalisation (Vue / VanillaJS) is out of scope for EXP001 and stays future work."
+    },
+    "provenance_of_generator": {
+      "spec": "latest/tests/poc-bug-injection.spec.ts",
+      "spec_blob_sha": "b0d7f339d2f94b39f542985c648ceffe35353536",
+      "inherits_from": "dataset_v2 (tree 64f1b0cfa9b67499db6ad6692e63bc29d9499086)",
+      "_why_not_v2": "dataset_v2 fixed two defects that made dataset_v1 unusable as ground truth: (a) Playwright's recorder lost the single defect frame of static broken states, corrupting every flyaway_offset clip and 3/5 vanish_invisible clips; (b) post-injection typing wrote the scenario id — including the bug name — into the on-screen input, leaking the label to any model that reads the screen. dataset_v3 reuses the fixed v2 generator and only scales the case counts.",
+      "generator_settings": {
+        "CONTROL_CASES": 60,
+        "CASES_PER_BUG": 10,
+        "DEFECT_HOLD_MS": 7000,
+        "viewport": { "width": 1280, "height": 720 },
+        "browser": "chromium",
+        "rng_seed": 20260725,
+        "_change_required": "The generator uses unseeded Math.random() for todo text, counts, toggles and filter walks. EXP001 declares rng_seed above; the spec must consume it through a seeded PRNG before generation, otherwise dataset_v3 is reproducible only as an artifact, never as a procedure."
+      }
+    }
+  },
+
+  "quality_gates": {
+    "_role": "A clip enters dataset_v3 only if it clears both gates. Rejected clips are regenerated, never relabelled.",
+    "screenshot_gate": {
+      "tool": "pixelmatch",
+      "threshold": 0.03,
+      "clip_padding_px": 60,
+      "control_requirement": "diff ratio must be exactly 0",
+      "min_diff_ratio_by_bug_type": {
+        "skew_distortion": 0.1,
+        "blur_unreadable": 0.05,
+        "vanish_invisible": 0.15,
+        "flyaway_offset": 0.15,
+        "flicker_seizure": 0.15,
+        "displaynone_collapse": 0.12
+      }
+    },
+    "video_gate": {
+      "tool": "poc/gate_videos.py",
+      "requirement": "the final decoded frame must resemble buggy.png rather than normal.png",
+      "_why": "The screenshot gate never decodes the video, so it cannot detect a clip whose footage lost the defect frame."
+    }
+  },
+
+  "keyframe_selection": {
+    "source": "poc/keyframes.py",
+    "diff_thresh_intensity": 8,
+    "skip_lead_seconds": 2.0,
+    "window_frames": 2,
+    "dom_correlation_window_ms": 1200
+  },
+
+  "metrics": {
+    "primary": "accuracy per condition, with Wilson 95% CI",
+    "paired_test": "exact McNemar on discordant pairs (C1 vs C2)",
+    "secondary": [
+      "false_positive_rate on the 60 normal clips",
+      "anomaly_recall on the 60 anomaly clips",
+      "recall_by_bug_type (n=10 per type)",
+      "defect_type_match — C2 only, 6-way classification accuracy on correctly detected anomalies",
+      "invalid_responses (unparseable JSON) per condition"
+    ],
+    "_power_note": "At the PoC's observed discordance rate (3/16 ≈ 19%, all favouring C2), n=120 projects to roughly 23 discordant pairs. Exact McNemar reaches p<0.05 once 6 or more discordant pairs fall on one side, so the design is adequately powered if the PoC effect is real."
+  },
+
+  "environment_lock": {
+    "os": "macOS (Darwin 25.5.0)",
+    "node": "v20.15.0",
+    "playwright": "1.61.1",
+    "_playwright_note": "This is the version actually installed in latest/node_modules. package.json declares '^1.61.1' (floating) and `npx playwright --version` reports 1.62.0 because it resolves a fresh download — pin package.json to the exact 1.61.1 before generating dataset_v3.",
+    "chromium": "149.0.7827.55 (playwright revision 1228)",
+    "python": "3.13.7",
+    "python_packages": {
+      "google-generativeai": "0.8.6",
+      "pillow": "12.3.0",
+      "numpy": "2.4.6",
+      "imageio-ffmpeg": "0.6.0",
+      "requests": "2.34.2"
+    }
+  },
+
+  "reference_poc_result": {
+    "_role": "Not a result of EXP001 — recorded so the main trial can be read against the pre-trial it was designed from.",
+    "source": "poc/results/summary.json",
+    "n_clips": 16,
+    "dataset": "dataset_v1 subset",
+    "temperature": "SDK default (~1.0), unpinned",
+    "baseline_accuracy": 0.75,
+    "ours_accuracy": 0.938,
+    "mcnemar_exact_p": 0.25
+  }
+}

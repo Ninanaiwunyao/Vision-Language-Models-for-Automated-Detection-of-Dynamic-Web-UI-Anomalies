@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Large generated datasets (video/image binaries) beyond the quota-fitted
+# baseline already committed (dataset_v1, dataset_v2). GitLab project storage
+# is capped at ~100MB; these must be regenerated locally/on vLab from the
+# pinned generator (latest/tests/poc-bug-injection.spec.ts) + the frozen
+# RNG_SEED in experiments/*/config.frozen.json, not distributed via git.
+dataset_v3/
+Satistic_Display_Rule.md

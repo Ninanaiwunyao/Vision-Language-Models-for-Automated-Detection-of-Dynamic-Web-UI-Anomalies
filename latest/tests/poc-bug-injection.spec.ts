@@ -14,9 +14,13 @@ import pixelmatch from "pixelmatch";
 const TARGET_URL =
   process.env.TODOMVC_URL ?? "https://todomvc.com/examples/react/dist/";
 
-/** How many videos to generate per group. 10 + 6 bug types x 5 = 40 cases. */
-const CONTROL_CASES = 10;
-const CASES_PER_BUG = 5;
+/**
+ * How many videos to generate per group. 60 + 6 bug types x 10 = 120 cases,
+ * a 60/60 normal-vs-anomalous split with equal allocation per bug type.
+ * Frozen for EXP001 — see experiments/exp001/config.frozen.json.
+ */
+const CONTROL_CASES = 60;
+const CASES_PER_BUG = 10;
 
 /**
  * How long the post-gate (defective) state is held on screen, in ms.
@@ -57,58 +61,112 @@ const TODO_PHRASES = [
   "Schedule dentist appointment",
 ];
 
-function randInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+/**
+ * Master seed for every random choice in the generator. Frozen for EXP001;
+ * override with RNG_SEED=... to produce an independent replicate.
+ */
+const RNG_SEED = Number(process.env.RNG_SEED ?? 20260725);
+
+type Rng = () => number;
+
+/**
+ * mulberry32 — a compact, well-distributed 32-bit PRNG.
+ *
+ * Seeded PER SCENARIO rather than globally, because tests run in parallel: with
+ * one shared stream the values a case draws would depend on worker count and
+ * completion order, so the same seed would not rebuild the same dataset. Keying
+ * each scenario's seed off its id makes a case's random choices a pure function
+ * of (RNG_SEED, scenario.id) — reproducible at any --workers setting.
+ */
+function mulberry32(seed: number): Rng {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
-function sample<T>(arr: T[], n: number): T[] {
-  return [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+/** FNV-1a — folds a scenario id into a 32-bit seed offset. */
+function hashString(s: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+
+function rngForScenario(id: string): Rng {
+  return mulberry32((RNG_SEED ^ hashString(id)) >>> 0);
+}
+
+function randInt(rng: Rng, min: number, max: number): number {
+  return Math.floor(rng() * (max - min + 1)) + min;
+}
+
+/**
+ * Uniform random sample via Fisher-Yates. Replaces the previous
+ * `sort(() => rng() - 0.5)` shuffle, which was not uniform (a comparison sort
+ * driven by a random comparator biases toward the input order) and whose result
+ * depended on the engine's sort implementation — neither acceptable once the
+ * dataset is meant to be reproducible.
+ */
+function sample<T>(rng: Rng, arr: T[], n: number): T[] {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out.slice(0, n);
 }
 
 /**
  * Seed the page with a randomized todo state: a random number of todos,
  * then optionally toggle some as completed, delete one, and switch filters.
  */
-async function runRandomUserScenario(page: Page): Promise<void> {
+async function runRandomUserScenario(page: Page, rng: Rng): Promise<void> {
   const input = page.locator(".new-todo");
-  const todos = sample(TODO_PHRASES, randInt(3, 6));
+  const todos = sample(rng, TODO_PHRASES, randInt(rng, 3, 6));
 
   for (const text of todos) {
     await input.fill(text);
     await input.press("Enter");
-    await page.waitForTimeout(randInt(200, 600)); // human-like variable pacing
+    await page.waitForTimeout(randInt(rng, 200, 600)); // human-like variable pacing
   }
 
   // ~70% of runs: mark 1-2 random todos as completed
-  if (Math.random() < 0.7) {
+  if (rng() < 0.7) {
     const toggles = page.locator(".todo-list li .toggle");
     const count = await toggles.count();
-    for (const idx of sample([...Array(count).keys()], randInt(1, 2))) {
+    for (const idx of sample(rng, [...Array(count).keys()], randInt(rng, 1, 2))) {
       await toggles.nth(idx).click();
-      await page.waitForTimeout(randInt(200, 500));
+      await page.waitForTimeout(randInt(rng, 200, 500));
     }
   }
 
   // ~40% of runs: delete one random todo
-  if (Math.random() < 0.4) {
+  if (rng() < 0.4) {
     const items = page.locator(".todo-list li");
     const count = await items.count();
     if (count > 1) {
-      const victim = items.nth(randInt(0, count - 1));
+      const victim = items.nth(randInt(rng, 0, count - 1));
       await victim.hover();
       await victim.locator(".destroy").click();
-      await page.waitForTimeout(randInt(200, 500));
+      await page.waitForTimeout(randInt(rng, 200, 500));
     }
   }
 
   // ~50% of runs: walk through the filters and come back to "All"
-  if (Math.random() < 0.5) {
-    for (const name of sample(["Active", "Completed"], randInt(1, 2))) {
+  if (rng() < 0.5) {
+    for (const name of sample(rng, ["Active", "Completed"], randInt(rng, 1, 2))) {
       await page.getByRole("link", { name }).click();
-      await page.waitForTimeout(randInt(300, 700));
+      await page.waitForTimeout(randInt(rng, 300, 700));
     }
     await page.getByRole("link", { name: "All" }).click();
-    await page.waitForTimeout(randInt(200, 400));
+    await page.waitForTimeout(randInt(rng, 200, 400));
   }
 }
 
@@ -124,8 +182,12 @@ interface BugConfig {
   label: string;
   /** Quality gate: buggy screenshot must differ by at least this ratio. */
   minDiffRatio: number;
-  /** Returns the malicious CSS to inject. Magnitudes are randomized per run. */
-  buildCss: () => string;
+  /**
+   * Returns the malicious CSS to inject. Magnitudes are drawn from the
+   * scenario's seeded RNG, so they are randomized across cases but
+   * reproducible for a given (RNG_SEED, scenario.id).
+   */
+  buildCss: (rng: Rng) => string;
 }
 
 // Gate thresholds below were calibrated empirically against the live page
@@ -136,9 +198,9 @@ const BUG_MATRIX: BugConfig[] = [
     key: "skew_distortion",
     label: "Severe geometric distortion (skew + rotate)",
     minDiffRatio: 0.1,
-    buildCss: () => {
-      const skew = randInt(25, 35);
-      const rot = randInt(8, 15);
+    buildCss: (rng) => {
+      const skew = randInt(rng, 25, 35);
+      const rot = randInt(rng, 8, 15);
       return `
         .todoapp {
           transform: skewX(${skew}deg) rotate(-${rot}deg) scale(1.2) !important;
@@ -149,8 +211,8 @@ const BUG_MATRIX: BugConfig[] = [
     key: "blur_unreadable",
     label: "Whole app blurred beyond readability",
     minDiffRatio: 0.05,
-    buildCss: () => {
-      const blur = randInt(10, 14);
+    buildCss: (rng) => {
+      const blur = randInt(rng, 10, 14);
       return `
         .todoapp {
           filter: blur(${blur}px) contrast(1.5) !important;
@@ -167,15 +229,15 @@ const BUG_MATRIX: BugConfig[] = [
         .todoapp {
           opacity: 0 !important;
           visibility: hidden !important;
-        }`,
+        }`, // deterministic by construction — no magnitude to randomize
   },
   {
     key: "flyaway_offset",
     label: "App flies off-screen (huge negative margin → massive layout shift)",
     minDiffRatio: 0.15,
-    buildCss: () => {
-      const up = randInt(450, 700);
-      const left = randInt(150, 300);
+    buildCss: (rng) => {
+      const up = randInt(rng, 450, 700);
+      const left = randInt(rng, 150, 300);
       return `
         .todoapp {
           margin-top: -${up}px !important;
@@ -190,18 +252,24 @@ const BUG_MATRIX: BugConfig[] = [
     // Both keyframe states are drastically different from the clean baseline
     // (color swap instead of pure opacity), so the quality-gate screenshot
     // registers a large diff no matter which frame it lands on.
-    buildCss: () => `
+    buildCss: (rng) => {
+      // One shift value shared by both halves of the second state. The previous
+      // version drew it twice, which under `steps(1)` left the 100% keyframe's
+      // value unused while still consuming an RNG draw.
+      const shift = randInt(rng, 30, 60);
+      return `
         @keyframes poc-flicker {
           0%   { background: #ff3b30 !important; transform: translateX(0); }
           49%  { background: #ff3b30 !important; transform: translateX(0); }
-          50%  { background: #0033ff !important; transform: translateX(${randInt(30, 60)}px); }
-          100% { background: #0033ff !important; transform: translateX(${randInt(30, 60)}px); }
+          50%  { background: #0033ff !important; transform: translateX(${shift}px); }
+          100% { background: #0033ff !important; transform: translateX(${shift}px); }
         }
         .todoapp .new-todo,
         .todo-list li {
           animation: poc-flicker 0.12s steps(1) infinite !important;
           background: #ff3b30 !important;
-        }`,
+        }`;
+    },
   },
   {
     key: "displaynone_collapse",
@@ -422,6 +490,10 @@ for (const scenario of scenarios) {
   test(title, async ({ page }, testInfo) => {
     test.setTimeout(120_000);
 
+    // Every random choice this case makes comes from here — one stream per
+    // scenario, so parallel execution cannot perturb it.
+    const rng = rngForScenario(scenario.id);
+
     // Must be installed before navigation so the observer sees the whole session.
     await installDomRecorder(page);
 
@@ -432,7 +504,7 @@ for (const scenario of scenarios) {
     await page.addStyleTag({ content: `* { caret-color: transparent !important; }` });
 
     // Randomized pre-injection user behavior → diverse "normal" footage
-    await runRandomUserScenario(page);
+    await runRandomUserScenario(page, rng);
 
     // ── Quality Gate step 1: clean baseline ────────────────────────────────
     // Clip is computed once from the pre-injection layout and reused for the
@@ -442,7 +514,7 @@ for (const scenario of scenarios) {
 
     // ── Inject the defect (no-op for the control group) ────────────────────
     if (scenario.bug) {
-      await page.addStyleTag({ content: scenario.bug.buildCss() });
+      await page.addStyleTag({ content: scenario.bug.buildCss(rng) });
       await page.waitForTimeout(500); // let layout/animation settle visibly
     }
 
@@ -493,6 +565,10 @@ for (const scenario of scenarios) {
           // exact region normal.png / buggy.png cover.
           clip,
           defectHoldMs: DEFECT_HOLD_MS,
+          // Provenance for reproducibility: this case's random choices are a
+          // pure function of these two values.
+          rngSeed: RNG_SEED,
+          rngScenarioSeed: (RNG_SEED ^ hashString(scenario.id)) >>> 0,
           generatedAt: new Date().toISOString(),
         },
         null,
@@ -515,8 +591,8 @@ for (const scenario of scenarios) {
     // the bug name — into the video for any model that can read the screen.
     if (await input.isVisible().catch(() => false)) {
       await input
-        .pressSequentially(sample(TODO_PHRASES, 1)[0], {
-          delay: randInt(40, 90),
+        .pressSequentially(sample(rng, TODO_PHRASES, 1)[0], {
+          delay: randInt(rng, 40, 90),
           // Don't let Playwright's default 30s retry loop stall the clip when
           // the app is too broken to reach (e.g. pushed off-screen).
           timeout: 5000,
