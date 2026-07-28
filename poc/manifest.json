@@ -1,10 +1,11 @@
 {
   "schema_version": 2,
-  "description": "PoC pre-trial ground-truth manifest (balanced subset of dataset_v2).",
-  "source": "dataset_v2/metadata.json",
-  "total": 16,
-  "normal": 8,
-  "anomaly": 8,
+  "description": "Ground-truth manifest \u2014 full dataset_v3 (120 clips, no subsetting).",
+  "selection_mode": "full",
+  "source": "dataset_v3/metadata.json",
+  "total": 120,
+  "normal": 60,
+  "anomaly": 60,
   "cases": [
     {
       "id": "control_normal_1",
@@ -13,12 +14,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_1/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_1/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_1/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_1/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_1/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_1/diff.png"
+        "normal": "dataset_v3/normal/control_normal_1/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_1/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_1/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -32,12 +33,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_2/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_2/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_2/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_2/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_2/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_2/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_2/diff.png"
+        "normal": "dataset_v3/normal/control_normal_2/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_2/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_2/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -51,12 +52,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_3/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_3/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_3/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_3/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_3/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_3/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_3/diff.png"
+        "normal": "dataset_v3/normal/control_normal_3/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_3/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_3/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -70,12 +71,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_4/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_4/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_4/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_4/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_4/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_4/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_4/diff.png"
+        "normal": "dataset_v3/normal/control_normal_4/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_4/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_4/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -89,12 +90,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_5/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_5/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_5/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_5/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_5/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_5/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_5/diff.png"
+        "normal": "dataset_v3/normal/control_normal_5/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_5/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_5/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -108,12 +109,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_6/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_6/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_6/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_6/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_6/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_6/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_6/diff.png"
+        "normal": "dataset_v3/normal/control_normal_6/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_6/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_6/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -127,12 +128,12 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_7/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_7/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_7/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_7/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_7/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_7/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_7/diff.png"
+        "normal": "dataset_v3/normal/control_normal_7/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_7/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_7/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -146,12 +147,1000 @@
       "bug_type": null,
       "bug_label": null,
       "expectation": "The app renders and behaves normally; no visual defect should be reported.",
-      "video_path": "dataset_v2/normal/control_normal_8/video.webm",
-      "dom_trace_path": "dataset_v2/normal/control_normal_8/domtrace.json",
+      "video_path": "dataset_v3/normal/control_normal_8/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_8/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/normal/control_normal_8/normal.png",
-        "buggy": "dataset_v2/normal/control_normal_8/buggy.png",
-        "diff": "dataset_v2/normal/control_normal_8/diff.png"
+        "normal": "dataset_v3/normal/control_normal_8/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_8/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_8/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_9",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_9/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_9/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_9/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_9/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_10",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_10/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_10/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_10/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_10/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_11",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_11/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_11/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_11/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_11/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_11/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_12",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_12/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_12/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_12/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_12/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_12/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_13",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_13/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_13/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_13/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_13/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_13/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_14",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_14/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_14/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_14/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_14/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_14/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_15",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_15/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_15/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_15/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_15/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_15/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_16",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_16/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_16/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_16/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_16/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_16/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_17",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_17/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_17/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_17/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_17/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_17/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_18",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_18/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_18/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_18/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_18/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_18/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_19",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_19/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_19/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_19/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_19/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_19/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_20",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_20/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_20/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_20/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_20/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_20/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_21",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_21/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_21/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_21/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_21/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_21/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_22",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_22/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_22/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_22/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_22/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_22/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_23",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_23/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_23/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_23/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_23/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_23/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_24",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_24/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_24/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_24/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_24/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_24/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_25",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_25/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_25/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_25/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_25/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_25/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_26",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_26/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_26/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_26/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_26/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_26/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_27",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_27/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_27/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_27/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_27/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_27/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_28",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_28/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_28/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_28/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_28/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_28/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_29",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_29/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_29/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_29/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_29/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_29/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_30",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_30/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_30/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_30/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_30/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_30/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_31",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_31/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_31/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_31/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_31/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_31/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_32",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_32/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_32/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_32/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_32/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_32/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_33",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_33/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_33/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_33/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_33/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_33/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_34",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_34/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_34/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_34/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_34/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_34/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_35",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_35/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_35/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_35/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_35/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_35/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_36",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_36/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_36/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_36/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_36/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_36/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_37",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_37/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_37/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_37/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_37/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_37/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_38",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_38/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_38/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_38/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_38/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_38/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_39",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_39/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_39/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_39/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_39/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_39/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_40",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_40/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_40/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_40/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_40/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_40/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_41",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_41/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_41/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_41/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_41/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_41/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_42",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_42/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_42/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_42/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_42/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_42/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_43",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_43/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_43/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_43/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_43/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_43/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_44",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_44/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_44/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_44/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_44/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_44/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_45",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_45/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_45/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_45/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_45/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_45/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_46",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_46/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_46/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_46/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_46/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_46/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_47",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_47/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_47/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_47/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_47/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_47/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_48",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_48/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_48/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_48/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_48/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_48/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_49",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_49/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_49/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_49/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_49/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_49/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_50",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_50/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_50/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_50/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_50/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_50/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_51",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_51/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_51/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_51/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_51/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_51/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_52",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_52/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_52/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_52/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_52/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_52/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_53",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_53/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_53/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_53/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_53/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_53/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_54",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_54/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_54/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_54/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_54/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_54/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_55",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_55/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_55/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_55/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_55/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_55/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_56",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_56/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_56/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_56/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_56/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_56/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_57",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_57/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_57/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_57/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_57/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_57/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_58",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_58/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_58/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_58/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_58/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_58/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_59",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_59/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_59/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_59/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_59/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_59/diff.png"
+      },
+      "diff_ratio": 0,
+      "min_diff_ratio": 0,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "control_normal_60",
+      "ground_truth": "normal",
+      "is_anomaly": false,
+      "bug_type": null,
+      "bug_label": null,
+      "expectation": "The app renders and behaves normally; no visual defect should be reported.",
+      "video_path": "dataset_v3/normal/control_normal_60/video.webm",
+      "dom_trace_path": "dataset_v3/normal/control_normal_60/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/normal/control_normal_60/normal.png",
+        "buggy": "dataset_v3/normal/control_normal_60/buggy.png",
+        "diff": "dataset_v3/normal/control_normal_60/diff.png"
       },
       "diff_ratio": 0,
       "min_diff_ratio": 0,
@@ -165,14 +1154,14 @@
       "bug_type": "skew_distortion",
       "bug_label": "Severe geometric distortion (skew + rotate)",
       "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
-      "video_path": "dataset_v2/buggy/bug_skew_distortion_1/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_skew_distortion_1/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_1/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_skew_distortion_1/normal.png",
-        "buggy": "dataset_v2/buggy/bug_skew_distortion_1/buggy.png",
-        "diff": "dataset_v2/buggy/bug_skew_distortion_1/diff.png"
+        "normal": "dataset_v3/buggy/bug_skew_distortion_1/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_1/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_1/diff.png"
       },
-      "diff_ratio": 0.297708,
+      "diff_ratio": 0.295952,
       "min_diff_ratio": 0.1,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -184,14 +1173,166 @@
       "bug_type": "skew_distortion",
       "bug_label": "Severe geometric distortion (skew + rotate)",
       "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
-      "video_path": "dataset_v2/buggy/bug_skew_distortion_2/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_skew_distortion_2/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_2/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_2/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_skew_distortion_2/normal.png",
-        "buggy": "dataset_v2/buggy/bug_skew_distortion_2/buggy.png",
-        "diff": "dataset_v2/buggy/bug_skew_distortion_2/diff.png"
+        "normal": "dataset_v3/buggy/bug_skew_distortion_2/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_2/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_2/diff.png"
       },
-      "diff_ratio": 0.306104,
+      "diff_ratio": 0.288045,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_3",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_3/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_3/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_3/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_3/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_3/diff.png"
+      },
+      "diff_ratio": 0.290187,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_4",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_4/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_4/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_4/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_4/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_4/diff.png"
+      },
+      "diff_ratio": 0.285636,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_5",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_5/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_5/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_5/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_5/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_5/diff.png"
+      },
+      "diff_ratio": 0.285639,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_6",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_6/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_6/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_6/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_6/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_6/diff.png"
+      },
+      "diff_ratio": 0.277755,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_7",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_7/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_7/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_7/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_7/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_7/diff.png"
+      },
+      "diff_ratio": 0.293871,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_8",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_8/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_8/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_8/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_8/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_8/diff.png"
+      },
+      "diff_ratio": 0.290544,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_9",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_9/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_9/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_9/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_9/diff.png"
+      },
+      "diff_ratio": 0.286342,
+      "min_diff_ratio": 0.1,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_skew_distortion_10",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "skew_distortion",
+      "bug_label": "Severe geometric distortion (skew + rotate)",
+      "expectation": "The whole to-do app is geometrically distorted (skewed, rotated and scaled), so the interface looks visibly broken/misaligned.",
+      "video_path": "dataset_v3/buggy/bug_skew_distortion_10/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_skew_distortion_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_skew_distortion_10/normal.png",
+        "buggy": "dataset_v3/buggy/bug_skew_distortion_10/buggy.png",
+        "diff": "dataset_v3/buggy/bug_skew_distortion_10/diff.png"
+      },
+      "diff_ratio": 0.297052,
       "min_diff_ratio": 0.1,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -203,14 +1344,14 @@
       "bug_type": "blur_unreadable",
       "bug_label": "Whole app blurred beyond readability",
       "expectation": "The whole app is heavily blurred and its text is unreadable.",
-      "video_path": "dataset_v2/buggy/bug_blur_unreadable_1/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_blur_unreadable_1/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_1/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_blur_unreadable_1/normal.png",
-        "buggy": "dataset_v2/buggy/bug_blur_unreadable_1/buggy.png",
-        "diff": "dataset_v2/buggy/bug_blur_unreadable_1/diff.png"
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_1/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_1/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_1/diff.png"
       },
-      "diff_ratio": 0.088955,
+      "diff_ratio": 0.080215,
       "min_diff_ratio": 0.05,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -222,14 +1363,166 @@
       "bug_type": "blur_unreadable",
       "bug_label": "Whole app blurred beyond readability",
       "expectation": "The whole app is heavily blurred and its text is unreadable.",
-      "video_path": "dataset_v2/buggy/bug_blur_unreadable_2/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_blur_unreadable_2/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_2/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_2/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_blur_unreadable_2/normal.png",
-        "buggy": "dataset_v2/buggy/bug_blur_unreadable_2/buggy.png",
-        "diff": "dataset_v2/buggy/bug_blur_unreadable_2/diff.png"
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_2/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_2/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_2/diff.png"
       },
-      "diff_ratio": 0.087316,
+      "diff_ratio": 0.07584,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_3",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_3/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_3/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_3/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_3/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_3/diff.png"
+      },
+      "diff_ratio": 0.077078,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_4",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_4/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_4/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_4/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_4/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_4/diff.png"
+      },
+      "diff_ratio": 0.104568,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_5",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_5/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_5/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_5/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_5/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_5/diff.png"
+      },
+      "diff_ratio": 0.091354,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_6",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_6/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_6/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_6/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_6/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_6/diff.png"
+      },
+      "diff_ratio": 0.099758,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_7",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_7/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_7/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_7/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_7/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_7/diff.png"
+      },
+      "diff_ratio": 0.088399,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_8",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_8/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_8/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_8/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_8/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_8/diff.png"
+      },
+      "diff_ratio": 0.085343,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_9",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_9/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_9/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_9/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_9/diff.png"
+      },
+      "diff_ratio": 0.074997,
+      "min_diff_ratio": 0.05,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_blur_unreadable_10",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "blur_unreadable",
+      "bug_label": "Whole app blurred beyond readability",
+      "expectation": "The whole app is heavily blurred and its text is unreadable.",
+      "video_path": "dataset_v3/buggy/bug_blur_unreadable_10/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_blur_unreadable_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_blur_unreadable_10/normal.png",
+        "buggy": "dataset_v3/buggy/bug_blur_unreadable_10/buggy.png",
+        "diff": "dataset_v3/buggy/bug_blur_unreadable_10/diff.png"
+      },
+      "diff_ratio": 0.087427,
       "min_diff_ratio": 0.05,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -241,14 +1534,185 @@
       "bug_type": "vanish_invisible",
       "bug_label": "Entire app mysteriously invisible (opacity 0)",
       "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
-      "video_path": "dataset_v2/buggy/bug_vanish_invisible_1/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_vanish_invisible_1/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_1/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_vanish_invisible_1/normal.png",
-        "buggy": "dataset_v2/buggy/bug_vanish_invisible_1/buggy.png",
-        "diff": "dataset_v2/buggy/bug_vanish_invisible_1/diff.png"
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_1/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_1/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_1/diff.png"
       },
-      "diff_ratio": 0.655031,
+      "diff_ratio": 0.655378,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_2",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_2/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_2/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_2/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_2/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_2/diff.png"
+      },
+      "diff_ratio": 0.676934,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_3",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_3/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_3/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_3/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_3/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_3/diff.png"
+      },
+      "diff_ratio": 0.632924,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_4",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_4/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_4/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_4/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_4/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_4/diff.png"
+      },
+      "diff_ratio": 0.603807,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_5",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_5/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_5/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_5/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_5/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_5/diff.png"
+      },
+      "diff_ratio": 0.634498,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_6",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_6/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_6/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_6/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_6/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_6/diff.png"
+      },
+      "diff_ratio": 0.634111,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_7",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_7/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_7/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_7/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_7/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_7/diff.png"
+      },
+      "diff_ratio": 0.632795,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_8",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_8/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_8/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_8/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_8/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_8/diff.png"
+      },
+      "diff_ratio": 0.631196,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_9",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_9/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_9/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_9/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_9/diff.png"
+      },
+      "diff_ratio": 0.603452,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_vanish_invisible_10",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "vanish_invisible",
+      "bug_label": "Entire app mysteriously invisible (opacity 0)",
+      "expectation": "The app content is invisible/blank (rendered fully transparent), so the UI appears to be missing.",
+      "video_path": "dataset_v3/buggy/bug_vanish_invisible_10/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_vanish_invisible_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_vanish_invisible_10/normal.png",
+        "buggy": "dataset_v3/buggy/bug_vanish_invisible_10/buggy.png",
+        "diff": "dataset_v3/buggy/bug_vanish_invisible_10/diff.png"
+      },
+      "diff_ratio": 0.600234,
       "min_diff_ratio": 0.15,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -260,14 +1724,185 @@
       "bug_type": "flyaway_offset",
       "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
       "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
-      "video_path": "dataset_v2/buggy/bug_flyaway_offset_1/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_flyaway_offset_1/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_1/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_flyaway_offset_1/normal.png",
-        "buggy": "dataset_v2/buggy/bug_flyaway_offset_1/buggy.png",
-        "diff": "dataset_v2/buggy/bug_flyaway_offset_1/diff.png"
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_1/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_1/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_1/diff.png"
       },
-      "diff_ratio": 0.631649,
+      "diff_ratio": 0.658373,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_2",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_2/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_2/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_2/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_2/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_2/diff.png"
+      },
+      "diff_ratio": 0.675316,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_3",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_3/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_3/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_3/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_3/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_3/diff.png"
+      },
+      "diff_ratio": 0.656505,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_4",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_4/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_4/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_4/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_4/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_4/diff.png"
+      },
+      "diff_ratio": 0.630477,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_5",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_5/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_5/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_5/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_5/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_5/diff.png"
+      },
+      "diff_ratio": 0.655243,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_6",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_6/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_6/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_6/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_6/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_6/diff.png"
+      },
+      "diff_ratio": 0.656922,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_7",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_7/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_7/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_7/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_7/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_7/diff.png"
+      },
+      "diff_ratio": 0.655702,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_8",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_8/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_8/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_8/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_8/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_8/diff.png"
+      },
+      "diff_ratio": 0.677102,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_9",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_9/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_9/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_9/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_9/diff.png"
+      },
+      "diff_ratio": 0.691786,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flyaway_offset_10",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flyaway_offset",
+      "bug_label": "App flies off-screen (huge negative margin \u2192 massive layout shift)",
+      "expectation": "The app is shifted far from its normal position (partly or fully off-screen) \u2014 a massive, obvious layout shift.",
+      "video_path": "dataset_v3/buggy/bug_flyaway_offset_10/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flyaway_offset_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flyaway_offset_10/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flyaway_offset_10/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flyaway_offset_10/diff.png"
+      },
+      "diff_ratio": 0.633827,
       "min_diff_ratio": 0.15,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -279,14 +1914,185 @@
       "bug_type": "flicker_seizure",
       "bug_label": "Elements flicker violently between two broken states",
       "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
-      "video_path": "dataset_v2/buggy/bug_flicker_seizure_1/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_flicker_seizure_1/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_1/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_flicker_seizure_1/normal.png",
-        "buggy": "dataset_v2/buggy/bug_flicker_seizure_1/buggy.png",
-        "diff": "dataset_v2/buggy/bug_flicker_seizure_1/diff.png"
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_1/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_1/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_1/diff.png"
       },
-      "diff_ratio": 0.455943,
+      "diff_ratio": 0.544929,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_2",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_2/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_2/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_2/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_2/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_2/diff.png"
+      },
+      "diff_ratio": 0.45291,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_3",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_3/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_3/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_3/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_3/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_3/diff.png"
+      },
+      "diff_ratio": 0.492733,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_4",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_4/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_4/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_4/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_4/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_4/diff.png"
+      },
+      "diff_ratio": 0.488849,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_5",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_5/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_5/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_5/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_5/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_5/diff.png"
+      },
+      "diff_ratio": 0.495956,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_6",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_6/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_6/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_6/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_6/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_6/diff.png"
+      },
+      "diff_ratio": 0.406913,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_7",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_7/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_7/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_7/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_7/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_7/diff.png"
+      },
+      "diff_ratio": 0.402081,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_8",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_8/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_8/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_8/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_8/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_8/diff.png"
+      },
+      "diff_ratio": 0.52259,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_9",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_9/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_9/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_9/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_9/diff.png"
+      },
+      "diff_ratio": 0.459145,
+      "min_diff_ratio": 0.15,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_flicker_seizure_10",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "flicker_seizure",
+      "bug_label": "Elements flicker violently between two broken states",
+      "expectation": "UI elements flicker/strobe rapidly between two conflicting coloured states.",
+      "video_path": "dataset_v3/buggy/bug_flicker_seizure_10/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_flicker_seizure_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_flicker_seizure_10/normal.png",
+        "buggy": "dataset_v3/buggy/bug_flicker_seizure_10/buggy.png",
+        "diff": "dataset_v3/buggy/bug_flicker_seizure_10/diff.png"
+      },
+      "diff_ratio": 0.522391,
       "min_diff_ratio": 0.15,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"
@@ -298,14 +2104,185 @@
       "bug_type": "displaynone_collapse",
       "bug_label": "Key section removed with display:none \u2192 content below jumps up",
       "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
-      "video_path": "dataset_v2/buggy/bug_displaynone_collapse_1/video.webm",
-      "dom_trace_path": "dataset_v2/buggy/bug_displaynone_collapse_1/domtrace.json",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_1/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_1/domtrace.json",
       "keyframes": {
-        "normal": "dataset_v2/buggy/bug_displaynone_collapse_1/normal.png",
-        "buggy": "dataset_v2/buggy/bug_displaynone_collapse_1/buggy.png",
-        "diff": "dataset_v2/buggy/bug_displaynone_collapse_1/diff.png"
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_1/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_1/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_1/diff.png"
       },
-      "diff_ratio": 0.349059,
+      "diff_ratio": 0.507608,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_2",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_2/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_2/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_2/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_2/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_2/diff.png"
+      },
+      "diff_ratio": 0.509345,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_3",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_3/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_3/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_3/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_3/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_3/diff.png"
+      },
+      "diff_ratio": 0.414881,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_4",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_4/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_4/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_4/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_4/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_4/diff.png"
+      },
+      "diff_ratio": 0.508226,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_5",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_5/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_5/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_5/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_5/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_5/diff.png"
+      },
+      "diff_ratio": 0.466856,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_6",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_6/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_6/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_6/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_6/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_6/diff.png"
+      },
+      "diff_ratio": 0.543429,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_7",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_7/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_7/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_7/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_7/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_7/diff.png"
+      },
+      "diff_ratio": 0.544188,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_8",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_8/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_8/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_8/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_8/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_8/diff.png"
+      },
+      "diff_ratio": 0.466326,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_9",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_9/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_9/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_9/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_9/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_9/diff.png"
+      },
+      "diff_ratio": 0.510431,
+      "min_diff_ratio": 0.12,
+      "target_url": "https://todomvc.com/examples/react/dist/",
+      "browser": "chromium"
+    },
+    {
+      "id": "bug_displaynone_collapse_10",
+      "ground_truth": "anomaly",
+      "is_anomaly": true,
+      "bug_type": "displaynone_collapse",
+      "bug_label": "Key section removed with display:none \u2192 content below jumps up",
+      "expectation": "A key section is missing (removed from the layout), so the content below it collapses and jumps upward.",
+      "video_path": "dataset_v3/buggy/bug_displaynone_collapse_10/video.webm",
+      "dom_trace_path": "dataset_v3/buggy/bug_displaynone_collapse_10/domtrace.json",
+      "keyframes": {
+        "normal": "dataset_v3/buggy/bug_displaynone_collapse_10/normal.png",
+        "buggy": "dataset_v3/buggy/bug_displaynone_collapse_10/buggy.png",
+        "diff": "dataset_v3/buggy/bug_displaynone_collapse_10/diff.png"
+      },
+      "diff_ratio": 0.469909,
       "min_diff_ratio": 0.12,
       "target_url": "https://todomvc.com/examples/react/dist/",
       "browser": "chromium"

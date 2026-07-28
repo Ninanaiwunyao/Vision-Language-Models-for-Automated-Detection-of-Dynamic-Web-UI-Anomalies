@@ -85,14 +85,23 @@ Fixes (branch feat/poc-pretrial):
 
 ### Stage 3 trial results (model: gemini-3.1-flash-lite, 16 clips x 2 conditions)
 
-| metric | baseline (uniform x6 + naive) | ours (smart keyframes x3 + dual-path) |
+> **Condition relabelling (2026-07-27, EXP002 factor scheme).** The pilot's two
+> arms are relabelled below to the EXP002 code space. Under the frozen EXP002
+> definition, **factor A is "which frames are sent"**: A1 = pixel-diff-only
+> keyframe selection, A3 = pixel+DOM *fused* selection (DOM influences frame
+> choice). The pilot's "ours" selector was **pixel-only** — DOM entered only the
+> prompt, never the selection — so it was **A1B1, not A3B1**. "baseline" was
+> uniform sampling + naive prompt = **A0B0**. These are NOT retroactively renamed
+> to A3B1; A3 is a genuinely new selector implemented for EXP002.
+
+| metric | A0B0 (uniform x6 + naive) | A1B1 (pixel-only keyframes x3 + dual-path) |
 |---|---|---|
 | accuracy | 0.75 [CI 0.51-0.90] | **0.94** [CI 0.72-0.99] |
 | false-positive rate (8 normal) | 0.125 | **0.0** |
 | anomaly recall (8 buggy) | 0.625 | **0.875** |
 | defect-type match | — | 5/7 |
 
-Paired: ours-only-correct **3**, baseline-only-correct **0** (strict dominance;
+Paired: A1B1-only-correct **3**, A0B0-only-correct **0** (strict dominance;
 McNemar exact p=0.25 — direction fully consistent, n=16 too small for
 significance, as expected for a pre-trial). Model selection needed a quota
 probe at connect time: this key's gemini-2.0 family has `limit: 0` and
@@ -183,12 +192,94 @@ RNG_SEED, not distributed through the repo. A clean `git status` therefore does
 ### Next Steps
 - [ ] Run the EXP001 paired trial (C1_BASELINE vs C2_OURS) over all 120 clips;
       n=120 should give McNemar real power, unlike the n=16 pre-trial.
-- [ ] Rebuild the manifest against dataset_v3 — this is **not** just a
-      re-point. `poc/manifest.json` still resolves to dataset_v2 throughout,
-      and `poc/build_manifest.py` blocks a full-scale manifest three ways:
-      its dataset auto-discovery list is `("dataset_v2", "dataset_v1")` and
-      never sees v3; it hard-fails any subset outside 10-20 clips (line 164);
-      and its selection plan is hardcoded to the pre-trial's 8 anomalous + 8
-      normal. The metadata schema itself is fine — v3's case keys are a strict
-      superset of v2's — so the work is in the selection/guard logic, not the
-      reader.
+- [x] Rebuild the manifest against dataset_v3 — done 2026-07-27 (below).
+
+## 2026-07-27
+
+### build_manifest.py scaled to the full dataset_v3 manifest
+
+The manifest builder was still a pre-trial tool: it only knew v1/v2, hard-coded
+an 8+8 = 16-clip subset, and guarded `10 <= n <= 20`, so it could not produce
+the formal-trial manifest EXP001 requires (`evaluation_subset: none` — all 120
+clips, subsetting bypassed). `poc/manifest.json` still pointed at dataset_v2.
+
+Changes to `poc/build_manifest.py`:
+- **New `full` selection mode**: emits every clip, no subsetting. Controls
+  first, then anomalies grouped in the injection matrix's order. Guards the
+  properties the study needs (non-empty, all six bug types present, not wildly
+  imbalanced) but drops the 10-20 size cap.
+- **Mode auto-resolves per dataset**: `full` for dataset_v3 and later,
+  `pretrial` for v1/v2 (kept for reproducibility). Override with
+  `--full` / `--pretrial`.
+- **Dataset discovery** now lists dataset_v3 first (newest-present default).
+- **Renamed** `select_subset` -> `select_pretrial`, added `select_full` and a
+  `select_cases` dispatcher; the old 16-clip path is unchanged.
+- Manifest doc gains a `selection_mode` field (additive; schema_version stays
+  2, so `run_trial.py` / `score_trial.py` readers are unaffected).
+
+**Labels are still auto-derived from the bug key, never hand-written.** The
+`EXPECTED_SYMPTOM` mapping (keyed on `bugKey`) is untouched, and `to_entry`
+still resolves each clip's expectation through it. Added a guard that aborts if
+a dataset contains a bug key with no expected-symptom mapping, rather than
+silently dropping it.
+
+Regenerated: `poc/manifest.json` + `poc/manifest.csv` now describe the full
+dataset_v3 (120 clips, 60/60, 10 per type). Verified: every bug type maps to
+exactly one distinct expectation string (label auto-derivation intact), all
+downstream-required fields present on all 120 cases, zero
+`ground_truth`/`is_anomaly` mismatches, and pretrial mode still produces the
+original 16-clip subset for v2.
+
+Command:
+
+    python3 poc/build_manifest.py dataset_v3
+
+### EXP002 planning — factor scheme + pre-registered power analysis
+
+Designing EXP002 as a **factorial ablation** of the pipeline, superseding the
+2-endpoint pilot. Factor definitions (frozen for EXP002):
+
+- **Factor A = which frames are sent to the model.**
+  - A0 = uniform sampling (no selection)
+  - A1 = pixel-diff-only keyframe selection
+  - A2 = DOM-mutation-only selection *(not implemented yet)*
+  - A3 = pixel + DOM **fused** selection (DOM influences frame choice)
+- **Factor B = prompt.** B0 = naive, B1 = dual-path decision (DOM evidence text
+  in the prompt is strictly under B; it does not define A).
+
+Consequence recorded above: the pilot's "ours" arm selected frames by pixels
+only, so it was **A1B1, not A3B1**; the pilot table is relabelled A0B0 vs A1B1.
+
+EXP002 conditions (**4 cells** — A1 = the existing selector, so no new
+implementation for it): **A0B0, A1B1, A3B0, A3B1**. (A2 dropped from the
+headline set; it would need a DOM-only selector not yet built.) Still to build
+before EXP002 can be frozen: the A3 fused selector, per-call token capture in
+`vlm_client`, and config-driven `run_trial.py` / `score_trial.py`.
+
+**Verified: EXP001 has been run** — `poc/results/raw/` holds 32 pilot response
+files (16 A0B0 + 16 A1B1). `experiments/exp001/` stays immutable; EXP002 is a
+new experiment id, not an edit.
+
+**Pre-registered power analysis** (`poc/power_analysis.py`, seed 20260727,
+100k Monte-Carlo sims/cell). The paired test is an exact McNemar on discordant
+pairs, so power depends on `(n, p_disc, psi)` — the discordant-pair rate and its
+split — **not** on marginal accuracy. The pilot's psi=1.00 (b=3, c=0 at n=16) is
+winner's-curse inflated and is explicitly not used as a planning basis; the
+headline plan is **p_disc=0.20, psi=0.85**. Framed as *minimum detectable effect
+at fixed n* (dataset_v3 is fixed at 120), not required-n.
+
+| planning cell (p_disc=0.20, psi=0.85) | power |
+|---|---|
+| n=40 (exploratory) | 0.38 — below 0.80 |
+| **n=120 (operating, all dataset_v3)** | **0.94 — meets 0.80** |
+
+Decision: the n=40 exploratory grid was underpowered at the planning cell, so
+**EXP002 evaluates all 120 paired clips**; no additional videos are generated.
+Full sensitivity grids for both n written to `poc/results/power_analysis.json`.
+
+### Next Steps
+- [ ] Build the A3 fused keyframe selector (DOM timestamps influence selection).
+- [ ] Add per-call token capture to `vlm_client` (for cost/latency metrics).
+- [ ] Refactor `run_trial.py` + `score_trial.py` to be config-driven over the
+      EXP002 condition list; add Cochran's Q + pairwise McNemar/Holm + Wilcoxon.
+- [ ] Freeze `experiments/exp002/config.frozen.json`, then run the trial.
