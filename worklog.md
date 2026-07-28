@@ -277,9 +277,53 @@ Decision: the n=40 exploratory grid was underpowered at the planning cell, so
 **EXP002 evaluates all 120 paired clips**; no additional videos are generated.
 Full sensitivity grids for both n written to `poc/results/power_analysis.json`.
 
+### EXP002 build step 1 — A3 selector + config-driven run_trial
+
+- **A3 fused keyframe selector** (`keyframes.py`, `select_fused`). Refactored the
+  shared candidate-scoring + selection assembly out of `select_transition` (now
+  A1) into `_candidate_scores` / `_build_selection`. Fusion rule (simple, one
+  paragraph): a CSS-only defect changes pixels but produces no DOM mutation
+  (injected stylesheet lives in `<head>`, unobserved), while real user actions
+  do mutate the DOM — so A3 scores each candidate as
+  `pixel_score / (1 + λ·dom_mutations_near)` and takes the argmax. DOM therefore
+  genuinely changes *which* frame is sent. Verified on 6 buggy clips: A3 diverged
+  from A1 on 4/6, jumping to a `dom_near=0` transition (the pure-rendering change)
+  instead of the DOM-heavy user edit. Degenerates to A1 when no trace exists.
+- **Token capture** (`vlm_client.call_json`): now returns `_usage`
+  (prompt/candidates/total tokens) and accepts a `generation_config` (EXP002 pins
+  temperature 0.0 through it instead of the SDK's default 1.0).
+- **Config-driven `run_trial.py`**: removed the hardcoded `("baseline","ours")`;
+  conditions, repeats, and generation config are read from a config
+  (`experiments/exp002/conditions.draft.json`, `--config` / `--conditions` /
+  `--repeats` overrides). Condition codes `AxBy` are parsed into factor levels;
+  factor A picks frames (A0 uniform / A1 pixel / A3 fused), factor B picks the
+  prompt (B0 naive / B1 dual-path, DOM evidence text strictly under B). Decodes
+  once per clip; interleaves conditions×repeats for quota-safe pairing; writes
+  `{id}__{code}__r{rep}.json` to `poc/results/exp002/` (kept separate from the
+  EXP001 pilot raw dir). Loud validation rejects any unimplemented code (and
+  A0+B1, which has no transition to describe).
+- **B0 prompt fix**: dropped "sampled uniformly" from the naive prompt. Under
+  A3B0 the frames are fused-selected, so that wording was a false claim and an
+  ablation confound; B0 is now selection-agnostic. (Means EXP002's B0 differs by
+  a few words from EXP001's frozen baseline — acceptable, new experiment.)
+- **EXP002 conditions draft** (`experiments/exp002/conditions.draft.json`,
+  clearly marked NOT frozen): the 4 cells A0B0/A1B1/A3B0/A3B1, factor
+  definitions, repeats=3, generation_config (temp 0.0).
+
+Smoke test (structural, no API key): `run_trial.py --dry-run --limit 2
+--repeats 1` builds all 4 conditions on 2 clips → 8 valid JSON payloads; A0B0
+sends 6 uniform frames, the rest send 3; B0 vs B1 prompts correct; A3B1 embeds
+the DOM-activity block. Live JSON-from-model check still needs the API key.
+
+Live smoke test (2026-07-28, model gemini-3.1-flash-lite): `run_trial.py
+--limit 2 --repeats 1` made 8 real calls (2 control clips x 4 conditions). All 8
+returned valid JSON verdicts (`normal`, correct — zero false positives), 0
+unparseable, token usage + latency captured on every call. Input-token counts
+already show the cost story: A0B0 (6 images) ~6662 vs the 3-image conditions
+~3362-4000 tokens. Scratch results were deleted so the frozen run starts clean.
+
 ### Next Steps
-- [ ] Build the A3 fused keyframe selector (DOM timestamps influence selection).
-- [ ] Add per-call token capture to `vlm_client` (for cost/latency metrics).
-- [ ] Refactor `run_trial.py` + `score_trial.py` to be config-driven over the
-      EXP002 condition list; add Cochran's Q + pairwise McNemar/Holm + Wilcoxon.
-- [ ] Freeze `experiments/exp002/config.frozen.json`, then run the trial.
+- [x] Live smoke test — done 2026-07-28, all conditions return valid JSON.
+- [ ] Refactor `score_trial.py` to be config-driven over the EXP002 conditions;
+      add Cochran's Q + pairwise McNemar/Holm + Wilcoxon + bootstrap CIs.
+- [ ] Freeze `experiments/exp002/config.frozen.json`, then run the full trial.

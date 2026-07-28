@@ -157,32 +157,52 @@ def _strip_code_fence(text: str) -> str:
     return t.strip()
 
 
+def _usage_of(resp) -> dict | None:
+    """Extract per-call token counts from the response, if the SDK reports them.
+    Needed for EXP002's cost/efficiency metrics; absent on some error paths."""
+    u = getattr(resp, "usage_metadata", None)
+    if u is None:
+        return None
+    return {
+        "prompt_tokens": getattr(u, "prompt_token_count", None),
+        "candidates_tokens": getattr(u, "candidates_token_count", None),
+        "total_tokens": getattr(u, "total_token_count", None),
+    }
+
+
 def call_json(
     genai,
     model_name: str,
     parts: list,
     *,
+    generation_config: dict | None = None,
     max_retries: int = 5,
     base_sleep: float = 20.0,
 ) -> dict:
     """Send `parts`, expect strict JSON back, retry the SAME model on 429.
 
-    Returns the parsed dict, plus a `_raw` key holding the raw text so a
-    malformed reply can still be audited afterwards.
+    `generation_config` is passed straight to the SDK (EXP002 pins temperature
+    here so decoding is a controlled variable, not the SDK default of 1.0).
+
+    Returns the parsed dict, plus `_raw` (raw text, so a malformed reply is
+    still auditable) and `_usage` (per-call token counts, or None).
     """
     model = genai.GenerativeModel(model_name)
     last_exc: Exception | None = None
     for attempt in range(max_retries):
         try:
-            resp = model.generate_content(parts)
+            resp = model.generate_content(parts, generation_config=generation_config)
+            usage = _usage_of(resp)
             raw = _strip_code_fence(resp.text or "")
             try:
                 parsed = json.loads(raw)
             except json.JSONDecodeError:
                 # Record the failure instead of crashing the whole trial: an
                 # unparseable answer is itself a result worth counting.
-                return {"verdict": None, "reason": "unparseable", "_raw": raw}
+                return {"verdict": None, "reason": "unparseable", "_raw": raw,
+                        "_usage": usage}
             parsed["_raw"] = raw
+            parsed["_usage"] = usage
             return parsed
         except Exception as exc:  # noqa: BLE001
             last_exc = exc
