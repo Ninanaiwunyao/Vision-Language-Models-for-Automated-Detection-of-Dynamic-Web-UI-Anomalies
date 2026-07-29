@@ -322,8 +322,38 @@ unparseable, token usage + latency captured on every call. Input-token counts
 already show the cost story: A0B0 (6 images) ~6662 vs the 3-image conditions
 ~3362-4000 tokens. Scratch results were deleted so the frozen run starts clean.
 
+### EXP002 build step 2 — config-driven score_trial + statistics stack
+
+Rewrote `score_trial.py` from the hardcoded 2-condition scorer into a
+config-driven, multi-condition analyser reading the same conditions config as
+`run_trial.py`. Repeats are collapsed by majority vote for the paired binary
+tests; temperature 0.0 makes repeats mainly a probe of residual API
+non-determinism.
+
+Statistics implemented (each test records name, n, exact/asymptotic p, and an
+effect size; everything written to `summary.json`, not just stdout):
+- **Per condition**: accuracy mean +/- SD across repeats; bootstrap 95% CI
+  (10k resamples, seed 20260728) over per-clip correctness *fractions* so the CI
+  is coherent with the mean (verified it brackets the point estimate); FPR,
+  recall, recall-by-bug-type; invalid-response count; defect-type match for B1
+  conditions; mean tokens / latency / cost per clip.
+- **Omnibus**: Cochran's Q over the per-clip correctness matrix (hand-rolled;
+  chi-square p via scipy) — one test for "do the conditions differ at all".
+- **Post-hoc accuracy**: pairwise exact McNemar + Holm-Bonferroni, effect size
+  Cohen's g.
+- **Post-hoc efficiency**: pairwise Wilcoxon signed-rank on tokens / latency /
+  cost (per-clip means), effect size matched-pairs rank-biserial, Holm-corrected.
+- **Cost**: derived from captured token usage x the pinned model's price
+  (gemini-3.1-flash-lite $0.25 in / $1.50 out per 1M, from price_token.md);
+  flags `price_assumed` if the model is unknown.
+
+Verified end-to-end against a synthetic 40-clip x 4-condition x 3-repeat fixture
+(scratchpad-only, never committed): Cochran's Q separated the conditions
+(p=7e-05), McNemar+Holm and Wilcoxon+Holm produced sane pairwise output, and
+every bootstrap CI bracketed its accuracy_mean. No real EXP002 data scored yet.
+
 ### Next Steps
 - [x] Live smoke test — done 2026-07-28, all conditions return valid JSON.
-- [ ] Refactor `score_trial.py` to be config-driven over the EXP002 conditions;
-      add Cochran's Q + pairwise McNemar/Holm + Wilcoxon + bootstrap CIs.
-- [ ] Freeze `experiments/exp002/config.frozen.json`, then run the full trial.
+- [x] Refactor `score_trial.py` — done, config-driven + full stats stack.
+- [ ] Freeze `experiments/exp002/config.frozen.json` (promote the draft), then
+      run the full 120-clip x 4-condition x 3-repeat trial and score it.
