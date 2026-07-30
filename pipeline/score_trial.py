@@ -27,8 +27,8 @@ Binary outcomes are collapsed across repeats by majority vote (temperature is
 0.0, so repeats mainly probe residual API non-determinism).
 
 Usage:
-  python3 poc/score_trial.py
-  python3 poc/score_trial.py --results-dir poc/results/exp002/raw
+  python3 pipeline/score_trial.py
+  python3 pipeline/score_trial.py --results-dir results/exp002/raw
 """
 
 from __future__ import annotations
@@ -42,8 +42,8 @@ from pathlib import Path
 
 import numpy as np
 
-POC_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(POC_DIR))
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
 
 import conditions as cond  # noqa: E402
 import paths  # noqa: E402

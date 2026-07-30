@@ -13,36 +13,63 @@ The framework consists of two main paths to balance precision and efficiency:
 1. **Path B (Structural/Visual Path - The Alarm):** Utilizes DOM Mutation Observers and `pixelmatch` to continuously monitor the UI state. It acts as an efficient anomaly filter to capture highly significant layout divergences.
 2. **Path A (Semantic Path - The Brain):** Employs Multimodal LLMs (e.g., Gemini 3 Flash, Qwen2.5-VL) as reasoning engines. It is triggered only when Path B flags a structural change, analyzing whether the change is an acceptable responsive UI update or an actual defect.
 
-## Repository Structure & Dataset
+## Repository Structure
 
-To eliminate non-deterministic anti-bot mechanisms (e.g., CAPTCHAs) and network latency, this project utilizes the globally recognized **TodoMVC** (React, Vue, VanillaJS) as the benchmark subject application.
+To eliminate non-deterministic anti-bot mechanisms (e.g., CAPTCHAs) and network latency, this project uses the widely recognised **TodoMVC** (React, Vue, VanillaJS) as the benchmark subject application.
 
-- `/dataset_v1/`: The curated Proof-of-Concept (PoC) dataset containing 40 high-contrast synthetic UI anomaly videos (.webm). These were generated entirely automatically via Playwright by mutating CSS/DOM parameters, inspired by the _GUI-Robust (KDD 2026)_ semi-automated generation paradigm. All 40 videos have successfully passed the automated `pixelmatch` quality gate.
-- `/tests/`: Contains the Playwright data-driven automated fault injection scripts (`poc-bug-injection.spec.ts`).
-- `/test-results/`: Ephemeral directory for local test execution output (ignored in Git).
-- `worklog.md`: Development log tracking daily experiments, architectural decisions, and hardware (vLab) migration progress.
+The tree separates four things that have genuinely different lifecycles — code can be refactored freely, ground truth is regenerable, results are evidence, and the frozen specs must not move:
+
+| path | contents |
+|---|---|
+| `generator/` | Playwright fault-injection suite that produces the dataset (`tests/bug-injection.spec.ts`) plus its quality gate |
+| `pipeline/` | the Python evaluation pipeline: manifest, keyframe selection, VLM client, trial runner, scoring and statistics |
+| `data/` | `manifest.json` / `manifest.csv` — dataset-derived ground truth, one record per clip |
+| `results/<exp>/` | per-experiment evidence: the `raw/` response cache, `summary.json`, `trial-config.json` |
+| `experiments/<exp>/` | `config.frozen.json` — the frozen specification each run must satisfy |
+| `docs/` | the dataset standard and other written specifications |
+| `dataset_v3/` | 120 recorded clips (.webm + keyframes + DOM traces). **Not in git** — see below |
+| `worklog.md` | development log: experiments, architectural decisions, and the GenAI appendix |
+
+Datasets are excluded from version control because GitLab caps project storage at ~100MB. They are fully regenerable from the pinned generator plus the `RNG_SEED` recorded in `experiments/*/config.frozen.json`, so reproducibility does not depend on shipping the binaries.
 
 ## Quick Start
 
-### 1. Generate Synthetic UI Anomalies
+### 1. Generate the synthetic anomaly dataset
 
-Ensure you have Node.js and Playwright installed:
+Requires Node.js and Playwright:
 
 ```bash
-npm install
-npx playwright install chromium
-Run the automated fault injection pipeline (generates buggy videos in test-results/):
-npx playwright test poc-bug-injection.spec.ts
+cd generator && npm install && npx playwright install chromium
 ```
 
-### 2. Zero-shot VLM Evaluation (Running on vLab GPU)
+```bash
+cd generator && npx playwright test bug-injection.spec.ts
+```
 
-Note: Due to the unshared filesystem between vLab CPU and GPU instances, curated datasets must be pulled via Git
-.
-Check out this repository in the vLab GPU environment.
-Ensure you have the required API keys (e.g., Google AI Studio for Gemini 3 Flash) or local models (Qwen2.5-VL-7B) configured
-.
-Run the evaluation script targeting the videos inside dataset_v1/.
+Then verify every labelled defect is actually visible in the recording, not just in the screenshots:
+
+```bash
+python3 pipeline/gate_videos.py dataset_v3
+```
+
+### 2. VLM evaluation
+
+```bash
+export GOOGLE_API_KEY=...            # Google AI Studio key
+export GEMINI_MODEL=...              # the model id pinned by the frozen config
+```
+
+```bash
+python3 pipeline/build_manifest.py dataset_v3 && python3 pipeline/smoke_test.py
+```
+
+Both gates must be green before the trial: otherwise an accuracy number cannot be attributed to the method rather than to broken plumbing.
+
+```bash
+python3 pipeline/run_trial.py && python3 pipeline/score_trial.py
+```
+
+`run_trial.py` caches each response under `results/<exp>/raw/`, so an interrupted run resumes instead of re-spending quota. See [`pipeline/README.md`](pipeline/README.md) for the full stage-by-stage description.
 
 ## Honour Code & GenAI Disclosure
 

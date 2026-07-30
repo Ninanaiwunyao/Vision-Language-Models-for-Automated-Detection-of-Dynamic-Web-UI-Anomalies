@@ -19,8 +19,8 @@ single model with a zeroed-out free tier does not sink the whole run.
 
 Usage:
   export GOOGLE_API_KEY=...            # or GEMINI_API_KEY
-  python3 poc/smoke_test.py           # auto-picks a model with quota
-  GEMINI_MODEL=gemini-2.5-flash python3 poc/smoke_test.py   # pin one model
+  python3 pipeline/smoke_test.py           # auto-picks a model with quota
+  GEMINI_MODEL=gemini-2.5-flash python3 pipeline/smoke_test.py   # pin one model
 
 Exit code 0 means the gate is GREEN and it is safe to start the PoC.
 Any non-zero exit means DO NOT proceed — read the printed stage to see why.
@@ -34,8 +34,8 @@ import os
 import sys
 from pathlib import Path
 
-POC_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(POC_DIR))
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
 
 import paths  # noqa: E402
 # The auth, quota-detection and code-fence helpers are the ones the real trial

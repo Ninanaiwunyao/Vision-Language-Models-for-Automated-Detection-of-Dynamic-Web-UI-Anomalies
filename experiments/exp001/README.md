@@ -14,8 +14,8 @@ the paired (McNemar) comparison — the whole point of the design. A change afte
 the freeze requires a new `experiment_id` and a re-run of **all** clips under
 **both** conditions.
 
-The one deliberate exception is `poc/score_trial.py`: scoring is a pure
-function of the cached raw responses in `poc/results/raw/`, so it can be fixed
+The one deliberate exception is `pipeline/score_trial.py`: scoring is a pure
+function of the cached raw responses in `results/exp001/raw/`, so it can be fixed
 or extended afterwards without invalidating the run.
 
 ## Three code changes required before the run
@@ -40,33 +40,33 @@ rather than pinned. Each is marked `_change_required` in the config.
    PRNG, `dataset_v3` is reproducible only as a stored artifact, never as a
    procedure someone else could re-run.
 
-A fourth, smaller one: pin `latest/package.json` to an exact Playwright
+A fourth, smaller one: pin `generator/package.json` to an exact Playwright
 `1.61.1` instead of `^1.61.1` before generating the dataset.
 
 ## Run order
 
 ```bash
 # 0. apply the four changes above, then regenerate the dataset
-cd latest && npx playwright test poc-bug-injection.spec.ts   # CONTROL_CASES=60, CASES_PER_BUG=10
+cd generator && npx playwright test bug-injection.spec.ts   # CONTROL_CASES=60, CASES_PER_BUG=10
 node scripts/collect-dataset.mjs                             # -> dataset_v3/
 
 # 1. video-level gate (a clip that lost its defect frame is not ground truth)
-python3 poc/gate_videos.py
+python3 pipeline/gate_videos.py
 
 # 2. manifest over all 120 clips (no subsetting for EXP001)
-python3 poc/build_manifest.py dataset_v3
+python3 pipeline/build_manifest.py dataset_v3
 
 # 3. pipeline smoke test — must exit 0
 export GEMINI_MODEL=gemini-3.1-flash-lite
 export GOOGLE_API_KEY=...        # never committed
-python3 poc/smoke_test.py
+python3 pipeline/smoke_test.py
 
 # 4. dry run: build every payload, zero API calls — inspect prompts first
-python3 poc/run_trial.py --dry-run
+python3 pipeline/run_trial.py --dry-run
 
 # 5. the real run (240 calls: 120 clips x 2 conditions, interleaved, resumable)
-python3 poc/run_trial.py
-python3 poc/score_trial.py
+python3 pipeline/run_trial.py
+python3 pipeline/score_trial.py
 ```
 
 ## Design summary

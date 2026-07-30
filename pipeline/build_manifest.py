@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Stage 1 — Build the PoC ground-truth manifest.
+"""Stage 1 — Build the ground-truth manifest.
 
 Every evaluation in this project scores the model's verdict against this file,
 so the manifest is the experiment's foundation. It is generated *from the
 dataset itself* (<dataset>/metadata.json), which was in turn produced by the
-Playwright fault-injection matrix in latest/tests/poc-bug-injection.spec.ts.
+Playwright fault-injection matrix in generator/tests/bug-injection.spec.ts.
 
 Because every bug is self-injected via a known CSS mutation, the ground-truth
 label and the expected symptom are *known a priori* — they are derived here
 from the bug key, never hand-written per video. That keeps the manifest
 objective and trivially reproducible.
 
-Output (written next to this script, in poc/):
-  - manifest.json : rich, machine-readable ground truth (one object per video)
-  - manifest.csv  : flat view for quick inspection / spreadsheets
+Output (written to data/, which holds dataset-derived ground truth rather than
+code — see pipeline/paths.py for the layout):
+  - data/manifest.json : rich, machine-readable ground truth (one per video)
+  - data/manifest.csv  : flat view for quick inspection / spreadsheets
 
 Two selection modes:
   - pretrial : the original balanced 16-clip subset (8 normal / 8 anomalous, the
@@ -28,9 +29,9 @@ The mode defaults to `full` for dataset_v3 and any later dataset, and to
 `pretrial` for dataset_v1 / dataset_v2; override with --full / --pretrial.
 
 Usage:
-  python3 poc/build_manifest.py                 # newest dataset, default mode
-  python3 poc/build_manifest.py dataset_v3      # -> full (120 clips)
-  python3 poc/build_manifest.py dataset_v2 --pretrial
+  python3 pipeline/build_manifest.py                 # newest dataset, default mode
+  python3 pipeline/build_manifest.py dataset_v3      # -> full (120 clips)
+  python3 pipeline/build_manifest.py dataset_v2 --pretrial
 """
 
 from __future__ import annotations
@@ -41,8 +42,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-POC_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(POC_DIR))
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
 
 import paths  # noqa: E402
 from paths import MANIFEST_CSV, MANIFEST_JSON, REPO_ROOT  # noqa: E402

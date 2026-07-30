@@ -1,0 +1,11 @@
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# Never commit API keys
+.env
+.env.local
+*.key
+
+# Result-cache rules used to live here; results/ is now a top-level directory,
+# so they moved to the root .gitignore.

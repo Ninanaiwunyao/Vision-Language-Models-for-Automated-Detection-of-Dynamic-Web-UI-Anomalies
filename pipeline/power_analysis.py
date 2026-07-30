@@ -32,8 +32,8 @@ from pathlib import Path
 
 import numpy as np
 
-POC_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(POC_DIR))
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
 
 import paths  # noqa: E402
 from stats_tests import mcnemar_exact  # noqa: E402
@@ -178,7 +178,7 @@ def main() -> None:
     print(f"Paired exact-McNemar power  |  seed={SEED}  sims/cell={N_SIM:,}")
     for n in N_GRID:
         print_grid(n, grids[n], is_operating=(n == N_OPERATING))
-    print(f"\nWritten: {OUT.relative_to(POC_DIR.parent)}")
+    print(f"\nWritten: {OUT.relative_to(paths.REPO_ROOT)}")
 
 
 if __name__ == "__main__":

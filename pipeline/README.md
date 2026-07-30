@@ -1,4 +1,4 @@
-# PoC Pipeline (`poc/`)
+# Evaluation pipeline (`pipeline/`)
 
 The apparatus behind **EXP002**, the formal factorial ablation of the dual-path
 VLM defect detector. Stages 1 and 2 are gates that must both be green **before**
@@ -13,14 +13,14 @@ from — stays immutable under `experiments/exp001/`.)
 ## Stage 1 — Ground-truth manifest
 
 ```bash
-python3 poc/build_manifest.py                 # newest dataset, default mode
+python3 pipeline/build_manifest.py                 # newest dataset, default mode
 ```
 
 Reads a dataset's `metadata.json` (produced by the Playwright fault-injection
 matrix) and emits:
 
-- `poc/manifest.json` — rich, machine-readable ground truth (one object/video)
-- `poc/manifest.csv` — flat view for quick inspection
+- `data/manifest.json` — rich, machine-readable ground truth (one object/video)
+- `data/manifest.csv` — flat view for quick inspection
 
 Two selection modes:
 
@@ -36,12 +36,12 @@ older EXP001 subset; in that mode `N_CONTROLS` / `BUG_SELECTION` in
 `build_manifest.py` control the sampling, and in `full` mode they are bypassed.
 
 ```bash
-python3 poc/build_manifest.py dataset_v3      # -> full (120 clips)
-python3 poc/build_manifest.py dataset_v2 --pretrial
+python3 pipeline/build_manifest.py dataset_v3      # -> full (120 clips)
+python3 pipeline/build_manifest.py dataset_v2 --pretrial
 ```
 
 Every label is **derived, not hand-written**: because each bug is a known CSS
-mutation injected by `latest/tests/poc-bug-injection.spec.ts`, the
+mutation injected by `generator/tests/bug-injection.spec.ts`, the
 `ground_truth` (`normal`/`anomaly`) and the `expectation` symptom text come
 straight from the bug key.
 
@@ -67,7 +67,7 @@ straight from the bug key.
 
 ```bash
 export GOOGLE_API_KEY=...            # or GEMINI_API_KEY
-python3 poc/smoke_test.py            # exit 0 = gate GREEN
+python3 pipeline/smoke_test.py            # exit 0 = gate GREEN
 ```
 
 Runs four checks in order, short-circuiting on the first failure:
@@ -100,7 +100,7 @@ there a 429 retries the same model with backoff and never switches.
 ## Pre-registration — power analysis
 
 ```bash
-python3 poc/power_analysis.py        # -> poc/results/power_analysis.json
+python3 pipeline/power_analysis.py        # -> results/power_analysis.json
 ```
 
 Run **before** the trial, so the analysis plan is fixed independently of the
@@ -119,9 +119,9 @@ grid is reproducible.
 ## Stage 3 — Factorial ablation trial (the core)
 
 ```bash
-python3 poc/run_trial.py --dry-run   # build every payload, zero API calls
-python3 poc/run_trial.py             # the real thing (needs GOOGLE_API_KEY)
-python3 poc/score_trial.py           # metrics + omnibus + post-hoc tests
+python3 pipeline/run_trial.py --dry-run   # build every payload, zero API calls
+python3 pipeline/run_trial.py             # the real thing (needs GOOGLE_API_KEY)
+python3 pipeline/score_trial.py           # metrics + omnibus + post-hoc tests
 ```
 
 EXP002 is a **2-factor factorial ablation, paired within clip**. Factor **A** is
@@ -168,7 +168,7 @@ Fairness rules (enforced in code):
   appearance text under B1 is generic and byte-identical for every clip.
 - Keyframe selection reads only pixels and the DOM trace, never the label.
 - Conditions *and* repeats are interleaved per clip, and every response is
-  cached in `poc/results/exp002/raw/` — a quota crash mid-run costs every arm
+  cached in `results/exp002/raw/` — a quota crash mid-run costs every arm
   the same clips, so pairing holds and a re-run resumes.
 
 ### Scoring
@@ -212,7 +212,7 @@ after the run without invalidating it.
 
 ## Module layout
 
-Entry-point scripts, each runnable as `python3 poc/<name>.py`:
+Entry-point scripts, each runnable as `python3 pipeline/<name>.py`:
 
 | script | stage |
 |---|---|
@@ -237,6 +237,24 @@ Shared modules (imported, never run directly):
 `power_analysis.py`: a power model built on a *different* McNemar
 implementation than the one finally applied would not pre-register anything.
 
+### What the scripts read and write
+
+Nothing here writes inside `pipeline/`. Code, dataset-derived ground truth and
+experimental evidence live in separate top-level directories because they have
+different lifecycles — code is refactorable, ground truth is regenerable from a
+dataset, and results are evidence:
+
+| directory | contents | lifecycle |
+|---|---|---|
+| `pipeline/` | these scripts | refactorable at any time |
+| `data/` | `manifest.json` / `manifest.csv` | regenerate with `build_manifest.py` |
+| `results/<exp>/` | `raw/` response cache, `summary.json`, `trial-config.json` | append-only evidence, in git |
+| `experiments/<exp>/` | `config.frozen.json` | frozen spec, amendments recorded in-file |
+| `dataset_v3/` | the .webm / .png / DOM-trace binaries | **not** in git; regenerable from the pinned generator |
+
+`paths.py` is the single place these locations are defined; no other module
+hard-codes one.
+
 ## Dataset integrity: why dataset_v2 exists
 
 dataset_v1's *videos* frequently did not contain the labelled defect: Playwright
@@ -247,7 +265,7 @@ app) emitted a single defect frame that often lost the close race. Every
 while animated bugs (`flicker`) always survived. The screenshot-level pixelmatch
 gate could not see this because it never decoded the video.
 
-Three fixes in `latest/tests/poc-bug-injection.spec.ts` + `poc/gate_videos.py`:
+Three fixes in `generator/tests/bug-injection.spec.ts` + `pipeline/gate_videos.py`:
 1. a 7s fixed post-injection hold, identical for both groups (so clip duration
    cannot leak the label);
 2. a "screencast heartbeat" — a tiny grey dot outside the app region toggling

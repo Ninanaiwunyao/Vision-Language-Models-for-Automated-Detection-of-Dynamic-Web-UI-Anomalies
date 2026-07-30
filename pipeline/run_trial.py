@@ -21,10 +21,10 @@ The three prompt templates below are integrity-pinned by SHA-256 in the frozen
 config, so their text must not be edited while EXP002 is being collected.
 
 Usage:
-  python3 poc/run_trial.py --dry-run            # build all payloads, no API calls
-  python3 poc/run_trial.py --dry-run --limit 2  # smoke test payloads on 2 clips
-  python3 poc/run_trial.py --limit 2            # real calls on 2 clips (needs key)
-  python3 poc/run_trial.py                       # the full trial
+  python3 pipeline/run_trial.py --dry-run            # build all payloads, no API calls
+  python3 pipeline/run_trial.py --dry-run --limit 2  # smoke test payloads on 2 clips
+  python3 pipeline/run_trial.py --limit 2            # real calls on 2 clips (needs key)
+  python3 pipeline/run_trial.py                       # the full trial
 """
 
 from __future__ import annotations
@@ -36,8 +36,8 @@ import time
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-POC_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(POC_DIR))
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
 
 import conditions as cond  # noqa: E402
 import keyframes as kf  # noqa: E402
@@ -359,7 +359,7 @@ def main() -> None:
     print(f"\n{'Dry run' if args.dry_run else 'Trial'} finished: "
           f"{done} new calls, {skipped} cached. Results in {RAW_DIR}")
     if not args.dry_run:
-        print("Score with: python3 poc/score_trial.py")
+        print("Score with: python3 pipeline/score_trial.py")
 
 
 if __name__ == "__main__":

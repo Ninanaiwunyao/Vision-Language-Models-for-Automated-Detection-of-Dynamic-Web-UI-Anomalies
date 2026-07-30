@@ -22,8 +22,8 @@ Control cases have buggy.png == normal.png (nothing injected), so there is no
 defect to verify; they pass automatically as long as the video decodes.
 
 Usage:
-  python3 poc/gate_videos.py <dataset-dir>          # report only
-  python3 poc/gate_videos.py <dataset-dir> --prune  # also delete failed cases
+  python3 pipeline/gate_videos.py <dataset-dir>          # report only
+  python3 pipeline/gate_videos.py <dataset-dir> --prune  # also delete failed cases
 """
 
 from __future__ import annotations
@@ -36,8 +36,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-POC_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(POC_DIR))
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
 
 import paths  # noqa: E402
 
