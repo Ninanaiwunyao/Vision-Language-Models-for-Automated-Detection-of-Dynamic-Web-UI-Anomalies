@@ -45,7 +45,7 @@ from scipy import stats
 POC_DIR = Path(__file__).resolve().parent
 REPO_ROOT = POC_DIR.parent
 
-DEFAULT_CONFIG = REPO_ROOT / "experiments" / "exp002" / "conditions.draft.json"
+DEFAULT_CONFIG = REPO_ROOT / "experiments" / "exp002" / "config.frozen.json"
 DEFAULT_RESULTS = POC_DIR / "results" / "exp002" / "raw"
 
 BOOTSTRAP_N = 10_000

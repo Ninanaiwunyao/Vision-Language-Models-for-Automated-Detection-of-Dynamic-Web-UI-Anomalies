@@ -352,8 +352,32 @@ Verified end-to-end against a synthetic 40-clip x 4-condition x 3-repeat fixture
 (p=7e-05), McNemar+Holm and Wilcoxon+Holm produced sane pairwise output, and
 every bootstrap CI bracketed its accuracy_mean. No real EXP002 data scored yet.
 
+### EXP002 frozen (2026-07-30)
+
+Promoted the draft to `experiments/exp002/config.frozen.json` (status: frozen,
+frozen_from_commit ef3344c), mirroring EXP001's structure. Pins: the 4-cell
+factorial (A0B0/A1B1/A3B0/A3B1) with factor + fusion definitions; model
+gemini-3.1-flash-lite; generation_config (temp 0.0, top_p 1.0, top_k 1,
+max_output_tokens 512) — now actually wired, unlike EXP001 which froze it as a
+TODO; repeats 3; prompt SHA-256s; A3 fusion params (fuse_lambda 1.0, window
+1200ms); dataset_v3 (120 clips, full manifest); the statistics stack (Cochran's Q
+-> McNemar+Holm -> Wilcoxon+Holm, bootstrap seed 20260728); the cost model
+(price_token.md); and the power-analysis reference (planning power 0.94 at n=120).
+
+- **B0 prompt SHA differs from EXP001** by design (baseline/v2, dropped "sampled
+  uniformly"); B1 and the expected-appearance block are unchanged (byte-identical
+  SHAs to EXP001). Verified all three SHAs match the live code.
+- **Runners repointed**: `run_trial.py` / `score_trial.py` DEFAULT_CONFIG now
+  reads `config.frozen.json`; the superseded `conditions.draft.json` was removed.
+- **freeze_policy.unfrozen_by_design**: `score_trial.py` only (pure function of
+  cached raw responses).
+- Verified: dry-run reads the frozen config and builds all 4 conditions; both
+  runners load it; prompt SHA integrity check passes.
+
+EXP002 is a NEW experiment id (not an edit of EXP001, which stays immutable).
+
 ### Next Steps
-- [x] Live smoke test — done 2026-07-28, all conditions return valid JSON.
-- [x] Refactor `score_trial.py` — done, config-driven + full stats stack.
-- [ ] Freeze `experiments/exp002/config.frozen.json` (promote the draft), then
-      run the full 120-clip x 4-condition x 3-repeat trial and score it.
+- [x] Freeze `experiments/exp002/config.frozen.json` — done 2026-07-30.
+- [ ] Run the full trial: `python3 poc/run_trial.py` (120 x 4 x 3 = 1440 calls,
+      resumable) with `GEMINI_MODEL` + `GOOGLE_API_KEY` set, then
+      `python3 poc/score_trial.py`.

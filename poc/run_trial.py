@@ -51,7 +51,7 @@ sys.path.insert(0, str(POC_DIR))
 import keyframes as kf  # noqa: E402
 import vlm_client as vc  # noqa: E402
 
-DEFAULT_CONFIG = REPO_ROOT / "experiments" / "exp002" / "conditions.draft.json"
+DEFAULT_CONFIG = REPO_ROOT / "experiments" / "exp002" / "config.frozen.json"
 RESULTS_DIR = POC_DIR / "results" / "exp002"
 RAW_DIR = RESULTS_DIR / "raw"
 
