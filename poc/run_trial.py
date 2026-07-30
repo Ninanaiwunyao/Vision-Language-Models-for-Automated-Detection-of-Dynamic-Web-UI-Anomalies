@@ -3,21 +3,10 @@
 
 Every manifest clip is evaluated under EVERY condition listed in the conditions
 config, so the comparison is a paired design (Cochran's Q / McNemar-testable)
-rather than independent samples.
-
-Conditions are named by a 2-factor code, e.g. A3B1:
-
-  Factor A — which frames are sent to the model:
-    A0  uniform sampling (no selection)
-    A1  pixel-diff-only keyframe selection
-    A3  pixel + DOM fused selection (DOM influences which frames are sent)
-  Factor B — the prompt:
-    B0  naive prompt
-    B1  dual-path decision prompt (DOM evidence text lives here, under B)
-
-The condition set, repeats, and generation config are read from a config file
-(default experiments/exp002/conditions.draft.json), so adding or removing a
-condition is a config edit, not a code change.
+rather than independent samples. The condition grammar itself lives in
+`conditions.py`; the condition set, repeats and generation config are read from
+a frozen spec (default experiments/exp002/config.frozen.json), so adding or
+removing a condition is a config edit, not a code change.
 
 Fairness rules enforced here:
   - One model, resolved once (cheapest available), frozen for all calls.
@@ -27,6 +16,9 @@ Fairness rules enforced here:
   - Conditions (and repeats) are interleaved per clip, so if quota dies mid-run
     every arm loses the same clips and pairing holds.
   - Every response is cached in the raw dir; re-running resumes.
+
+The three prompt templates below are integrity-pinned by SHA-256 in the frozen
+config, so their text must not be edited while EXP002 is being collected.
 
 Usage:
   python3 poc/run_trial.py --dry-run            # build all payloads, no API calls
@@ -39,31 +31,38 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 import time
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 POC_DIR = Path(__file__).resolve().parent
-REPO_ROOT = POC_DIR.parent
 sys.path.insert(0, str(POC_DIR))
 
+import conditions as cond  # noqa: E402
 import keyframes as kf  # noqa: E402
+import paths  # noqa: E402
 import vlm_client as vc  # noqa: E402
+from paths import REPO_ROOT  # noqa: E402
 
-DEFAULT_CONFIG = REPO_ROOT / "experiments" / "exp002" / "config.frozen.json"
-RESULTS_DIR = POC_DIR / "results" / "exp002"
-RAW_DIR = RESULTS_DIR / "raw"
+EXPERIMENT_ID = "exp002"
+DEFAULT_CONFIG = paths.frozen_config(EXPERIMENT_ID)
+RESULTS_DIR = paths.results_dir(EXPERIMENT_ID)
+RAW_DIR = paths.raw_dir(EXPERIMENT_ID)
 
 BASELINE_FRAMES = 6
 FRAME_WIDTH = 640  # downscale width for all conditions (fairness + cost)
 
+# Window used to summarise DOM activity around the selected transition FOR THE
+# PROMPT. Deliberately a separate knob from keyframes.DOM_FUSE_WINDOW_MS (which
+# governs A3's selection-time fusion) — the frozen config lists the two as
+# independent parameters — but both are 1200ms so selection and the prompt's DOM
+# summary reason over the same neighbourhood.
+#
 # DOM trace timestamps start at init-script install (~navigation), the video at
 # context creation; the offset is the page-load delay, well under a second.
 # A generous window keeps the correlation honest despite that jitter.
 DOM_WINDOW_MS = 1200
-
-CONDITION_RE = re.compile(r"^(A\d)(B\d)$")
 
 # B0 "naive" prompt. Deliberately says nothing about HOW the frames were chosen,
 # so it is a clean control for any factor-A level: pairing it with A3 (fused
@@ -126,6 +125,8 @@ Respond with ONLY a JSON object, no prose, no code fence:
 "flyaway_offset","flicker_seizure","displaynone_collapse" or null>}}"""
 
 
+# --- payload construction ---------------------------------------------------
+
 def resize(frame, width=FRAME_WIDTH):
     import numpy as np
     from PIL import Image
@@ -154,45 +155,6 @@ def summarize_dom(trace: list | None, transition_ms: float) -> dict:
     }
 
 
-# --- config ----------------------------------------------------------------
-
-def validate_conditions(codes: list[str]) -> None:
-    """Reject any code the pipeline cannot actually run, with a clear reason."""
-    if not codes:
-        raise SystemExit("No conditions to run")
-    for code in codes:
-        m = CONDITION_RE.match(code)
-        if not m:
-            raise SystemExit(f"Malformed condition code '{code}' (expected AxBy)")
-        a, b = m.group(1), m.group(2)
-        if a not in ("A0", "A1", "A3"):
-            raise SystemExit(f"{code}: frame selector {a} not implemented")
-        if b not in ("B0", "B1"):
-            raise SystemExit(f"{code}: prompt variant {b} not implemented")
-        if b == "B1" and a == "A0":
-            raise SystemExit(
-                f"{code}: B1 (dual-path) needs a transition-based selector; "
-                f"A0 (uniform) has no transition to describe"
-            )
-
-
-def load_config(path: Path) -> dict:
-    if not path.exists():
-        raise SystemExit(f"Conditions config not found: {path}")
-    cfg = json.loads(path.read_text())
-    conditions = cfg.get("conditions")
-    if not conditions:
-        raise SystemExit(f"No 'conditions' list in {path}")
-    validate_conditions(conditions)
-    # Strip comment keys from the generation config before it reaches the SDK.
-    gen = {k: v for k, v in cfg.get("generation_config", {}).items()
-           if not k.startswith("_")}
-    return {"conditions": conditions, "repeats": int(cfg.get("repeats", 1)),
-            "generation_config": gen or None, "source": str(path)}
-
-
-# --- per-clip analysis (decode once) ---------------------------------------
-
 def analyze_clip(case: dict) -> dict:
     """Decode the clip once and precompute every selector's frames + signals,
     so each condition just picks the pieces it needs."""
@@ -201,7 +163,7 @@ def analyze_clip(case: dict) -> dict:
     trace_rel = case.get("dom_trace_path")
     trace = None
     if trace_rel and (REPO_ROOT / trace_rel).exists():
-        trace = json.loads((REPO_ROOT / trace_rel).read_text())
+        trace = paths.read_json(REPO_ROOT / trace_rel)
 
     uni = [frames[i] for i in kf.uniform_indices(len(frames), BASELINE_FRAMES)]
     return {
@@ -221,7 +183,7 @@ def frames_for_a(ctx: dict, a_level: str) -> list:
 
 
 def build_condition_payload(ctx: dict, code: str) -> dict:
-    a_level, b_level = CONDITION_RE.match(code).groups()
+    a_level, b_level = cond.split(code)
     frames = frames_for_a(ctx, a_level)
 
     if b_level == "B0":
@@ -242,18 +204,99 @@ def build_condition_payload(ctx: dict, code: str) -> dict:
     return {"prompt": prompt, "frames": [resize(f) for f in frames], "meta": meta}
 
 
-def run_condition(genai, model_name, payload, gen_config) -> dict:
+# --- execution --------------------------------------------------------------
+
+@dataclass
+class Session:
+    """Everything the per-clip loop needs to know about *how* to run.
+
+    In a dry run the model handles stay None and no request is ever built, so
+    the payload path can be exercised without an API key.
+    """
+
+    dry_run: bool
+    generation_config: dict | None = None
+    genai: object | None = None
+    model_name: str | None = None
+
+    @property
+    def label(self) -> str:
+        return "DRY-RUN" if self.dry_run else str(self.model_name)
+
+
+def call_model(session: Session, payload: dict) -> dict:
     parts = [payload["prompt"]] + [vc.frame_to_part(f) for f in payload["frames"]]
     t0 = time.time()
-    result = vc.call_json(genai, model_name, parts, generation_config=gen_config)
+    result = vc.call_json(session.genai, session.model_name, parts,
+                          generation_config=session.generation_config)
     result["_latency_s"] = round(time.time() - t0, 2)
     return result
 
 
-def main() -> None:
+def save_dry_record(case: dict, code: str, rep: int, payload: dict) -> None:
+    """A dry run records the prompt it *would* have sent, so payloads are
+    reviewable (and prompt hashes verifiable) before any quota is spent."""
+    record = {
+        "id": case["id"], "condition": code, "repeat": rep,
+        "dry_run": True, "prompt": payload["prompt"],
+        "n_images": len(payload["frames"]), "meta": payload["meta"],
+    }
+    paths.write_json(RAW_DIR / f"DRY__{case['id']}__{code}__r{rep}.json", record)
+    print(f"[dry ] {case['id']:30s} {code} r{rep} "
+          f"imgs={record['n_images']} sel={payload['meta']['selection']}")
+
+
+def save_call_record(out: Path, case: dict, code: str, rep: int,
+                     payload: dict, session: Session) -> None:
+    resp = call_model(session, payload)
+    record = {
+        "id": case["id"], "condition": code, "repeat": rep,
+        "model": session.model_name,
+        "verdict": resp.get("verdict"),
+        "reason": resp.get("reason"),
+        "defect_type": resp.get("defect_type"),
+        "raw": resp.get("_raw"),
+        "usage": resp.get("_usage"),
+        "latency_s": resp.get("_latency_s"),
+        "meta": payload["meta"],
+    }
+    paths.write_json(out, record)
+    print(f"[call] {case['id']:30s} {code} r{rep} -> {record['verdict']}")
+
+
+def process_clip(case: dict, cfg: cond.TrialConfig, session: Session) -> tuple[int, int]:
+    """Run every (repeat, condition) cell for one clip. Returns (done, skipped).
+
+    The clip is decoded at most once, and only if at least one cell is actually
+    missing from the cache — so resuming a finished run costs no video decoding.
+    """
+    done = skipped = 0
+    ctx = None
+    for rep in range(1, cfg.repeats + 1):
+        for code in cfg.conditions:  # interleaved by construction
+            out = RAW_DIR / f"{case['id']}__{code}__r{rep}.json"
+            if out.exists():
+                skipped += 1
+                continue
+            if ctx is None:
+                ctx = analyze_clip(case)
+            payload = build_condition_payload(ctx, code)
+
+            if session.dry_run:
+                save_dry_record(case, code, rep, payload)
+                continue
+
+            save_call_record(out, case, code, rep, payload, session)
+            done += 1
+    return done, skipped
+
+
+# --- entry point ------------------------------------------------------------
+
+def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", type=Path, default=DEFAULT_CONFIG,
-                    help="conditions config (default: EXP002 draft)")
+                    help="conditions config (default: EXP002 frozen spec)")
     ap.add_argument("--dry-run", action="store_true",
                     help="build payloads and save prompts, make no API calls")
     ap.add_argument("--limit", type=int, default=None,
@@ -262,80 +305,56 @@ def main() -> None:
                     help="override the repeats count from the config")
     ap.add_argument("--conditions", type=str, default=None,
                     help="comma-separated condition codes overriding the config")
-    args = ap.parse_args()
+    return ap.parse_args()
 
-    cfg = load_config(args.config)
+
+def resolve_config(args: argparse.Namespace) -> cond.TrialConfig:
+    """The frozen spec, with the CLI overrides applied (and re-validated)."""
+    cfg = cond.load(args.config)
     if args.conditions:
-        override = [c.strip() for c in args.conditions.split(",") if c.strip()]
-        validate_conditions(override)
-        cfg["conditions"] = override
-    conditions = cfg["conditions"]
-    repeats = args.repeats if args.repeats is not None else cfg["repeats"]
-    gen_config = cfg["generation_config"]
+        cfg = cfg.with_conditions(
+            [c.strip() for c in args.conditions.split(",") if c.strip()])
+    if args.repeats is not None:
+        cfg = replace(cfg, repeats=args.repeats)
+    return cfg
 
-    manifest = json.loads((POC_DIR / "manifest.json").read_text())
+
+def save_trial_config(cfg: cond.TrialConfig, session: Session, manifest: dict) -> None:
+    """Record the exact apparatus this run used, next to its results."""
+    paths.write_json(RESULTS_DIR / "trial-config.json", {
+        "model": session.model_name,
+        "conditions": cfg.conditions,
+        "repeats": cfg.repeats,
+        "generation_config": cfg.generation_config,
+        "baseline_frames": BASELINE_FRAMES,
+        "frame_width": FRAME_WIDTH,
+        "dom_window_ms": DOM_WINDOW_MS,
+        "config_source": cfg.source,
+        "manifest_total": manifest["total"],
+    })
+
+
+def main() -> None:
+    args = parse_args()
+    cfg = resolve_config(args)
+
+    manifest = paths.read_json(paths.MANIFEST_JSON)
     cases = manifest["cases"][: args.limit] if args.limit else manifest["cases"]
     RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-    genai = model_name = None
-    if not args.dry_run:
-        genai, model_name = vc.connect()
-        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-        (RESULTS_DIR / "trial-config.json").write_text(json.dumps({
-            "model": model_name,
-            "conditions": conditions,
-            "repeats": repeats,
-            "generation_config": gen_config,
-            "baseline_frames": BASELINE_FRAMES,
-            "frame_width": FRAME_WIDTH,
-            "dom_window_ms": DOM_WINDOW_MS,
-            "config_source": cfg["source"],
-            "manifest_total": manifest["total"],
-        }, indent=2) + "\n")
+    session = Session(dry_run=args.dry_run, generation_config=cfg.generation_config)
+    if not session.dry_run:
+        session.genai, session.model_name = vc.connect()
+        save_trial_config(cfg, session, manifest)
 
-    print(f"Conditions: {conditions} x {repeats} repeat(s) | "
-          f"{len(cases)} clip(s) | {'DRY-RUN' if args.dry_run else model_name}")
+    print(f"Conditions: {cfg.conditions} x {cfg.repeats} repeat(s) | "
+          f"{len(cases)} clip(s) | {session.label}")
 
     done = skipped = 0
     for case in cases:
-        ctx = None  # decode lazily, once per clip
-        for rep in range(1, repeats + 1):
-            for code in conditions:  # interleaved by construction
-                out = RAW_DIR / f"{case['id']}__{code}__r{rep}.json"
-                if out.exists():
-                    skipped += 1
-                    continue
-                if ctx is None:
-                    ctx = analyze_clip(case)
-                payload = build_condition_payload(ctx, code)
-
-                if args.dry_run:
-                    record = {
-                        "id": case["id"], "condition": code, "repeat": rep,
-                        "dry_run": True, "prompt": payload["prompt"],
-                        "n_images": len(payload["frames"]), "meta": payload["meta"],
-                    }
-                    (RAW_DIR / f"DRY__{case['id']}__{code}__r{rep}.json").write_text(
-                        json.dumps(record, indent=2) + "\n")
-                    print(f"[dry ] {case['id']:30s} {code} r{rep} "
-                          f"imgs={record['n_images']} sel={payload['meta']['selection']}")
-                    continue
-
-                resp = run_condition(genai, model_name, payload, gen_config)
-                record = {
-                    "id": case["id"], "condition": code, "repeat": rep,
-                    "model": model_name,
-                    "verdict": resp.get("verdict"),
-                    "reason": resp.get("reason"),
-                    "defect_type": resp.get("defect_type"),
-                    "raw": resp.get("_raw"),
-                    "usage": resp.get("_usage"),
-                    "latency_s": resp.get("_latency_s"),
-                    "meta": payload["meta"],
-                }
-                out.write_text(json.dumps(record, indent=2) + "\n")
-                done += 1
-                print(f"[call] {case['id']:30s} {code} r{rep} -> {record['verdict']}")
+        d, s = process_clip(case, cfg, session)
+        done += d
+        skipped += s
 
     print(f"\n{'Dry run' if args.dry_run else 'Trial'} finished: "
           f"{done} new calls, {skipped} cached. Results in {RAW_DIR}")

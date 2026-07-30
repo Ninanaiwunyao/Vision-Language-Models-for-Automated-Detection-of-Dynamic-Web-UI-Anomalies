@@ -32,20 +32,22 @@ import base64
 import json
 import os
 import sys
-import warnings
 from pathlib import Path
 
-# The installed google-generativeai SDK is deprecated but functional; hide its
-# noisy FutureWarning so the smoke-test output stays readable.
-warnings.filterwarnings("ignore", category=FutureWarning)
-
 POC_DIR = Path(__file__).resolve().parent
-REPO_ROOT = POC_DIR.parent
-MANIFEST_JSON = POC_DIR / "manifest.json"
+sys.path.insert(0, str(POC_DIR))
+
+import paths  # noqa: E402
+# The auth, quota-detection and code-fence helpers are the ones the real trial
+# uses, imported rather than re-implemented so a green smoke test is evidence
+# about the actual pipeline. vlm_client keeps its heavy imports lazy, so this
+# costs nothing here and still lets stage 2 diagnose a missing SDK itself.
+from vlm_client import (  # noqa: E402
+    API_KEY_ENV, MODEL_ENV, find_api_key, is_quota_error, strip_code_fence,
+)
+from paths import MANIFEST_JSON, REPO_ROOT  # noqa: E402
 
 API_HOST = "generativelanguage.googleapis.com"
-API_KEY_ENV = ("GOOGLE_API_KEY", "GEMINI_API_KEY")
-MODEL_ENV = "GEMINI_MODEL"
 
 # Preference order for auto-selection: models most likely to still carry free
 # tier quota first. Any of these that the account exposes are tried in turn on a
@@ -80,27 +82,11 @@ def fail(stage: str, msg: str, hint: str | None = None) -> "None":
     sys.exit(1)
 
 
-def get_api_key() -> str | None:
-    for name in API_KEY_ENV:
-        val = os.environ.get(name)
-        if val:
-            return val
-    return None
-
-
-def is_quota_error(exc: Exception) -> bool:
-    """True for 429 / RESOURCE_EXHAUSTED regardless of SDK exception class."""
-    s = str(exc)
-    if "429" in s or "RESOURCE_EXHAUSTED" in s:
-        return True
-    return "quota" in s.lower()
-
-
 def pick_sample_image() -> Path:
     """Use the first anomalous keyframe from the manifest so the smoke test
     exercises the same asset type the PoC will feed the model."""
     if MANIFEST_JSON.exists():
-        doc = json.loads(MANIFEST_JSON.read_text())
+        doc = paths.read_json(MANIFEST_JSON)
         for case in doc.get("cases", []):
             if case.get("is_anomaly"):
                 p = REPO_ROOT / case["keyframes"]["buggy"]
@@ -167,7 +153,7 @@ def stage_network() -> None:
 # ---------------------------------------------------------------------------
 def stage_auth() -> tuple[object, list[str]]:
     print("Stage 2/4  AUTH     — validating API key and listing models ...")
-    key = get_api_key()
+    key = find_api_key()
     if not key:
         fail("2 (AUTH)", "no API key found in the environment",
              f"export one of: {', '.join(API_KEY_ENV)}")
@@ -242,15 +228,6 @@ def stage_image(genai, candidates: list[str], img_path: Path) -> tuple[object, s
 # ---------------------------------------------------------------------------
 # Stage 4 — strict JSON response + parse (reuses the model that worked above)
 # ---------------------------------------------------------------------------
-def _strip_code_fence(text: str) -> str:
-    t = text.strip()
-    if t.startswith("```"):
-        t = t.split("\n", 1)[-1] if "\n" in t else t[3:]
-        if t.endswith("```"):
-            t = t[: t.rfind("```")]
-    return t.strip()
-
-
 def stage_json(model, model_name: str, img_path: Path) -> None:
     print(f"Stage 4/4  JSON     — requesting strict JSON from '{model_name}' ...")
     prompt = (
@@ -264,7 +241,7 @@ def stage_json(model, model_name: str, img_path: Path) -> None:
         resp = model.generate_content(
             [prompt, {"mime_type": "image/png", "data": b64}]
         )
-        raw = _strip_code_fence(resp.text or "")
+        raw = strip_code_fence(resp.text or "")
         parsed = json.loads(raw)
     except json.JSONDecodeError as exc:
         fail("4 (JSON)", f"response was not valid JSON: {exc}",

@@ -1,10 +1,15 @@
-"""Shared Gemini client for the PoC trial.
+"""Shared Gemini client for the PoC trial, and the API helpers smoke_test reuses.
 
 Experimental-validity rule enforced here: the model is resolved **once** and
 then frozen for the whole trial. On a 429 we retry the *same* model with
 backoff rather than falling back to another one — silently switching models
 between clips would mean different cases were judged by different judges, which
 destroys the paired comparison.
+
+Imports of the heavy image stack (numpy / Pillow) are deliberately deferred into
+`frame_to_part`, the only function that needs them, so smoke_test.py can import
+the auth and parsing helpers without pulling in the whole pipeline — its job is
+to *diagnose* a broken environment, so it must be able to start in one.
 """
 
 from __future__ import annotations
@@ -16,9 +21,8 @@ import os
 import time
 import warnings
 
-import numpy as np
-from PIL import Image
-
+# The installed google-generativeai SDK is deprecated but functional; hide its
+# noisy FutureWarning so console output stays readable.
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 API_KEY_ENV = ("GOOGLE_API_KEY", "GEMINI_API_KEY")
@@ -29,14 +33,23 @@ class QuotaExhausted(RuntimeError):
     pass
 
 
-def get_api_key() -> str:
+def find_api_key() -> str | None:
+    """The first API key present in the environment, or None."""
     for name in API_KEY_ENV:
         val = os.environ.get(name)
         if val:
             return val
-    raise SystemExit(
-        f"No API key found. Export one of: {', '.join(API_KEY_ENV)}"
-    )
+    return None
+
+
+def get_api_key() -> str:
+    """Like find_api_key, but a missing key is a fatal misconfiguration."""
+    key = find_api_key()
+    if key is None:
+        raise SystemExit(
+            f"No API key found. Export one of: {', '.join(API_KEY_ENV)}"
+        )
+    return key
 
 
 def is_quota_error(exc: Exception) -> bool:
@@ -136,9 +149,12 @@ def connect(verbose: bool = True):
     return genai, chosen
 
 
-def frame_to_part(arr: np.ndarray, quality: int = 90) -> dict:
+def frame_to_part(arr, quality: int = 90) -> dict:
     """Encode an RGB ndarray as a JPEG inline image part. JPEG keeps the upload
     small; Gemini bills images by dimension, so quality costs nothing extra."""
+    import numpy as np
+    from PIL import Image
+
     img = Image.fromarray(arr.astype(np.uint8), mode="RGB")
     buf = io.BytesIO()
     img.save(buf, format="JPEG", quality=quality)
@@ -148,7 +164,9 @@ def frame_to_part(arr: np.ndarray, quality: int = 90) -> dict:
     }
 
 
-def _strip_code_fence(text: str) -> str:
+def strip_code_fence(text: str) -> str:
+    """Unwrap a ```-fenced reply so it can be JSON-parsed. Shared with
+    smoke_test.py, which exercises the same round-trip before the trial."""
     t = text.strip()
     if t.startswith("```"):
         t = t.split("\n", 1)[-1] if "\n" in t else t[3:]
@@ -193,7 +211,7 @@ def call_json(
         try:
             resp = model.generate_content(parts, generation_config=generation_config)
             usage = _usage_of(resp)
-            raw = _strip_code_fence(resp.text or "")
+            raw = strip_code_fence(resp.text or "")
             try:
                 parsed = json.loads(raw)
             except json.JSONDecodeError:

@@ -376,11 +376,100 @@ TODO; repeats 3; prompt SHA-256s; A3 fusion params (fuse_lambda 1.0, window
 
 EXP002 is a NEW experiment id (not an edit of EXP001, which stays immutable).
 
+### Pre-run refactor of `poc/` (branch: refactor/poc-cleanup, 2026-07-30)
+
+Structural cleanup taken deliberately *before* the 1440-call trial, so the code
+that produces the reported numbers is the tidy version and no refactor lands
+mid-collection (which the freeze policy forbids for everything except
+`score_trial.py`). **Explicit constraint: zero behavioural change** — no method,
+threshold, statistic or prompt was touched.
+
+**Prompt used** (verbatim, translated): "before running the formal experiment,
+open a branch and refactor the code for me — tidy-up only, do not change the
+method logic; then can you delete the datasets on the remote without touching
+history?" Scope was then narrowed by an explicit choice of "structural tidy-up +
+extract shared modules" over "conservative cleanup only".
+
+Three shared modules extracted from duplication that had accumulated across the
+six entry-point scripts:
+- `poc/paths.py` — repo-relative paths and JSON read/write, resolved from
+  `__file__` rather than the CWD. `POC_DIR`/`REPO_ROOT` had been re-derived in
+  five files, and the `json.dumps(..., indent=2) + "\n"` write idiom in four.
+- `poc/conditions.py` — the `AxBy` grammar, the "is this level implemented"
+  validator, and the frozen-config loader. `run_trial.py` and `score_trial.py`
+  each had their own regex and their own loader with divergent error messages;
+  `score_trial.py` previously did no validation at all.
+- `poc/stats_tests.py` — Cochran's Q, exact McNemar, Cohen's g, Wilcoxon
+  signed-rank, Holm-Bonferroni, bootstrap CI. The exact-McNemar formula existed
+  **twice**, in `score_trial.py` and `power_analysis.py`, with only a comment
+  asserting they matched. They now share one function, so the pre-registered
+  power model is provably a model of the test that will actually be applied.
+
+Per-file work:
+- `build_manifest.py` — parsed `sys.argv` **at import time** and derived
+  `MODE` / `DATASET_DIR` / `DATASET_NAME` as module globals, so importing it
+  from a test or another script would consume the caller's argv. Replaced with a
+  frozen `BuildSpec` dataclass threaded through as an argument. Removed the dead
+  `by_id` dict and its `assert by_id  # silence linters`.
+- `score_trial.py` — a 165-line `main()` split into `score_condition()` /
+  `omnibus()` / `posthoc_accuracy()` / `posthoc_efficiency()`, with the
+  per-condition state carried by a `ConditionScore` dataclass instead of four
+  parallel dicts. Deleted the unused `wilson()` helper (dead since the switch to
+  the bootstrap CI — a live Wilson function in a stats module invites someone to
+  report a CI the paper does not use) and an unused `CONDITION_RE`.
+- `run_trial.py` — extracted `Session`, `process_clip()`, `save_dry_record()`,
+  `save_call_record()`, `resolve_config()`. The prompt templates deliberately
+  stay in this file: the frozen config pins them by SHA-256 *and* by source path
+  (`poc/run_trial.py::OURS_PROMPT`), so moving them would break the integrity
+  reference.
+- `smoke_test.py` — was re-implementing `get_api_key`, `is_quota_error` and
+  `_strip_code_fence` verbatim from `vlm_client.py`; now imports them, so a green
+  smoke test is evidence about the real pipeline rather than about a copy.
+- `vlm_client.py` — `numpy`/`Pillow` imports deferred into `frame_to_part()`
+  (the only consumer), matching `keyframes.decode()`'s existing lazy-import
+  style. This is what makes the `smoke_test` import safe: smoke_test's job is to
+  *diagnose* a broken environment, so it must not hard-fail at import time on the
+  very packages it was written to report on.
+- `gate_videos.py` — `diff_ratio` renamed `yiq_diff_ratio`. It shares a name with
+  `keyframes.diff_ratio` but computes a different metric (pixelmatch YIQ colour
+  delta vs a plain RGB threshold); the two are not interchangeable and the
+  collision was a live trap.
+- `poc/.gitignore` — `results/raw/DRY__*` only covered EXP001's layout, so
+  EXP002 dry-run payloads under `results/exp002/raw/` were not ignored. Added
+  `results/*/raw/DRY__*`.
+
+**Verification — golden-output diffing.** Every artefact was captured before the
+refactor and byte-compared after:
+
+| check | scale | result |
+|---|---|---|
+| frozen prompt SHA-256 vs `config.frozen.json` | 3 templates | identical |
+| `manifest.json` / `manifest.csv` | 120 clips | identical |
+| `power_analysis.json` | 2 grids x 20 cells | identical |
+| `summary.json` + stdout | 1439 synthetic responses | identical |
+| `run_trial --dry-run` payload files + stdout | 3 clips x 4 conds x 3 reps | identical |
+| payload prompt **and decoded-frame pixel** hashes | 14 clips x 4 conds | identical |
+| `video-gate-report.json` | 120 clips | identical |
+
+The frame-pixel hashes are the load-bearing check: they would catch any drift in
+decoding, A1/A3 selection, or downscaling that a prompt-text diff would miss.
+Negative controls also re-run: `A0B1`, `A9B0`, `A1B9` and `notacode` are still
+rejected with their specific reasons, and `--repeats` / `--conditions` overrides
+still interleave correctly.
+
+**Not done, and why**: the ~34MB of `dataset_v1`/`v2` blobs in git history stay.
+`origin/main` already tracks zero dataset files (untracked in `ace7c63`, all
+three versions gitignored), so nothing is deletable at HEAD; the historical blobs
+are only removable by a history rewrite, which was explicitly ruled out.
+
 ### Next Steps
 - [x] Freeze `experiments/exp002/config.frozen.json` — done 2026-07-30.
+- [x] Refactor `poc/` before collection starts — done 2026-07-30.
 - [ ] Run the full trial: `python3 poc/run_trial.py` (120 x 4 x 3 = 1440 calls,
       resumable) with `GEMINI_MODEL` + `GOOGLE_API_KEY` set, then
       `python3 poc/score_trial.py`.
+- [ ] Refresh `poc/README.md` end to end — its Stage 1/3 sections still describe
+      the EXP001 16-clip, 2-condition pre-trial.
 
 ---
 

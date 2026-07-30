@@ -29,13 +29,17 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
 import shutil
 import sys
 from pathlib import Path
 
 import numpy as np
 from PIL import Image
+
+POC_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(POC_DIR))
+
+import paths  # noqa: E402
 
 # pixelmatch's YIQ colour-delta constants. TodoMVC's white card (#fff) sits on a
 # #f5f5f5 page — only ~10 intensity levels apart — so a naive RGB threshold is
@@ -63,7 +67,10 @@ def color_delta_mask(a: np.ndarray, b: np.ndarray, threshold: float = PIXELMATCH
     return delta > (MAX_DELTA * threshold * threshold)
 
 
-def diff_ratio(a: np.ndarray, b: np.ndarray) -> float:
+def yiq_diff_ratio(a: np.ndarray, b: np.ndarray) -> float:
+    """Fraction of perceptually different pixels. Named to distinguish it from
+    keyframes.diff_ratio, which uses a plain RGB threshold for a different job —
+    the two metrics are NOT interchangeable."""
     return float(color_delta_mask(a, b).mean())
 
 
@@ -125,8 +132,8 @@ def check_case(case_dir: Path, case: dict) -> dict:
     buggy = np.asarray(Image.open(case_dir / "buggy.png").convert("RGB"))
     sub = crop_to_clip(frame, clip, normal.shape[:2])
 
-    d_normal = diff_ratio(sub, normal)
-    d_buggy = diff_ratio(sub, buggy)
+    d_normal = yiq_diff_ratio(sub, normal)
+    d_buggy = yiq_diff_ratio(sub, buggy)
 
     # The final frame always differs a little from buggy.png (the user kept
     # typing after it was taken), so we compare which reference it is closer to
@@ -145,6 +152,35 @@ def check_case(case_dir: Path, case: dict) -> dict:
     }
 
 
+def gate_dataset(dataset: Path, cases: list[dict]) -> list[dict]:
+    """Run the gate over every case, printing one line each. Returns the results."""
+    results = []
+    for case in cases:
+        r = check_case(dataset / case["path"], case)
+        results.append(r)
+        mark = "PASS" if r["passed"] else "FAIL"
+        extra = ""
+        if "diff_vs_normal" in r:
+            extra = f"  (vs_normal={r['diff_vs_normal']:.4f} vs_buggy={r['diff_vs_buggy']:.4f})"
+        print(f"[{mark}] {r['id']:32s} {r['reason']}{extra}")
+    return results
+
+
+def prune_failed(dataset: Path, meta_path: Path, meta: dict,
+                 results: list[dict]) -> None:
+    """Delete the rejected case directories and rewrite metadata.json to match,
+    so the dataset on disk and its manifest cannot drift apart."""
+    keep = {r["id"] for r in results if r["passed"]}
+    for case in meta["cases"]:
+        if case["id"] not in keep:
+            shutil.rmtree(dataset / case["path"], ignore_errors=True)
+    meta["cases"] = [c for c in meta["cases"] if c["id"] in keep]
+    meta["totalCases"] = len(meta["cases"])
+    meta["normalCases"] = sum(1 for c in meta["cases"] if c["group"] == "control")
+    meta["buggyCases"] = sum(1 for c in meta["cases"] if c["group"] == "bug")
+    paths.write_json(meta_path, meta)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("dataset", type=Path)
@@ -155,17 +191,9 @@ def main() -> None:
     meta_path = args.dataset / "metadata.json"
     if not meta_path.exists():
         raise SystemExit(f"No metadata.json in {args.dataset}")
-    meta = json.loads(meta_path.read_text())
+    meta = paths.read_json(meta_path)
 
-    results = []
-    for case in meta["cases"]:
-        r = check_case(args.dataset / case["path"], case)
-        results.append(r)
-        mark = "PASS" if r["passed"] else "FAIL"
-        extra = ""
-        if "diff_vs_normal" in r:
-            extra = f"  (vs_normal={r['diff_vs_normal']:.4f} vs_buggy={r['diff_vs_buggy']:.4f})"
-        print(f"[{mark}] {r['id']:32s} {r['reason']}{extra}")
+    results = gate_dataset(args.dataset, meta["cases"])
 
     failed = [r for r in results if not r["passed"]]
     n_bug = sum(1 for r in results if r["group"] == "bug")
@@ -173,20 +201,10 @@ def main() -> None:
     print(f"\nVideo gate: {len(results) - len(failed)}/{len(results)} passed "
           f"({n_bug - n_bug_fail}/{n_bug} buggy clips have the defect on video)")
 
-    (args.dataset / "video-gate-report.json").write_text(
-        json.dumps({"results": results}, indent=2) + "\n"
-    )
+    paths.write_json(args.dataset / "video-gate-report.json", {"results": results})
 
     if failed and args.prune:
-        keep = {r["id"] for r in results if r["passed"]}
-        for case in meta["cases"]:
-            if case["id"] not in keep:
-                shutil.rmtree(args.dataset / case["path"], ignore_errors=True)
-        meta["cases"] = [c for c in meta["cases"] if c["id"] in keep]
-        meta["totalCases"] = len(meta["cases"])
-        meta["normalCases"] = sum(1 for c in meta["cases"] if c["group"] == "control")
-        meta["buggyCases"] = sum(1 for c in meta["cases"] if c["group"] == "bug")
-        meta_path.write_text(json.dumps(meta, indent=2) + "\n")
+        prune_failed(args.dataset, meta_path, meta, results)
         print(f"Pruned {len(failed)} failed case(s) from {args.dataset}")
 
     sys.exit(1 if failed else 0)
