@@ -1,0 +1,347 @@
+{
+  "test": "paired two-sided exact McNemar",
+  "method": "Monte-Carlo simulation",
+  "seed": 20260727,
+  "n_sim_per_cell": 100000,
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "framing": "minimum detectable effect at fixed n; dataset_v3 fixed at 120 clips, so n is not solved for",
+  "n_operating": 120,
+  "n_exploratory": 40,
+  "planning_cell": {
+    "p_disc": 0.2,
+    "psi": 0.85
+  },
+  "planning_power": {
+    "40": 0.3809,
+    "120": 0.9378
+  },
+  "decision": "n=40 was underpowered at the planning cell (0.38); EXP002 evaluates all 120 paired clips (planning power 0.94), no new videos generated.",
+  "planning_note": "psi=1.00 (pilot b=3,c=0 at n=16) is winner's-curse inflated and is not a valid planning basis; headline uses psi=0.85, p_disc=0.20.",
+  "grids": {
+    "40": [
+      {
+        "p_disc": 0.15,
+        "psi": 0.75,
+        "n": 40,
+        "power": 0.1003,
+        "expected_discordant": 6.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 0.75,
+        "n": 40,
+        "power": 0.1711,
+        "expected_discordant": 8.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 0.75,
+        "n": 40,
+        "power": 0.2405,
+        "expected_discordant": 10.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 0.75,
+        "n": 40,
+        "power": 0.3068,
+        "expected_discordant": 12.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 0.75,
+        "n": 40,
+        "power": 0.4369,
+        "expected_discordant": 16.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.15,
+        "psi": 0.85,
+        "n": 40,
+        "power": 0.2226,
+        "expected_discordant": 6.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 0.85,
+        "n": 40,
+        "power": 0.3809,
+        "expected_discordant": 8.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 0.85,
+        "n": 40,
+        "power": 0.5112,
+        "expected_discordant": 10.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 0.85,
+        "n": 40,
+        "power": 0.6254,
+        "expected_discordant": 12.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 0.85,
+        "n": 40,
+        "power": 0.792,
+        "expected_discordant": 16.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.15,
+        "psi": 0.9,
+        "n": 40,
+        "power": 0.3101,
+        "expected_discordant": 6.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 0.9,
+        "n": 40,
+        "power": 0.522,
+        "expected_discordant": 8.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 0.9,
+        "n": 40,
+        "power": 0.6763,
+        "expected_discordant": 10.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 0.9,
+        "n": 40,
+        "power": 0.7917,
+        "expected_discordant": 12.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 0.9,
+        "n": 40,
+        "power": 0.9194,
+        "expected_discordant": 16.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.15,
+        "psi": 1.0,
+        "n": 40,
+        "power": 0.567,
+        "expected_discordant": 6.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 1.0,
+        "n": 40,
+        "power": 0.8402,
+        "expected_discordant": 8.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 1.0,
+        "n": 40,
+        "power": 0.9566,
+        "expected_discordant": 10.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 1.0,
+        "n": 40,
+        "power": 0.991,
+        "expected_discordant": 12.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 1.0,
+        "n": 40,
+        "power": 0.9998,
+        "expected_discordant": 16.0,
+        "meets_target": true
+      }
+    ],
+    "120": [
+      {
+        "p_disc": 0.15,
+        "psi": 0.75,
+        "n": 120,
+        "power": 0.4927,
+        "expected_discordant": 18.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 0.75,
+        "n": 120,
+        "power": 0.6336,
+        "expected_discordant": 24.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 0.75,
+        "n": 120,
+        "power": 0.7478,
+        "expected_discordant": 30.0,
+        "meets_target": false
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 0.75,
+        "n": 120,
+        "power": 0.8335,
+        "expected_discordant": 36.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 0.75,
+        "n": 120,
+        "power": 0.9339,
+        "expected_discordant": 48.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.15,
+        "psi": 0.85,
+        "n": 120,
+        "power": 0.8408,
+        "expected_discordant": 18.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 0.85,
+        "n": 120,
+        "power": 0.9378,
+        "expected_discordant": 24.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 0.85,
+        "n": 120,
+        "power": 0.9773,
+        "expected_discordant": 30.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 0.85,
+        "n": 120,
+        "power": 0.9928,
+        "expected_discordant": 36.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 0.85,
+        "n": 120,
+        "power": 0.9993,
+        "expected_discordant": 48.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.15,
+        "psi": 0.9,
+        "n": 120,
+        "power": 0.9445,
+        "expected_discordant": 18.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 0.9,
+        "n": 120,
+        "power": 0.988,
+        "expected_discordant": 24.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 0.9,
+        "n": 120,
+        "power": 0.9975,
+        "expected_discordant": 30.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 0.9,
+        "n": 120,
+        "power": 0.9995,
+        "expected_discordant": 36.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 0.9,
+        "n": 120,
+        "power": 1.0,
+        "expected_discordant": 48.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.15,
+        "psi": 1.0,
+        "n": 120,
+        "power": 0.9999,
+        "expected_discordant": 18.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.2,
+        "psi": 1.0,
+        "n": 120,
+        "power": 1.0,
+        "expected_discordant": 24.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.25,
+        "psi": 1.0,
+        "n": 120,
+        "power": 1.0,
+        "expected_discordant": 30.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.3,
+        "psi": 1.0,
+        "n": 120,
+        "power": 1.0,
+        "expected_discordant": 36.0,
+        "meets_target": true
+      },
+      {
+        "p_disc": 0.4,
+        "psi": 1.0,
+        "n": 120,
+        "power": 1.0,
+        "expected_discordant": 48.0,
+        "meets_target": true
+      }
+    ]
+  }
+}

@@ -15,17 +15,29 @@ Output (written next to this script, in poc/):
   - manifest.json : rich, machine-readable ground truth (one object per video)
   - manifest.csv  : flat view for quick inspection / spreadsheets
 
-Design goals for the PoC subset (a "pre-trial", not the full 40-video run):
-  - 10-20 videos total
-  - roughly half normal / half anomalous  -> a false-positive rate is meaningful
-  - all six bug types represented          -> covers the anomaly space
+Two selection modes:
+  - pretrial : the original balanced 16-clip subset (8 normal / 8 anomalous, the
+               two hardest types sampled twice). Used for the PoC pre-trial and
+               kept for reproducibility.
+  - full     : every clip in the dataset, no subsetting. This is what the frozen
+               EXP001 spec requires for dataset_v3 ("all 120 clips are evaluated";
+               N_CONTROLS / BUG_SELECTION subsetting is bypassed so subset
+               selection is no longer an experimental variable).
+
+The mode defaults to `full` for dataset_v3 and any later dataset, and to
+`pretrial` for dataset_v1 / dataset_v2; override with --full / --pretrial.
+
+Usage:
+  python3 poc/build_manifest.py                 # newest dataset, default mode
+  python3 poc/build_manifest.py dataset_v3      # -> full (120 clips)
+  python3 poc/build_manifest.py dataset_v2 --pretrial
 """
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
-import sys
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -36,19 +48,46 @@ from pathlib import Path
 POC_DIR = Path(__file__).resolve().parent
 REPO_ROOT = POC_DIR.parent
 
+# Newest first: the default dataset is the latest one present on disk.
+KNOWN_DATASETS = ("dataset_v3", "dataset_v2", "dataset_v1")
+
+# Datasets whose default selection mode is the 16-clip pre-trial subset. Anything
+# not listed here (dataset_v3 and later) defaults to the full formal-trial set.
+PRETRIAL_DEFAULT_DATASETS = {"dataset_v1", "dataset_v2"}
+
 
 def _default_dataset() -> Path:
-    for name in ("dataset_v2", "dataset_v1"):
+    for name in KNOWN_DATASETS:
         if (REPO_ROOT / name / "metadata.json").exists():
             return REPO_ROOT / name
     raise SystemExit("No dataset with metadata.json found in the repo root")
 
 
-DATASET_DIR = (
-    REPO_ROOT / sys.argv[1] if len(sys.argv) > 1 else _default_dataset()
-)
+def _parse_args() -> argparse.Namespace:
+    ap = argparse.ArgumentParser(description="Build the ground-truth manifest.")
+    ap.add_argument("dataset", nargs="?", default=None,
+                    help="dataset dir name (default: newest present)")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--full", action="store_true",
+                      help="include every clip (formal trial, e.g. EXP001)")
+    mode.add_argument("--pretrial", action="store_true",
+                      help="balanced 16-clip pre-trial subset")
+    return ap.parse_args()
+
+
+_ARGS = _parse_args()
+DATASET_DIR = REPO_ROOT / _ARGS.dataset if _ARGS.dataset else _default_dataset()
 DATASET_NAME = DATASET_DIR.name
 DATASET_META = DATASET_DIR / "metadata.json"
+
+# Resolve the selection mode: explicit flag wins, otherwise fall back to the
+# per-dataset default (pre-trial for v1/v2, full for v3+).
+if _ARGS.full:
+    MODE = "full"
+elif _ARGS.pretrial:
+    MODE = "pretrial"
+else:
+    MODE = "pretrial" if DATASET_NAME in PRETRIAL_DEFAULT_DATASETS else "full"
 
 MANIFEST_JSON = POC_DIR / "manifest.json"
 MANIFEST_CSV = POC_DIR / "manifest.csv"
@@ -108,6 +147,11 @@ BUG_SELECTION: dict[str, int] = {
     "displaynone_collapse": 1,
 }  # -> 8 buggy clips
 
+# Stable presentation order for the anomaly types in the full manifest. Keyed on
+# the same bugKeys the injection matrix emits; also the authoritative set of
+# types the full mode requires every dataset to contain.
+BUG_ORDER: dict[str, int] = {key: i for i, key in enumerate(EXPECTED_SYMPTOM)}
+
 
 def load_cases() -> list[dict]:
     if not DATASET_META.exists():
@@ -140,7 +184,8 @@ def verify_assets(case_path: str) -> dict[str, str | None]:
     return assets
 
 
-def select_subset(cases: list[dict]) -> list[dict]:
+def select_pretrial(cases: list[dict]) -> list[dict]:
+    """The original balanced 16-clip subset (8 normal / 8 anomalous)."""
     by_id = {c["id"]: c for c in cases}
     controls = sorted(
         (c for c in cases if c["group"] == "control"), key=lambda c: numeric_suffix(c["id"])
@@ -167,6 +212,52 @@ def select_subset(cases: list[dict]) -> list[dict]:
         raise SystemExit(f"Subset is not balanced: {n_anom} anomalous vs {n - n_anom} normal")
     assert by_id  # silence linters; by_id kept for future id-based selection
     return chosen
+
+
+def select_full(cases: list[dict]) -> list[dict]:
+    """Every clip in the dataset — the formal-trial set (e.g. EXP001).
+
+    No subsetting: controls first, then anomalies grouped by type in the
+    injection matrix's order, each block sorted by clip number. We still guard
+    the properties the study relies on — a non-empty, roughly balanced set with
+    all six bug types present — but impose no size cap."""
+    controls = sorted(
+        (c for c in cases if c["group"] == "control"),
+        key=lambda c: numeric_suffix(c["id"]),
+    )
+    bugs = sorted(
+        (c for c in cases if c["group"] == "bug"),
+        # Unknown bug keys sort last rather than crashing the sort key.
+        key=lambda c: (BUG_ORDER.get(c.get("bugKey"), len(BUG_ORDER)), numeric_suffix(c["id"])),
+    )
+    chosen = controls + bugs
+
+    if not chosen:
+        raise SystemExit(f"{DATASET_NAME} contains no cases")
+    present = {c.get("bugKey") for c in bugs}
+    missing = set(BUG_ORDER) - present
+    if missing:
+        raise SystemExit(
+            f"{DATASET_NAME} is missing required bug types: {sorted(missing)}"
+        )
+    unknown = present - set(BUG_ORDER)
+    if unknown:
+        raise SystemExit(
+            f"{DATASET_NAME} has bug types with no expected-symptom mapping: {sorted(unknown)}"
+        )
+    n_anom, n_norm = len(bugs), len(controls)
+    # Not a hard failure — just refuse a wildly lopsided set the metrics can't
+    # carry (FPR and recall are meant to have comparable uncertainty).
+    if n_norm == 0 or n_anom == 0 or max(n_anom, n_norm) > 3 * min(n_anom, n_norm):
+        raise SystemExit(
+            f"{DATASET_NAME} is too imbalanced for a paired trial: "
+            f"{n_anom} anomalous vs {n_norm} normal"
+        )
+    return chosen
+
+
+def select_cases(cases: list[dict]) -> list[dict]:
+    return select_full(cases) if MODE == "full" else select_pretrial(cases)
 
 
 def to_entry(case: dict) -> dict:
@@ -196,9 +287,19 @@ def to_entry(case: dict) -> dict:
 
 def write_json(entries: list[dict]) -> None:
     n_anom = sum(1 for e in entries if e["is_anomaly"])
+    if MODE == "full":
+        description = (
+            f"Ground-truth manifest — full {DATASET_NAME} "
+            f"({len(entries)} clips, no subsetting)."
+        )
+    else:
+        description = (
+            f"PoC pre-trial ground-truth manifest (balanced subset of {DATASET_NAME})."
+        )
     doc = {
         "schema_version": 2,
-        "description": f"PoC pre-trial ground-truth manifest (balanced subset of {DATASET_NAME}).",
+        "description": description,
+        "selection_mode": MODE,
         "source": f"{DATASET_NAME}/metadata.json",
         "total": len(entries),
         "normal": len(entries) - n_anom,
@@ -231,13 +332,13 @@ def write_csv(entries: list[dict]) -> None:
 
 def main() -> None:
     cases = load_cases()
-    subset = select_subset(cases)
+    subset = select_cases(cases)
     entries = [to_entry(c) for c in subset]
     write_json(entries)
     write_csv(entries)
 
     n_anom = sum(1 for e in entries if e["is_anomaly"])
-    print(f"Manifest written: {len(entries)} videos "
+    print(f"Manifest written [{MODE}] from {DATASET_NAME}: {len(entries)} videos "
           f"({len(entries) - n_anom} normal / {n_anom} anomalous)")
     print(f"  - {MANIFEST_JSON.relative_to(REPO_ROOT)}")
     print(f"  - {MANIFEST_CSV.relative_to(REPO_ROOT)}")

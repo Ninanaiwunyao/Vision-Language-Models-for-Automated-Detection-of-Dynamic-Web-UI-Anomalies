@@ -1,19 +1,23 @@
 """Frame decoding, sampling strategies, and the pixel structural signal.
 
-Two sampling strategies are implemented, one per experimental condition:
+Frame-selection strategies, one per level of EXP002's factor A ("which frames
+are sent to the model"):
 
-  uniform_indices()   -> Baseline. Evenly spaced frames over the whole clip,
-                         the naive "just show the model some frames" approach.
-  select_transition() -> Ours. Finds the strongest *sustained* visual
-                         transition and returns the before/after pair plus a
-                         structural description of what changed.
+  uniform_indices()   -> A0. Evenly spaced frames over the whole clip, the naive
+                         "just show the model some frames" approach.
+  select_transition() -> A1. Finds the strongest *sustained* pixel transition
+                         and returns the before/after pair plus a structural
+                         description of what changed. Pixel evidence only.
+  select_fused()      -> A3. Same transition search, but the candidate scores
+                         are re-weighted by DOM activity so the DOM trace
+                         *influences which frame is selected* (see fusion note).
 
 Threshold note: TodoMVC's white card (#fff) sits on a #f5f5f5 page, only ~10
 intensity levels apart, so a coarse threshold is literally blind to the app
 vanishing. DIFF_THRESH is set below that gap but above VP8 compression noise.
 
 Nothing in this module reads the ground-truth label — selection is driven only
-by the pixels, so it stays honest.
+by pixels (A1) or pixels + DOM structure (A3), so it stays honest.
 """
 
 from __future__ import annotations
@@ -28,6 +32,14 @@ DIFF_THRESH = 8
 # other transition. 2.0s was chosen after observing that a 1.2s skip still let
 # several clips latch onto the load tail at exactly the boundary frame.
 SKIP_LEAD_SECONDS = 2.0
+
+# A3 fusion parameters. A transition counts as "DOM-accompanied" if any recorded
+# mutation lands within +/- this window of the candidate's timestamp; each such
+# mutation divides the candidate's pixel score down by FUSE_LAMBDA. The window
+# matches run_trial's DOM_WINDOW_MS so selection and the prompt's DOM summary
+# reason over the same neighbourhood.
+DOM_FUSE_WINDOW_MS = 1200.0
+FUSE_LAMBDA = 1.0
 
 
 def decode(path: str, stride: int = 3) -> tuple[list[np.ndarray], float]:
@@ -82,41 +94,59 @@ def uniform_indices(n_frames: int, k: int) -> list[int]:
     return [int(round(i * (n_frames - 1) / (k - 1))) for i in range(k)]
 
 
-def select_transition(frames: list[np.ndarray], fps: float, window: int = 2) -> dict:
-    """Ours: locate the strongest sustained transition.
+def _candidate_scores(
+    frames: list[np.ndarray], fps: float, window: int,
+) -> list[tuple[float, int]]:
+    """Pixel change score (before-vs-after diff) for every candidate index.
 
-    For each candidate index i we measure how different the state `window`
-    frames *before* is from the state `window` frames *after*. A momentary
-    blip scores low; a real state change (a todo added, or a defect appearing)
-    scores high. We deliberately do NOT bias toward the end of the clip, even
-    though injected defects happen to live there — that would exploit a dataset
-    artifact rather than detect anything.
-    """
+    For each candidate i we measure how different the state `window` frames
+    *before* is from the state `window` frames *after*. A momentary blip scores
+    low; a real state change (a todo added, or a defect appearing) scores high.
+    We deliberately do NOT bias toward the end of the clip, even though injected
+    defects happen to live there — that would exploit a dataset artifact."""
     start = max(window, int(SKIP_LEAD_SECONDS * fps))
     end = len(frames) - window
     if end <= start:  # pathologically short clip
         start, end = window, max(window + 1, len(frames) - window)
 
-    scores = []
-    for i in range(start, end):
-        s = diff_ratio(frames[i - window], frames[i + window])
-        scores.append((s, i))
+    scores = [
+        (diff_ratio(frames[i - window], frames[i + window]), i)
+        for i in range(start, end)
+    ]
     if not scores:
-        i = len(frames) // 2
-        scores = [(0.0, i)]
+        return [(0.0, len(frames) // 2)]
+    return scores
 
-    best_score, best_i = max(scores)
+
+def _build_selection(
+    frames: list[np.ndarray], fps: float, best_i: int, best_score: float,
+    scores: list[tuple[float, int]], window: int, extra_signal: dict | None = None,
+) -> dict:
+    """Assemble the selection payload once the winning index is chosen.
+
+    `best_score` is always the raw *pixel* diff at the selected frame, so the
+    descriptive signals below describe the real visual transition regardless of
+    how the index was chosen (A1 pixel-only vs A3 pixel+DOM)."""
     before = frames[best_i - window]
     after = frames[best_i + window]
 
     # Oscillation: how many later transitions are also large. A flickering UI
     # keeps changing violently; a settled edit does not.
     big = sum(1 for s, _ in scores if s > max(0.05, best_score * 0.5))
-
     # Persistence: does the post-transition state still resemble the end of the
     # clip? Both a real edit and a defect persist, so this is descriptive
     # context for the model, not a discriminator on its own.
     persist = 1.0 - diff_ratio(after, frames[-1])
+
+    signal = {
+        "change_ratio": round(best_score, 4),
+        "changed_region": changed_bbox(before, after),
+        "large_transition_count": int(big),
+        "post_state_persistence": round(float(persist), 3),
+        "clip_duration_s": round(len(frames) / fps, 2),
+    }
+    if extra_signal:
+        signal.update(extra_signal)
 
     return {
         "index": best_i,
@@ -130,11 +160,59 @@ def select_transition(frames: list[np.ndarray], fps: float, window: int = 2) -> 
         # have a final state, and the baseline's uniform sample includes the
         # last frame too.
         "final": frames[-1],
-        "signal": {
-            "change_ratio": round(best_score, 4),
-            "changed_region": changed_bbox(before, after),
-            "large_transition_count": int(big),
-            "post_state_persistence": round(float(persist), 3),
-            "clip_duration_s": round(len(frames) / fps, 2),
-        },
+        "signal": signal,
     }
+
+
+def select_transition(frames: list[np.ndarray], fps: float, window: int = 2) -> dict:
+    """A1: locate the strongest sustained pixel transition (pixel evidence only)."""
+    scores = _candidate_scores(frames, fps, window)
+    best_score, best_i = max(scores)
+    return _build_selection(frames, fps, best_i, best_score, scores, window)
+
+
+def _dom_events_near(dom_events: list[dict] | None, t_ms: float) -> int:
+    """Count recorded DOM mutations within +/- DOM_FUSE_WINDOW_MS of t_ms."""
+    if not dom_events:
+        return 0
+    lo, hi = t_ms - DOM_FUSE_WINDOW_MS, t_ms + DOM_FUSE_WINDOW_MS
+    return sum(1 for m in dom_events if lo <= m.get("t", -1) <= hi)
+
+
+def select_fused(
+    frames: list[np.ndarray], fps: float, dom_events: list[dict] | None,
+    window: int = 2, fuse_lambda: float = FUSE_LAMBDA,
+) -> dict:
+    """A3: pixel transition search re-weighted so DOM activity influences choice.
+
+    Fusion rule (kept deliberately simple). A CSS-only rendering defect changes
+    pixels but produces NO DOM mutation — the injected stylesheet lives in
+    <head>, which the body MutationObserver never sees — whereas legitimate user
+    actions (add / complete / delete a todo) always mutate the DOM. So among the
+    candidate pixel transitions, A3 prefers the one that is strong in pixels yet
+    NOT accompanied by DOM activity:
+
+        fused_score(i) = pixel_score(i) / (1 + fuse_lambda * dom_mutations_near(i))
+
+    and selects argmax(fused_score). This makes the DOM genuinely change *which*
+    frame is sent (a different index than A1 whenever the largest pixel change
+    coincides with a user edit). With no trace available it degenerates to A1."""
+    scores = _candidate_scores(frames, fps, window)
+
+    best = None  # (fused_score, raw_score, index, near_count)
+    for raw_score, i in scores:
+        near = _dom_events_near(dom_events, i / fps * 1000.0)
+        fused = raw_score / (1.0 + fuse_lambda * near)
+        if best is None or fused > best[0]:
+            best = (fused, raw_score, i, near)
+
+    fused_score, raw_score, best_i, near = best
+    return _build_selection(
+        frames, fps, best_i, raw_score, scores, window,
+        extra_signal={
+            "selection": "pixel+DOM fused",
+            "fused_change_ratio": round(fused_score, 4),
+            "dom_mutations_near_selected": near,
+            "dom_trace_available": bool(dom_events),
+        },
+    )

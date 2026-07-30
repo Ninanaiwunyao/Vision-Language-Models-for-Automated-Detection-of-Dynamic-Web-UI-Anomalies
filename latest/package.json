@@ -8,7 +8,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.61.1",
+    "@playwright/test": "1.61.1",
     "@types/node": "^26.1.0",
     "@types/pixelmatch": "^5.2.6",
     "@types/pngjs": "^6.0.5",

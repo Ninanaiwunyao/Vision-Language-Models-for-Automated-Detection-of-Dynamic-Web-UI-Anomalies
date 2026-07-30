@@ -1,0 +1,168 @@
+{
+  "$schema_version": 1,
+  "experiment_id": "EXP002",
+  "title": "Factorial ablation of the dual-path VLM defect detector — frame selection (A) x prompt (B)",
+  "status": "frozen",
+  "frozen_at": "2026-07-30",
+  "frozen_from_commit": "ef3344cb23ceacfaf0323cd30415571a649c3fad",
+  "branch": "exp/formal-trial-v1",
+  "supersedes": {
+    "_note": "EXP002 is a NEW experiment id, not an edit of EXP001. experiments/exp001/ stays immutable; its n=16 pilot numbers were already reported. EXP002 exists because the condition set changed from 2 endpoints to a 4-cell factorial ablation, which the freeze policy requires to be a new id.",
+    "relation_to_exp001": "EXP001's two arms map onto EXP002's A0B0 (uniform + naive) and A1B1 (pixel-only selection + dual-path). EXP002 adds A3 (pixel+DOM fused selection) and the A3B0 / A3B1 cells."
+  },
+  "freeze_policy": {
+    "rule": "Once status is 'frozen', no field below may change while EXP002 results are being collected. Any change requires a new experiment_id and a fresh run of ALL clips under ALL conditions — partial re-runs break the paired (Cochran's Q / McNemar) design.",
+    "rationale": "The ablation is only interpretable if every cell saw the same judge, the same decoding, and the same prompts; the only thing that may differ between cells is the factor level being manipulated.",
+    "unfrozen_by_design": [
+      "poc/score_trial.py — scoring is a pure function of the cached raw responses in poc/results/exp002/raw/ and may be corrected or extended after the run without invalidating it."
+    ]
+  },
+  "design": {
+    "type": "2-factor factorial ablation, paired within clip",
+    "factor_A_frame_selection": {
+      "definition": "WHICH frames are sent to the model. The DOM trace must influence frame selection for A3 — it is a selection-time signal here, distinct from the DOM evidence text that factor B may place in the prompt.",
+      "levels": {
+        "A0": "uniform sampling (no selection)",
+        "A1": "pixel-diff-only keyframe selection (strongest sustained pixel transition + before/after/final)",
+        "A3": "pixel + DOM fused selection (pixel transition score down-weighted by nearby DOM activity)"
+      },
+      "dropped": {
+        "A2": "DOM-mutation-only selection — excluded from the headline set; would need a selector not yet built."
+      }
+    },
+    "factor_B_prompt": {
+      "definition": "the prompt only. The dual-path DOM evidence text lives strictly under B1; it does not define A.",
+      "levels": {
+        "B0": "naive prompt",
+        "B1": "dual-path decision prompt (expected-appearance reference + structural signals + DOM activity summary)"
+      }
+    },
+    "conditions_rationale": "The 4 cells isolate each factor: A0B0->A3B0 measures the frame-selection contribution under a fixed naive prompt; A3B0->A3B1 measures the prompt contribution under fixed fused selection; A1B1 anchors the pilot's method."
+  },
+  "conditions": ["A0B0", "A1B1", "A3B0", "A3B1"],
+  "condition_semantics": {
+    "A0B0": "uniform 6 frames + naive prompt (brute-force baseline)",
+    "A1B1": "pixel-only keyframes (3) + dual-path prompt (the pilot's 'ours')",
+    "A3B0": "fused keyframes (3) + naive prompt (isolates selection)",
+    "A3B1": "fused keyframes (3) + dual-path prompt (full proposed method)"
+  },
+  "repeats": 3,
+  "_repeats_rationale": "Temperature is 0.0, so repeats do not probe sampling spread; they capture residual API non-determinism and give real variance for latency / token / cost. SD is reported even when 0.00. Total calls = 120 clips x 4 conditions x 3 repeats = 1440.",
+  "model": {
+    "provider": "Google Gemini API",
+    "model_id": "gemini-3.1-flash-lite",
+    "pinned": true,
+    "pin_mechanism": "GEMINI_MODEL environment variable, verified by vlm_client.connect() against the account's live model list",
+    "fallback_on_quota": "none — a 429 retries the SAME model with backoff; if the model is unavailable the run ABORTS",
+    "sdk": "google-generativeai==0.8.6"
+  },
+  "generation_config": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 1,
+    "max_output_tokens": 512,
+    "candidate_count": 1,
+    "_status": "IMPLEMENTED — vlm_client.call_json() now accepts generation_config and run_trial passes this dict on every call (comment keys stripped before the SDK sees them). Unlike EXP001, this is already wired at the frozen commit.",
+    "_determinism_caveat": "temperature=0 makes the decoder greedy but Gemini does not guarantee bit-identical output across sessions; residual variation is measurement noise, absorbed by the 3 repeats + majority vote."
+  },
+  "prompts": {
+    "_integrity": "SHA-256 of the exact template string as it appears in poc/run_trial.py (before .format()). Verify before the run; a mismatch means the prompt drifted.",
+    "B0_naive": {
+      "version": "baseline/v2",
+      "source": "poc/run_trial.py::BASELINE_PROMPT",
+      "sha256": "f6db8781ec34e8b408c55454faf45a2ac3f436e5f503572dc7ab1396fd425cfc",
+      "length_chars": 269,
+      "_change_from_exp001": "EXP001 baseline (baseline/v1) said 'sampled uniformly'. Dropped for EXP002 because under A3B0 the frames are fused-selected, so that wording would be a false claim and an ablation confound. B0 is now selection-agnostic."
+    },
+    "B1_dual_path": {
+      "version": "ours/v1",
+      "source": "poc/run_trial.py::OURS_PROMPT",
+      "sha256": "9f42bb8a1a1d52f1fe0a8ba77c12ca92a55df007059a66eca2db6d58f3133043",
+      "length_chars": 1491,
+      "_unchanged_from_exp001": true
+    },
+    "expected_appearance_block": {
+      "version": "expected/v1",
+      "source": "poc/run_trial.py::EXPECTED_APPEARANCE",
+      "sha256": "0a8ffb24f0cdf4231d3583729c9c93feaa44420ccaef8d24e2ba88abee43d9a8",
+      "length_chars": 534,
+      "leakage_rule": "Generic and byte-identical for every clip. The manifest's per-clip `expectation` field must NEVER be interpolated into any prompt."
+    }
+  },
+  "keyframe_selection": {
+    "source": "poc/keyframes.py",
+    "diff_thresh_intensity": 8,
+    "skip_lead_seconds": 2.0,
+    "window_frames": 2,
+    "baseline_frames_A0": 6,
+    "frame_width_px": 640,
+    "dom_correlation_window_ms": 1200,
+    "A3_fusion": {
+      "rule": "fused_score(i) = pixel_score(i) / (1 + fuse_lambda * dom_mutations_near(i)); argmax over candidates.",
+      "fuse_lambda": 1.0,
+      "dom_fuse_window_ms": 1200,
+      "rationale": "A CSS-only rendering defect changes pixels but produces no DOM mutation (injected stylesheet is in <head>, unobserved), while legitimate user actions do mutate the DOM — so A3 prefers strong pixel transitions NOT accompanied by DOM activity. Degenerates to A1 when no trace exists.",
+      "label_safety": "Selection reads only pixels and the body DOM trace, never the ground-truth label."
+    }
+  },
+  "dataset": {
+    "name": "dataset_v3",
+    "manifest": "poc/manifest.json",
+    "selection_mode": "full",
+    "n_clips": 120,
+    "normal_clips": 60,
+    "anomaly_clips": 60,
+    "clips_per_bug_type": 10,
+    "subject_application": "TodoMVC (React), https://todomvc.com/examples/react/dist/",
+    "_gates": "Both quality gates already cleared for dataset_v3 (screenshot per-type floors + video gate 120/120). See docs/dataset-standard.md and dataset_v3/video-gate-report.json."
+  },
+  "metrics": {
+    "primary": "accuracy per condition: mean +/- SD across repeats, plus a bootstrap 95% CI (10000 resamples, seed 20260728) over per-clip correctness fractions",
+    "omnibus": "Cochran's Q over the per-clip correctness matrix across all 4 conditions",
+    "posthoc_accuracy": "pairwise exact McNemar on discordant pairs + Holm-Bonferroni; effect size Cohen's g",
+    "posthoc_efficiency": "pairwise Wilcoxon signed-rank on total_tokens / latency_s / cost_usd + Holm-Bonferroni; effect size matched-pairs rank-biserial",
+    "secondary": [
+      "false_positive_rate on the 60 normal clips",
+      "anomaly_recall on the 60 anomaly clips",
+      "recall_by_bug_type (n=10 per type)",
+      "defect_type_match — B1 conditions only, 6-way classification on correctly detected anomalies",
+      "invalid_responses (unparseable JSON) per condition"
+    ],
+    "cost_model": {
+      "source": "price_token.md (Gemini API paid tier, standard)",
+      "gemini-3.1-flash-lite_usd_per_1M": {"input": 0.25, "output": 1.50},
+      "formula": "prompt_tokens/1e6 * input + candidates_tokens/1e6 * output, from captured usage_metadata"
+    }
+  },
+  "power_analysis": {
+    "source": "poc/power_analysis.py, poc/results/power_analysis.json",
+    "test": "paired two-sided exact McNemar",
+    "seed": 20260727,
+    "planning_cell": {"p_disc": 0.20, "psi": 0.85},
+    "planning_power_at_n120": 0.94,
+    "framing": "minimum detectable effect at fixed n=120 (dataset_v3 fixed); the n=40 exploratory grid was underpowered (0.38), which is why all 120 clips are evaluated. psi=1.00 from the pilot is winner's-curse inflated and not used as a planning basis."
+  },
+  "environment_lock": {
+    "os": "macOS (Darwin 25.5.0)",
+    "python": "3.13.7",
+    "python_packages": {
+      "google-generativeai": "0.8.6",
+      "scipy": "1.17.1",
+      "numpy": "2.4.6",
+      "pillow": "12.3.0",
+      "imageio-ffmpeg": "0.6.0"
+    },
+    "_stats_note": "Cochran's Q is hand-rolled (statsmodels not installed); its chi-square p-value and Wilcoxon use scipy 1.17.1."
+  },
+  "reference_pilot_result": {
+    "_role": "Not a result of EXP002 — recorded so the ablation can be read against the pilot it grew from.",
+    "source": "poc/results/summary.json",
+    "n_clips": 16,
+    "dataset": "dataset_v1 subset",
+    "temperature": "SDK default (~1.0), unpinned",
+    "A0B0_accuracy": 0.75,
+    "A1B1_accuracy": 0.938,
+    "mcnemar_exact_p": 0.25,
+    "_labelling": "The pilot's 'ours' selected frames by pixels only, so it is A1B1, NOT A3B1."
+  }
+}
