@@ -381,3 +381,37 @@ EXP002 is a NEW experiment id (not an edit of EXP001, which stays immutable).
 - [ ] Run the full trial: `python3 poc/run_trial.py` (120 x 4 x 3 = 1440 calls,
       resumable) with `GEMINI_MODEL` + `GOOGLE_API_KEY` set, then
       `python3 poc/score_trial.py`.
+
+---
+
+## Appendix — MR description convention (reusable template)
+
+How to write a merge-request description in this project. Reuse this skeleton
+for every MR; fill each section and keep the *why*, not only the *what*.
+
+### Section structure
+
+1. **Title** — one line: what it does, plus a scope flag when relevant
+   (e.g. "no results — pre-registration").
+2. **## Summary** — 2-4 sentences framed as *problem -> change*: the gap or
+   defect, then what this MR ships to close it.
+3. **## Changes** — one `###` subsection per area. Each bullet states the
+   rationale / root cause, not just the edit, and cites exact file paths and
+   constants / thresholds.
+4. **## Results** — a table when the MR produces numbers; always give `n` and
+   say whether it is a *sanity check* or a *claim*. If there are none, write
+   "no results (pre-registration)".
+5. **## Known limitations** — what is deferred and why; mark
+   negative-by-design vs follow-up.
+6. **## GenAI Usage** — four bullets: **Tools** / **AI contributions** /
+   **Human ownership** (name the concrete decisions that were yours, not the
+   AI's) / **Prompt records** (point at this worklog).
+7. **## Test Plan** — a checkbox list of verifications, including at least one
+   *negative control* (a check that a guard rejects what it was built to catch).
+
+### Conventions
+
+- Every Changes bullet answers "why", not only "what".
+- Cite exact constants, thresholds, and file paths.
+- Separate sanity checks from publishable claims — always state `n`.
+- Prefer past evidence: link the commits/tests that back each claim.
