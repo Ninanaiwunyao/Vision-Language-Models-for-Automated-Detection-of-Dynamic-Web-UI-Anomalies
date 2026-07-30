@@ -27,14 +27,18 @@ the grid is reproducible and citable.
 
 from __future__ import annotations
 
-import json
-import math
+import sys
 from pathlib import Path
 
 import numpy as np
 
-POC_DIR = Path(__file__).resolve().parent
-OUT = POC_DIR / "results" / "power_analysis.json"
+PIPELINE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(PIPELINE_DIR))
+
+import paths  # noqa: E402
+from stats_tests import mcnemar_exact  # noqa: E402
+
+OUT = paths.RESULTS_DIR / "power_analysis.json"
 
 # --- Frozen analysis parameters (recorded, not defaults to be overridden) -----
 SEED = 20260727           # fixed so the grid is bit-reproducible
@@ -59,26 +63,16 @@ PLAN_PSI = 0.85
 TARGET_POWER = 0.80
 
 
-def mcnemar_exact_p(b: int, c: int) -> float:
-    """Two-sided exact McNemar p-value (binomial, p=0.5) on discordant pairs.
-
-    Identical formula to poc/score_trial.py so the power model matches the test
-    actually applied to the results."""
-    n = b + c
-    if n == 0:
-        return 1.0
-    k = min(b, c)
-    tail = sum(math.comb(n, i) for i in range(k + 1)) / 2 ** n
-    return min(1.0, 2 * tail)
-
-
 # Cache the reject/accept decision for every (b, c) with b + c <= n so the
 # Monte-Carlo loop never recomputes a p-value. Index by (n_disc, c).
+# The p-value comes from stats_tests.mcnemar_exact — the *same* function
+# score_trial.py applies to the real results, so this is a power model of the
+# test that will actually be run, not of a lookalike.
 def _reject_table(n_max: int, alpha: float) -> dict[tuple[int, int], bool]:
     table: dict[tuple[int, int], bool] = {}
     for nd in range(n_max + 1):
         for c in range(nd + 1):
-            table[(nd, c)] = mcnemar_exact_p(nd - c, c) < alpha
+            table[(nd, c)] = mcnemar_exact(nd - c, c) < alpha
     return table
 
 
@@ -179,13 +173,12 @@ def main() -> None:
         ),
         "grids": {str(n): grids[n] for n in N_GRID},
     }
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(result, indent=2) + "\n")
+    paths.write_json(OUT, result)
 
     print(f"Paired exact-McNemar power  |  seed={SEED}  sims/cell={N_SIM:,}")
     for n in N_GRID:
         print_grid(n, grids[n], is_operating=(n == N_OPERATING))
-    print(f"\nWritten: {OUT.relative_to(POC_DIR.parent)}")
+    print(f"\nWritten: {OUT.relative_to(paths.REPO_ROOT)}")
 
 
 if __name__ == "__main__":

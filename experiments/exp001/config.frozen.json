@@ -11,8 +11,24 @@
     "rule": "Once status is 'frozen', no field below may change while EXP001 results are being collected. Any change requires a new experiment_id and a fresh run of ALL clips under BOTH conditions — partial re-runs break the paired design.",
     "rationale": "The PoC's headline comparison (baseline 75.0% vs ours 93.8%) is only attributable if both arms saw the same judge, the same decoding, and the same prompts. Mid-run drift in any of them makes the difference uninterpretable.",
     "unfrozen_by_design": [
-      "poc/score_trial.py — scoring is a pure function of the cached raw responses and may be corrected or extended after the run without invalidating it."
+      "pipeline/score_trial.py — scoring is a pure function of the cached raw responses and may be corrected or extended after the run without invalidating it."
     ]
+  },
+
+  "path_layout_migration": {
+    "_note": "AMENDMENT, recorded rather than applied silently. EXP001's results were already collected and reported when the repository directories were renamed. The ONLY change made to this frozen file is path strings, so that they resolve to where the same evidence now lives. No design, model, prompt, decoding, dataset or statistical field was touched, and the prompt SHA-256 values below still verify against the templates at their new location. The raw responses were relocated with `git mv` and are byte-identical — see the rename entries in the commit that carries this amendment.",
+    "at": "2026-07-30",
+    "reason": "'poc' no longer described a directory holding the formal experiment's pipeline, and 'latest' never described anything.",
+    "mapping": {
+      "poc/": "pipeline/",
+      "poc/manifest.json, poc/manifest.csv": "data/manifest.json, data/manifest.csv",
+      "poc/results/raw/": "results/exp001/raw/",
+      "poc/results/summary.json": "results/exp001/summary.json",
+      "poc/results/trial-config.json": "results/exp001/trial-config.json",
+      "poc/results/power_analysis.json": "results/power_analysis.json",
+      "latest/": "generator/",
+      "latest/tests/poc-bug-injection.spec.ts": "generator/tests/bug-injection.spec.ts"
+    }
   },
 
   "model": {
@@ -22,7 +38,7 @@
     "pin_mechanism": "GEMINI_MODEL environment variable, verified by vlm_client.connect() against the account's live model list",
     "fallback_on_quota": "none — a 429 retries the SAME model with backoff; if the model is unavailable the run ABORTS",
     "_change_required": "vlm_client.connect() currently auto-probes the cheapest *-flash model when GEMINI_MODEL is unset. For EXP001 the pin is mandatory, not optional — an unset GEMINI_MODEL must be a hard error, not a fallback to auto-selection.",
-    "_poc_note": "The PoC resolved this same id by auto-probing (poc/results/trial-config.json). EXP001 pins it explicitly so the judge cannot silently change between clips or between sessions.",
+    "_poc_note": "The PoC resolved this same id by auto-probing (results/exp001/trial-config.json). EXP001 pins it explicitly so the judge cannot silently change between clips or between sessions.",
     "sdk": "google-generativeai==0.8.6"
   },
 
@@ -38,22 +54,22 @@
   },
 
   "prompts": {
-    "_integrity": "SHA-256 of the exact template string as it appears in poc/run_trial.py (before .format()). Verify these before the run; a mismatch means the prompt drifted.",
+    "_integrity": "SHA-256 of the exact template string as it appears in pipeline/run_trial.py (before .format()). Verify these before the run; a mismatch means the prompt drifted.",
     "baseline": {
       "version": "baseline/v1",
-      "source": "poc/run_trial.py::BASELINE_PROMPT",
+      "source": "pipeline/run_trial.py::BASELINE_PROMPT",
       "sha256": "4ede14402fe3372089cd28333542702d0b3d1a843727c1ed05d9066a93571f3f",
       "length_chars": 287
     },
     "ours": {
       "version": "ours/v1",
-      "source": "poc/run_trial.py::OURS_PROMPT",
+      "source": "pipeline/run_trial.py::OURS_PROMPT",
       "sha256": "9f42bb8a1a1d52f1fe0a8ba77c12ca92a55df007059a66eca2db6d58f3133043",
       "length_chars": 1491
     },
     "expected_appearance_block": {
       "version": "expected/v1",
-      "source": "poc/run_trial.py::EXPECTED_APPEARANCE",
+      "source": "pipeline/run_trial.py::EXPECTED_APPEARANCE",
       "sha256": "0a8ffb24f0cdf4231d3583729c9c93feaa44420ccaef8d24e2ba88abee43d9a8",
       "length_chars": 534,
       "leakage_rule": "Generic and byte-identical for every clip. The manifest's per-clip `expectation` field must NEVER be interpolated into any prompt."
@@ -120,7 +136,7 @@
       "_scope_note": "Single implementation by design — the only manipulated variable is the condition. Cross-framework generalisation (Vue / VanillaJS) is out of scope for EXP001 and stays future work."
     },
     "provenance_of_generator": {
-      "spec": "latest/tests/poc-bug-injection.spec.ts",
+      "spec": "generator/tests/bug-injection.spec.ts",
       "spec_blob_sha": "b0d7f339d2f94b39f542985c648ceffe35353536",
       "inherits_from": "dataset_v2 (tree 64f1b0cfa9b67499db6ad6692e63bc29d9499086)",
       "_why_not_v2": "dataset_v2 fixed two defects that made dataset_v1 unusable as ground truth: (a) Playwright's recorder lost the single defect frame of static broken states, corrupting every flyaway_offset clip and 3/5 vanish_invisible clips; (b) post-injection typing wrote the scenario id — including the bug name — into the on-screen input, leaking the label to any model that reads the screen. dataset_v3 reuses the fixed v2 generator and only scales the case counts.",
@@ -153,14 +169,14 @@
       }
     },
     "video_gate": {
-      "tool": "poc/gate_videos.py",
+      "tool": "pipeline/gate_videos.py",
       "requirement": "the final decoded frame must resemble buggy.png rather than normal.png",
       "_why": "The screenshot gate never decodes the video, so it cannot detect a clip whose footage lost the defect frame."
     }
   },
 
   "keyframe_selection": {
-    "source": "poc/keyframes.py",
+    "source": "pipeline/keyframes.py",
     "diff_thresh_intensity": 8,
     "skip_lead_seconds": 2.0,
     "window_frames": 2,
@@ -184,7 +200,7 @@
     "os": "macOS (Darwin 25.5.0)",
     "node": "v20.15.0",
     "playwright": "1.61.1",
-    "_playwright_note": "This is the version actually installed in latest/node_modules. package.json declares '^1.61.1' (floating) and `npx playwright --version` reports 1.62.0 because it resolves a fresh download — pin package.json to the exact 1.61.1 before generating dataset_v3.",
+    "_playwright_note": "This is the version actually installed in generator/node_modules. package.json declares '^1.61.1' (floating) and `npx playwright --version` reports 1.62.0 because it resolves a fresh download — pin package.json to the exact 1.61.1 before generating dataset_v3.",
     "chromium": "149.0.7827.55 (playwright revision 1228)",
     "python": "3.13.7",
     "python_packages": {
@@ -198,7 +214,7 @@
 
   "reference_poc_result": {
     "_role": "Not a result of EXP001 — recorded so the main trial can be read against the pre-trial it was designed from.",
-    "source": "poc/results/summary.json",
+    "source": "results/exp001/summary.json",
     "n_clips": 16,
     "dataset": "dataset_v1 subset",
     "temperature": "SDK default (~1.0), unpinned",

@@ -5,10 +5,19 @@
 # capped at ~100MB, so these are no longer tracked. dataset_v1/v2 were untracked
 # via `git rm --cached` (files kept on disk); their blobs remain in history and
 # are only reclaimable by a history rewrite. All three are regenerable from the
-# pinned generator (latest/tests/poc-bug-injection.spec.ts) + the frozen
+# pinned generator (generator/tests/bug-injection.spec.ts) + the frozen
 # RNG_SEED in experiments/*/config.frozen.json, not distributed via git.
 dataset_v1/
 dataset_v2/
 dataset_v3/
+
+# Dry-run payloads are regenerable from code+data, so they stay out of git.
+# The real results/<exp>/raw/*.json are NOT: they are irreproducible model
+# outputs and belong in git as the experiment's evidence.
+results/*/raw/DRY__*
+
+# Local-only notes. NOTE: CLAUDE.md was already tracked before this rule was
+# added, and .gitignore does not untrack an existing file — it is still in the
+# repo. Run `git rm --cached CLAUDE.md` if it should really be local-only.
 Satistic_Display_Rule.md
 CLAUDE.md

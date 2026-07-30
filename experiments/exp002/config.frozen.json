@@ -14,8 +14,22 @@
     "rule": "Once status is 'frozen', no field below may change while EXP002 results are being collected. Any change requires a new experiment_id and a fresh run of ALL clips under ALL conditions — partial re-runs break the paired (Cochran's Q / McNemar) design.",
     "rationale": "The ablation is only interpretable if every cell saw the same judge, the same decoding, and the same prompts; the only thing that may differ between cells is the factor level being manipulated.",
     "unfrozen_by_design": [
-      "poc/score_trial.py — scoring is a pure function of the cached raw responses in poc/results/exp002/raw/ and may be corrected or extended after the run without invalidating it."
+      "pipeline/score_trial.py — scoring is a pure function of the cached raw responses in results/exp002/raw/ and may be corrected or extended after the run without invalidating it."
     ]
+  },
+  "path_layout_migration": {
+    "_note": "AMENDMENT, recorded rather than applied silently. The repository directories were renamed BEFORE EXP002 issued its first API call, so no response was ever produced under the old layout and the freeze policy's 'while results are being collected' clause was not engaged. The ONLY change made to this frozen file is path strings; no design, model, prompt, decoding, dataset or statistical field was touched, and the prompt SHA-256 values below still verify against the templates at their new location. Had a single result existed, this would have required a new experiment_id instead.",
+    "at": "2026-07-30",
+    "results_collected_before_migration": 0,
+    "reason": "'poc' no longer described a directory holding the formal experiment's pipeline, and 'latest' never described anything.",
+    "mapping": {
+      "poc/": "pipeline/",
+      "poc/manifest.json, poc/manifest.csv": "data/manifest.json, data/manifest.csv",
+      "poc/results/exp002/": "results/exp002/",
+      "poc/results/power_analysis.json": "results/power_analysis.json",
+      "latest/": "generator/",
+      "latest/tests/poc-bug-injection.spec.ts": "generator/tests/bug-injection.spec.ts"
+    }
   },
   "design": {
     "type": "2-factor factorial ablation, paired within clip",
@@ -66,31 +80,31 @@
     "_determinism_caveat": "temperature=0 makes the decoder greedy but Gemini does not guarantee bit-identical output across sessions; residual variation is measurement noise, absorbed by the 3 repeats + majority vote."
   },
   "prompts": {
-    "_integrity": "SHA-256 of the exact template string as it appears in poc/run_trial.py (before .format()). Verify before the run; a mismatch means the prompt drifted.",
+    "_integrity": "SHA-256 of the exact template string as it appears in pipeline/run_trial.py (before .format()). Verify before the run; a mismatch means the prompt drifted.",
     "B0_naive": {
       "version": "baseline/v2",
-      "source": "poc/run_trial.py::BASELINE_PROMPT",
+      "source": "pipeline/run_trial.py::BASELINE_PROMPT",
       "sha256": "f6db8781ec34e8b408c55454faf45a2ac3f436e5f503572dc7ab1396fd425cfc",
       "length_chars": 269,
       "_change_from_exp001": "EXP001 baseline (baseline/v1) said 'sampled uniformly'. Dropped for EXP002 because under A3B0 the frames are fused-selected, so that wording would be a false claim and an ablation confound. B0 is now selection-agnostic."
     },
     "B1_dual_path": {
       "version": "ours/v1",
-      "source": "poc/run_trial.py::OURS_PROMPT",
+      "source": "pipeline/run_trial.py::OURS_PROMPT",
       "sha256": "9f42bb8a1a1d52f1fe0a8ba77c12ca92a55df007059a66eca2db6d58f3133043",
       "length_chars": 1491,
       "_unchanged_from_exp001": true
     },
     "expected_appearance_block": {
       "version": "expected/v1",
-      "source": "poc/run_trial.py::EXPECTED_APPEARANCE",
+      "source": "pipeline/run_trial.py::EXPECTED_APPEARANCE",
       "sha256": "0a8ffb24f0cdf4231d3583729c9c93feaa44420ccaef8d24e2ba88abee43d9a8",
       "length_chars": 534,
       "leakage_rule": "Generic and byte-identical for every clip. The manifest's per-clip `expectation` field must NEVER be interpolated into any prompt."
     }
   },
   "keyframe_selection": {
-    "source": "poc/keyframes.py",
+    "source": "pipeline/keyframes.py",
     "diff_thresh_intensity": 8,
     "skip_lead_seconds": 2.0,
     "window_frames": 2,
@@ -107,7 +121,7 @@
   },
   "dataset": {
     "name": "dataset_v3",
-    "manifest": "poc/manifest.json",
+    "manifest": "data/manifest.json",
     "selection_mode": "full",
     "n_clips": 120,
     "normal_clips": 60,
@@ -135,7 +149,7 @@
     }
   },
   "power_analysis": {
-    "source": "poc/power_analysis.py, poc/results/power_analysis.json",
+    "source": "pipeline/power_analysis.py, results/power_analysis.json",
     "test": "paired two-sided exact McNemar",
     "seed": 20260727,
     "planning_cell": {"p_disc": 0.20, "psi": 0.85},
@@ -156,7 +170,7 @@
   },
   "reference_pilot_result": {
     "_role": "Not a result of EXP002 — recorded so the ablation can be read against the pilot it grew from.",
-    "source": "poc/results/summary.json",
+    "source": "results/exp001/summary.json",
     "n_clips": 16,
     "dataset": "dataset_v1 subset",
     "temperature": "SDK default (~1.0), unpinned",

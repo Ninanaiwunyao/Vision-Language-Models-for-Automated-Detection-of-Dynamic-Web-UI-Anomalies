@@ -9,9 +9,9 @@ the codebase (`file:line`), not at description-after-the-fact.
 
 | Concern | File |
 |---|---|
-| Bug definitions & injection | [`latest/tests/poc-bug-injection.spec.ts`](../latest/tests/poc-bug-injection.spec.ts) |
+| Bug definitions & injection | [`generator/tests/bug-injection.spec.ts`](../generator/tests/bug-injection.spec.ts) |
 | Screenshot quality gate (pixelmatch) | same spec, `pixelDiffRatio()` |
-| Video quality gate | [`poc/gate_videos.py`](../poc/gate_videos.py) |
+| Video quality gate | [`pipeline/gate_videos.py`](../pipeline/gate_videos.py) |
 | Frozen dataset & gate spec (EXP001) | [`experiments/exp001/config.frozen.json`](../experiments/exp001/config.frozen.json) |
 
 ---
@@ -40,7 +40,7 @@ defect is genuinely visible in the artefact the model will consume.
 
 The construct under study is **"dynamic UI rendering defects."** It is
 operationalised as the six entries of `BUG_MATRIX`
-([spec:196-283](../latest/tests/poc-bug-injection.spec.ts)). Each corresponds to a
+([spec:196-283](../generator/tests/bug-injection.spec.ts)). Each corresponds to a
 class of real, purely visual/structural rendering failure:
 
 | bug key | injected CSS (mechanism) | real-world failure it stands for |
@@ -55,7 +55,7 @@ class of real, purely visual/structural rendering failure:
 ### 1.1 They span a difficulty spectrum, on purpose
 
 Measured pixel-difference ratios differ by an order of magnitude
-([spec:194-195](../latest/tests/poc-bug-injection.spec.ts)):
+([spec:194-195](../generator/tests/bug-injection.spec.ts)):
 
 ```
 flyaway ~66%   vanish ~55%   flicker ~50%   displaynone ~47%   skew ~28%   blur ~7%
@@ -70,7 +70,7 @@ machine," so that per-type recall has discriminating power.
 
 ### 1.2 Magnitudes are exaggerated *and* randomised *and* reproducible
 
-Using blur as the example — [spec:215](../latest/tests/poc-bug-injection.spec.ts):
+Using blur as the example — [spec:215](../generator/tests/bug-injection.spec.ts):
 `randInt(rng, 10, 14)` draws a blur radius of 10–14px per case.
 
 - **Exaggerated** — a 10px+ blur is unambiguously unreadable, not a marginal 2px.
@@ -86,7 +86,7 @@ Using blur as the example — [spec:215](../latest/tests/poc-bug-injection.spec.
 ### 1.3 Injection level is chosen to avoid confounds
 
 Injection points are calibrated so the label actually holds on screen. E.g.
-`vanish_invisible` ([spec:226-227](../latest/tests/poc-bug-injection.spec.ts)):
+`vanish_invisible` ([spec:226-227](../generator/tests/bug-injection.spec.ts)):
 hiding only inner sections leaves the white card intact (~3% diff), so the whole
 `.todoapp` card is vanished instead, exposing the grey page background and
 producing a large, unambiguous difference.
@@ -134,14 +134,14 @@ regeneration — the label is never weakened to fit a marginal clip.
 ### Gate 1 — Screenshot gate (pixelmatch, at injection time)
 
 Implemented in `pixelDiffRatio()`
-([spec:293-315](../latest/tests/poc-bug-injection.spec.ts)). After injecting the
+([spec:293-315](../generator/tests/bug-injection.spec.ts)). After injecting the
 CSS, a `buggy.png` is captured **immediately** and compared pixel-by-pixel against
 the pre-injection `normal.png`; the output is a **difference ratio `diffRatio`.**
 
 Two requirements, in opposite directions:
 
 **(a) Buggy clip — difference must be large enough.** Each bug type has its own
-`minDiffRatio` floor ([spec:184](../latest/tests/poc-bug-injection.spec.ts);
+`minDiffRatio` floor ([spec:184](../generator/tests/bug-injection.spec.ts);
 collected in `min_diff_ratio_by_bug_type`):
 
 | bug type | minDiffRatio |
@@ -154,7 +154,7 @@ collected in `min_diff_ratio_by_bug_type`):
 | `flicker_seizure` | 0.15 |
 
 Below the floor → `case rejected`
-([spec:545-546](../latest/tests/poc-bug-injection.spec.ts)). The thresholds are
+([spec:545-546](../generator/tests/bug-injection.spec.ts)). The thresholds are
 **per-type on purpose**: blur's floor (5%) is far below flyaway's (15%) because
 blur's intrinsic difference is small. The floor is a per-type lower bound on "how
 visible must this type at least be," not a single cutoff.
@@ -162,10 +162,10 @@ visible must this type at least be," not a single cutoff.
 **(b) Control clip — difference must be exactly 0.**
 (`control_requirement: "diff ratio must be exactly 0"`.) To make a true 0% possible,
 `stabilizeForScreenshot()`
-([spec:321-327](../latest/tests/poc-bug-injection.spec.ts)) blurs focus and moves
+([spec:321-327](../generator/tests/bug-injection.spec.ts)) blurs focus and moves
 the cursor off-screen, removing non-deterministic pixels (blinking caret, hover,
 focus ring). The pixelmatch `threshold: 0.03`
-([spec:307-311](../latest/tests/poc-bug-injection.spec.ts)) is itself calibrated for
+([spec:307-311](../generator/tests/bug-injection.spec.ts)) is itself calibrated for
 TodoMVC's low-contrast palette (white `#fff` card on a `#f5f5f5` page).
 
 > **Why this gate is not sufficient:** it never decodes the video. It compares two
@@ -173,13 +173,13 @@ TodoMVC's low-contrast palette (white `#fff` card on a `#f5f5f5` page).
 
 ### Gate 2 — Video gate (the check `dataset_v1` was missing)
 
-Implemented in [`poc/gate_videos.py`](../poc/gate_videos.py). Requirement
+Implemented in [`pipeline/gate_videos.py`](../pipeline/gate_videos.py). Requirement
 (`video_gate.requirement`):
 
 > The **final decoded video frame** must resemble `buggy.png` rather than
 > `normal.png`.
 
-Logic at [gate_videos.py:128-134](../poc/gate_videos.py): decode the last frame →
+Logic at [gate_videos.py:128-134](../pipeline/gate_videos.py): decode the last frame →
 crop to the app's clip region → compute its difference against both `normal` and
 `buggy` references → decide:
 
@@ -190,11 +190,11 @@ passed = d_buggy * DECISION_MARGIN < d_normal   # DECISION_MARGIN = 1.25
 I.e. the last frame must be at least **1.25× closer** to the buggy reference than
 to the normal one. "Closer to" (rather than "exactly equal to buggy") is used
 because the user keeps typing after `buggy.png` is captured, so the last frame is
-never byte-identical to it ([gate_videos.py:131-133](../poc/gate_videos.py)). The
+never byte-identical to it ([gate_videos.py:131-133](../pipeline/gate_videos.py)). The
 1.25 margin prevents passing on noise.
 
 Control clips have nothing injected, so there is no defect to verify — they pass as
-long as the video decodes ([gate_videos.py:112-114](../poc/gate_videos.py)).
+long as the video decodes ([gate_videos.py:112-114](../pipeline/gate_videos.py)).
 
 **dataset_v3 result: 120/120 pass.** The 60 buggy clips' last-frame difference vs
 normal ranges 0.1091–0.6927, vs buggy ≈ 0.
@@ -208,9 +208,9 @@ side channel**. These controls protect the experiment's **internal validity**.
 
 | # | Leakage risk | Control |
 |---|---|---|
-| A | **Duration leaks the label.** A static bug (app gone) emits ~1 frame; a dynamic bug (flicker) emits continuously — so clip length correlates with the label. | Fixed **7000ms** post-injection hold (`DEFECT_HOLD_MS`), identical for both groups, plus a screencast heartbeat that forces static states to keep emitting frames. ([spec ~433](../latest/tests/poc-bug-injection.spec.ts)) |
+| A | **Duration leaks the label.** A static bug (app gone) emits ~1 frame; a dynamic bug (flicker) emits continuously — so clip length correlates with the label. | Fixed **7000ms** post-injection hold (`DEFECT_HOLD_MS`), identical for both groups, plus a screencast heartbeat that forces static states to keep emitting frames. ([spec ~433](../generator/tests/bug-injection.spec.ts)) |
 | B | **On-screen text leaks the label.** `dataset_v1` typed the scenario id — *including the bug name* — into the input box; any model reading the screen saw the answer. | Post-injection typing uses neutral todo phrases. (Fixed in v2, recorded in `config._why_not_v2`.) |
-| C | **DOM trace leaks the label.** Path B records DOM mutations as a structural signal; the injection itself could show up in the trace. | The MutationObserver observes **`document.body` only**; the malicious stylesheet is appended to `<head>`, so the injection is structurally invisible to the trace — only legitimate user-driven DOM activity remains. ([spec:350-357](../latest/tests/poc-bug-injection.spec.ts)) |
+| C | **DOM trace leaks the label.** Path B records DOM mutations as a structural signal; the injection itself could show up in the trace. | The MutationObserver observes **`document.body` only**; the malicious stylesheet is appended to `<head>`, so the injection is structurally invisible to the trace — only legitimate user-driven DOM activity remains. ([spec:350-357](../generator/tests/bug-injection.spec.ts)) |
 
 ---
 
@@ -274,7 +274,7 @@ Screenshot gate runs during generation (Playwright test). To (re)run the video g
 against a dataset directory, from the repo root:
 
 ```bash
-python3 poc/gate_videos.py dataset_v3
+python3 pipeline/gate_videos.py dataset_v3
 ```
 
 Report-only; writes `dataset_v3/video-gate-report.json`. Add `--prune` to also delete
