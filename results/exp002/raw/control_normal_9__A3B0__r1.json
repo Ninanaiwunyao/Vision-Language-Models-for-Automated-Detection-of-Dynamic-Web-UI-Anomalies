@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_9",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is functioning as expected, with items being added, marked as complete, and the item count updating correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is functioning as expected, with items being added, marked as complete, and the item count updating correctly.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 35,
+    "total_tokens": 3397
+  },
+  "latency_s": 1.19,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_5",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual presentation of the todo list with a 3D perspective effect is an intentional design choice for this specific demo application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual presentation of the todo list with a 3D perspective effect is an intentional design choice for this specific demo application.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 37,
+    "total_tokens": 3399
+  },
+  "latency_s": 1.55,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "control_normal_49",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to a standard user interaction (switching filter tabs) supported by documented DOM mutations, and the final state correctly reflects the expected TodoMVC interface.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to a standard user interaction (switching filter tabs) supported by documented DOM mutations, and the final state correctly reflects the expected TodoMVC interface.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 4041,
+    "candidates_tokens": 50,
+    "total_tokens": 4091
+  },
+  "latency_s": 1.19,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.36,
+    "dom": {
+      "available": true,
+      "total_mutations": 191,
+      "mutations_near_transition": 29,
+      "near_breakdown": {
+        "attributes:input": 15,
+        "childList:ul": 7,
+        "attributes:a": 6,
+        "characterData:#text": 1
+      }
+    }
+  }
+}

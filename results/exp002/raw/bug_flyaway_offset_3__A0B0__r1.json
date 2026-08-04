@@ -1,0 +1,20 @@
+{
+  "id": "bug_flyaway_offset_3",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard interaction with a TodoMVC application where items are added and the list component is rendered correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard interaction with a TodoMVC application where items are added and the list component is rendered correctly.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 35,
+    "total_tokens": 6697
+  },
+  "latency_s": 1.33,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "control_normal_26",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to a standard user action of switching filters and updating the to-do list, which is supported by the recorded DOM mutations.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to a standard user action of switching filters and updating the to-do list, which is supported by the recorded DOM mutations.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3971,
+    "candidates_tokens": 47,
+    "total_tokens": 4018
+  },
+  "latency_s": 1.41,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.44,
+    "dom": {
+      "available": true,
+      "total_mutations": 212,
+      "mutations_near_transition": 53,
+      "near_breakdown": {
+        "attributes:input": 37,
+        "childList:ul": 10,
+        "attributes:a": 6
+      }
+    }
+  }
+}

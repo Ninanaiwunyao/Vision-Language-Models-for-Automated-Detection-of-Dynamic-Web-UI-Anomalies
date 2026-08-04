@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_35",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows the expected behavior of a todo list application where filtering by 'Completed' hides active items and adding a new item updates the list correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows the expected behavior of a todo list application where filtering by 'Completed' hides active items and adding a new item updates the list correctly.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 42,
+    "total_tokens": 3404
+  },
+  "latency_s": 0.87,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

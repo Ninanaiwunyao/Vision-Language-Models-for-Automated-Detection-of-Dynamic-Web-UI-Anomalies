@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_7",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container is rendered with an unintended 3D perspective transformation, causing it to appear skewed and distorted.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container is rendered with an unintended 3D perspective transformation, causing it to appear skewed and distorted.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 35,
+    "total_tokens": 6697
+  },
+  "latency_s": 1.16,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

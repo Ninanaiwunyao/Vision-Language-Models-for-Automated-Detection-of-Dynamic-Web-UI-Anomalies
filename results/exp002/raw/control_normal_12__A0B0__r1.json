@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_12",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows the expected behavior of a user interacting with a TodoMVC application by adding a new task.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows the expected behavior of a user interacting with a TodoMVC application by adding a new task.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 33,
+    "total_tokens": 6695
+  },
+  "latency_s": 1.08,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

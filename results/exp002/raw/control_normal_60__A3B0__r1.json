@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_60",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is correctly filtering the todo list based on the selected 'All', 'Active', or 'Completed' view state.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is correctly filtering the todo list based on the selected 'All', 'Active', or 'Completed' view state.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 37,
+    "total_tokens": 3399
+  },
+  "latency_s": 0.86,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

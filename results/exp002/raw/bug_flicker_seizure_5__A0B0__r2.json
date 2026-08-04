@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_5",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list items are incorrectly rendered with a bright red background and overlapping text, indicating a CSS or styling error.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list items are incorrectly rendered with a bright red background and overlapping text, indicating a CSS or styling error.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 35,
+    "total_tokens": 6697
+  },
+  "latency_s": 1.04,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

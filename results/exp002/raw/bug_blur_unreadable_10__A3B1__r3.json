@@ -1,0 +1,33 @@
+{
+  "id": "bug_blur_unreadable_10",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the todo list content has vanished, leaving only a blurred background card, which deviates from the expected functional appearance.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the todo list content has vanished, leaving only a blurred background card, which deviates from the expected functional appearance.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4051,
+    "candidates_tokens": 48,
+    "total_tokens": 4099
+  },
+  "latency_s": 0.72,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 2.04,
+    "dom": {
+      "available": true,
+      "total_mutations": 161,
+      "mutations_near_transition": 57,
+      "near_breakdown": {
+        "attributes:input": 45,
+        "childList:ul": 5,
+        "characterData:#text": 5,
+        "attributes:main": 1,
+        "attributes:footer": 1
+      }
+    }
+  }
+}

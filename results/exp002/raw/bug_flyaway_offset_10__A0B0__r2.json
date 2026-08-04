@@ -1,0 +1,20 @@
+{
+  "id": "bug_flyaway_offset_10",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows the standard functionality of a TodoMVC application where items are added, toggled, and cleared as expected.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows the standard functionality of a TodoMVC application where items are added, toggled, and cleared as expected.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 1.29,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

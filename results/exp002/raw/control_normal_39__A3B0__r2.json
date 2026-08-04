@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_39",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The third frame shows an unexpected input field appearing at the top of the todo list that duplicates an existing item, which is not present in the previous frames.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The third frame shows an unexpected input field appearing at the top of the todo list that duplicates an existing item, which is not present in the previous frames.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 43,
+    "total_tokens": 3405
+  },
+  "latency_s": 1.1,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

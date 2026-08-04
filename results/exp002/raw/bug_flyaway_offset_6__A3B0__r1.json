@@ -1,0 +1,20 @@
+{
+  "id": "bug_flyaway_offset_6",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component disappears abruptly from the screen between the first and second frames, indicating a rendering defect or unexpected state change.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component disappears abruptly from the screen between the first and second frames, indicating a rendering defect or unexpected state change.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 37,
+    "total_tokens": 3399
+  },
+  "latency_s": 0.74,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

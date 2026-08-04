@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_8",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component disappears entirely in the final frame, indicating a rendering failure or unexpected state change.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component disappears entirely in the final frame, indicating a rendering failure or unexpected state change.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 32,
+    "total_tokens": 3394
+  },
+  "latency_s": 1.42,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

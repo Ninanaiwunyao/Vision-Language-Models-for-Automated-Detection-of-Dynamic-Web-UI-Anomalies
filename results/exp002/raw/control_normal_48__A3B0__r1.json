@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_48",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is functioning as expected, correctly filtering the todo list when the 'Completed' tab is selected and returning to the full list when 'All' is selected.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is functioning as expected, correctly filtering the todo list when the 'Completed' tab is selected and returning to the full list when 'All' is selected.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 45,
+    "total_tokens": 3407
+  },
+  "latency_s": 0.75,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

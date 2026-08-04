@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_11",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows standard user interaction with a todo list application, including deleting an item and adding a new one.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows standard user interaction with a todo list application, including deleting an item and adding a new one.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 34,
+    "total_tokens": 3396
+  },
+  "latency_s": 0.88,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_25",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows the expected behavior of a todo list application where items are added and the input field is cleared after submission.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows the expected behavior of a todo list application where items are added and the input field is cleared after submission.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 36,
+    "total_tokens": 3398
+  },
+  "latency_s": 1.24,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

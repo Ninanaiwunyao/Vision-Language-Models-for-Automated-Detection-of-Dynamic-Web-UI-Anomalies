@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_14",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The screen recording shows standard user interaction with a todo list application, where items are added and marked as completed as expected.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The screen recording shows standard user interaction with a todo list application, where items are added and marked as completed as expected.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 0.94,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

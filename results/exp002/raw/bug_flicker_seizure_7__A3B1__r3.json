@@ -1,0 +1,27 @@
+{
+  "id": "bug_flicker_seizure_7",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application displays a severe rendering defect where the todo list items are incorrectly overlaid with a large, solid red block, obscuring the text and UI elements.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application displays a severe rendering defect where the todo list items are incorrectly overlaid with a large, solid red block, obscuring the text and UI elements.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3993,
+    "candidates_tokens": 55,
+    "total_tokens": 4048
+  },
+  "latency_s": 1.6,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.2,
+    "dom": {
+      "available": true,
+      "total_mutations": 207,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

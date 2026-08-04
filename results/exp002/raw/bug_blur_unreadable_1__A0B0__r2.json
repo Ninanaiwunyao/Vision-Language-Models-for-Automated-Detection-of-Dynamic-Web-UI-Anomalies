@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_1",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list items disappear abruptly from the screen, leaving only a blank container.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list items disappear abruptly from the screen, leaving only a blank container.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 28,
+    "total_tokens": 6690
+  },
+  "latency_s": 1.89,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

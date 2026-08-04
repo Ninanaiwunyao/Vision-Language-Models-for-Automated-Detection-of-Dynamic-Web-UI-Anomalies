@@ -1,0 +1,34 @@
+{
+  "id": "bug_flyaway_offset_1",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application UI disappears entirely in the final state despite no user action to remove it, indicating a rendering failure.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application UI disappears entirely in the final state despite no user action to remove it, indicating a rendering failure.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4059,
+    "candidates_tokens": 44,
+    "total_tokens": 4103
+  },
+  "latency_s": 0.98,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.24,
+    "dom": {
+      "available": true,
+      "total_mutations": 164,
+      "mutations_near_transition": 43,
+      "near_breakdown": {
+        "attributes:input": 30,
+        "childList:ul": 6,
+        "attributes:a": 4,
+        "attributes:li": 1,
+        "characterData:#text": 1,
+        "attributes:button": 1
+      }
+    }
+  }
+}

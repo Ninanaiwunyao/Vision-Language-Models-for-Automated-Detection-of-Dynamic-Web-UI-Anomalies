@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_17",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list contains duplicate entries for 'Finish the MSc thesis draft', which is an unexpected state for a standard todo application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list contains duplicate entries for 'Finish the MSc thesis draft', which is an unexpected state for a standard todo application.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 37,
+    "total_tokens": 3399
+  },
+  "latency_s": 0.89,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

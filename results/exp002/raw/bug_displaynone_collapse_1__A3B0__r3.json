@@ -1,0 +1,20 @@
+{
+  "id": "bug_displaynone_collapse_1",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows the expected behavior of a TodoMVC application where items are removed from the list upon interaction.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows the expected behavior of a TodoMVC application where items are removed from the list upon interaction.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 33,
+    "total_tokens": 3395
+  },
+  "latency_s": 0.95,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

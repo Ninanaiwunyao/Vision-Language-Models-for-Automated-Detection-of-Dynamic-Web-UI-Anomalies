@@ -1,0 +1,30 @@
+{
+  "id": "bug_skew_distortion_2",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application UI undergoes an unintended geometric transformation, shifting from a centered, upright orientation to a skewed, tilted perspective that deviates from the expected appearance.",
+  "defect_type": "skew_distortion",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application UI undergoes an unintended geometric transformation, shifting from a centered, upright orientation to a skewed, tilted perspective that deviates from the expected appearance.\", \"defect_type\": \"skew_distortion\"}",
+  "usage": {
+    "prompt_tokens": 3962,
+    "candidates_tokens": 50,
+    "total_tokens": 4012
+  },
+  "latency_s": 1.32,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.44,
+    "dom": {
+      "available": true,
+      "total_mutations": 171,
+      "mutations_near_transition": 102,
+      "near_breakdown": {
+        "attributes:input": 101,
+        "childList:body": 1
+      }
+    }
+  }
+}

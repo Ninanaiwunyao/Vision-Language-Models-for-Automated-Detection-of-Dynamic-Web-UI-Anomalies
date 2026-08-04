@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_17",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The UI displays a duplicate todo item entry, where the input field incorrectly renders an existing todo item instead of remaining as an empty input field.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The UI displays a duplicate todo item entry, where the input field incorrectly renders an existing todo item instead of remaining as an empty input field.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 40,
+    "total_tokens": 6702
+  },
+  "latency_s": 1.47,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

@@ -551,6 +551,292 @@ point of confusion rather than leaving the file looking excluded.
       the EXP001 16-clip, 2-condition pre-trial.
 - [ ] Decide whether `CLAUDE.md` should be untracked (`git rm --cached CLAUDE.md`).
 
+## 2026-07-31
+
+### EXP002 formal trial — pre-collection checks and payment setup
+
+**Branch**: `exp/formal-trial-v1` (created 2026-07-31, matches frozen config's
+`branch` field).
+
+#### Precondition verification
+
+All ground-truth and code elements passed verification before API access:
+
+- **Dataset integrity**: dataset_v3 = **120 clips** (60 normal, 60 anomaly),
+  10 per bug type; all 120 `.webm` + all 120 `domtrace.json` present and readable.
+- **Manifest**: `data/manifest.json` schema v2, `selection_mode: full`, 120 records
+  with derived labels from injected bug keys.
+- **Prompt SHA-256 verification** (vs `experiments/exp002/config.frozen.json`):
+  - `B0_naive`: got `f6db8781…` = want `f6db8781…` ✓
+  - `B1_dual_path`: got `9f42bb8a…` = want `9f42bb8a…` ✓
+  - `expected_appearance_block`: got `0a8ffb24…` = want `0a8ffb24…` ✓
+- **Dry-run payload build** (`--dry-run --limit 2`): 24 payloads generated
+  correctly — A0=6 frames, A1/A3=3 frames, 4 conditions × 3 repeats interleaved.
+
+#### Stage 2 smoke test (4 gates: NETWORK / AUTH / IMAGE / JSON)
+
+```
+[PASS] Stage 1 NETWORK — reaching generativelanguage.googleapis.com (HTTP 404 OK)
+[PASS] Stage 2 AUTH — API key accepted, 42 models in account
+[PASS] Stage 3 IMAGE — model saw buggy PNG frame, generated description
+[PASS] Stage 4 JSON — model returned parseable JSON verdict
+```
+
+Working judge: **`gemini-3.1-flash-lite`** (pinned by frozen config).
+
+#### Stage 3 trial probe — real API calls on 2 clips (24 calls)
+
+Ran `python3 pipeline/run_trial.py --limit 2` **on the free tier** to measure
+actual token usage and confirm the response format before committing to 1440
+calls. Token counts are read from each response's `usage_metadata`, not
+estimated:
+
+| condition | n_calls | mean_input_tokens | mean_output_tokens |
+|---|---|---|---|
+| A0B0 (uniform, 6 frames) | 6 | 6,662 | 36 |
+| A1B1 (pixel keyframes, 3) | 6 | 3,998 | 47 |
+| A3B0 (fused keyframes, 3) | 6 | 3,362 | 36 |
+| A3B1 (fused keyframes, 3) | 6 | 3,992 | 41 |
+
+Input tokens scale with frame count as expected: A0B0's 6 frames cost ~1.7x the
+3-frame cells. The B0/B1 gap within fused selection (3,362 -> 3,992) is the
+dual-path prompt's own text.
+
+**Latency from this probe is NOT reported** — it is uninterpretable. A free-tier
+429 fired mid-probe and `vlm_client` slept 20s + 40s inside the call being timed,
+inflating that cell's mean by ~10s/call. Real latency comes from the full paid
+run, where it is a genuine efficiency metric.
+
+**Projected full run** (120 clips x 4 conditions x 3 repeats = 1440 calls),
+extrapolating the measured per-condition means:
+- input **6.485M** tokens, output **58.2k** tokens
+- modelled cost at the frozen config's rate card ($0.25 / $1.50 per 1M): **$1.71**
+
+Note this projection corrected an earlier back-of-envelope guess of ~$0.5, which
+had underestimated image tokens by more than half. The measured figure supersedes
+it.
+
+**Tier-consistency note**: those 24 probe responses were produced on the free
+tier. They were **deleted** before the formal run rather than reused. The freeze
+policy requires every cell to see the same judge, and while the model id is
+pinned, free vs paid serving paths are not something this project can verify are
+identical — cheaper to re-run 2 clips (~$0.03) than to leave an unanswerable
+question in the results. `results/exp002/raw/` was empty at launch (verified).
+
+#### Billing
+
+The key's project was on the free tier at probe time. Attempting the full run
+after enabling billing aborted immediately at the model-probe step — zero calls
+issued, empty cache, no partial state — with a **different** 429 than before:
+
+```
+"Your prepayment credits are depleted. Please go to AI Studio at
+ https://ai.studio/projects to manage your project and billing."
+```
+
+i.e. billing was linked as **prepay** with a zero balance, so every request was
+rejected outright. Diagnosed by calling `generateContent` directly with `curl`;
+the runner's own message ("Every candidate model is quota-exhausted") would have
+been read as a free-tier rate limit and sent the investigation the wrong way.
+
+After top-up (minimum £10.00 on this account), the same probe returned
+`"serviceTier": "standard"` and `"modelVersion": "gemini-3.1-flash-lite"` —
+confirming both that billing was live and that the pinned judge was being served.
+
+#### Formal run launched
+
+`python3 pipeline/run_trial.py` started 2026-07-31 14:25 on branch
+`exp/formal-trial-v1`, full 1440 calls, single paid session, responses cached
+per call under `results/exp002/raw/`.
+
+#### Run completed
+
+All 1440 calls landed: 360 per condition, 120 per (condition, repeat) cell, no
+gaps and no re-runs. Every response reports `model: gemini-3.1-flash-lite` — the
+runner's abort-on-unavailable rule was never triggered, so no cell saw a
+different judge.
+
+| | projected from the 24-call probe | actual |
+|---|---|---|
+| input tokens | 6.485M | 6.492M |
+| output tokens | 58.2k | 58.4k |
+| cost | $1.71 | **$1.71** |
+
+The probe's measured per-condition token means extrapolated to within 0.1%. This
+is the payoff from reading `usage_metadata` off real responses instead of
+estimating image tokens — the earlier back-of-envelope guess of ~$0.5 was out by
+more than 3x.
+
+## 2026-08-02
+
+### EXP002 scoring and analysis
+
+`python3 pipeline/score_trial.py` over the cached responses, writing
+`results/exp002/summary.json` (run 2026-07-31 14:59, immediately after
+collection; reviewed and written up here). Scoring is a pure function of the
+cache, so this step is re-runnable without spending anything.
+
+#### Headline numbers
+
+| Condition | Accuracy ± SD [95% CI] (n=120) | FPR (n=60) | Recall (n=60) | Mean tokens | Median latency |
+|---|---|---|---|---|---|
+| A0B0 (uniform + naive) | 0.753 ± 0.005 [0.675, 0.828] | 0.167 | 0.667 | 6697 | 1.097s |
+| A1B1 (pixel keyframes + dual-path) | **0.908 ± 0.000** [0.850, 0.958] | **0.000** | **0.817** | 4031 | 0.983s |
+| A3B0 (fused + naive) | 0.756 ± 0.005 [0.678, 0.831] | 0.117 | 0.633 | **3396** | 0.952s |
+| A3B1 (fused + dual-path) | 0.842 ± 0.008 [0.775, 0.903] | 0.000 | 0.683 | 4072 | 0.903s |
+
+SD is across the 3 repeats; CIs are 10,000-resample bootstraps over clips
+(seed 20260728). Omnibus Cochran's Q = 23.30, df = 3, n = 120, p = 3.5e-05.
+
+Pairwise exact McNemar, Holm-corrected, on the per-clip majority vote:
+
+| contrast | n_disc | split (b/c) | p_holm | Cohen's g |
+|---|---|---|---|---|
+| A0B0 → A1B1 | 21 | 1 / 20 | **0.000126** | 0.45 |
+| A0B0 → A3B0 | 23 | 11 / 12 | 1.0 | 0.02 |
+| A0B0 → A3B1 | 25 | 7 / 18 | 0.130 | 0.22 |
+| A1B1 → A3B0 | 24 | 21 / 3 | **0.001385** | 0.38 |
+| A1B1 → A3B1 | 8 | 8 / 0 | **0.031** | 0.50 |
+| A3B0 → A3B1 | 24 | 7 / 17 | 0.130 | 0.21 |
+
+Efficiency (Wilcoxon signed-rank, Holm-corrected, 3 metrics x 6 pairs): every
+selector cell beats A0B0 on tokens and cost at p_holm < 1e-6 with rank-biserial
+1.00. A1B1 reaches its accuracy on 40% fewer tokens than the baseline, so the
+accuracy gain is not bought with extra compute.
+
+#### Three findings, two of them negative
+
+1. **The A3 fused selector buys no accuracy.** A0B0 → A3B0 is 0.753 → 0.756,
+   p_holm = 1.0, g = 0.02. It halves token usage (6697 → 3396, −49%), but that
+   saving comes from sending 3 frames instead of 6, which pixel-only selection
+   also does — it cannot be attributed to the DOM fusion.
+2. **Fusion actively harms the method under the dual-path prompt.** A1B1 (0.908)
+   vs A3B1 (0.842), p_holm = 0.031, g = 0.50, and **all 8 discordant clips
+   favour A1B1 with none favouring A3B1**. Per-type at fixed B1: flicker_seizure
+   8/10 → 5/10, flyaway_offset 10/10 → 8/10, and blur_unreadable /
+   skew_distortion / displaynone_collapse each lose one clip. Three of the eight
+   discordant clips are flicker_seizure.
+3. **The headline gain is real but aliased.** A0B0 → A1B1 is 0.753 → 0.908
+   (p_holm = 0.000126) with false positives 10/60 → 0/60, but that contrast moves
+   both factors at once. The clean prompt-only contrast A3B0 → A3B1 does not
+   survive correction (p_holm = 0.130), and the frozen design contains no A1B0
+   cell, so the gain cannot be decomposed.
+
+`displaynone_collapse` stays a blind spot: correct in only **2 of 40**
+clip-conditions. The pilot contained a single clip of this type and it also
+failed, so the n=16 pre-trial could not have detected this — it took 10 clips per
+type to see that it is systematic rather than incidental.
+
+#### Analysis-time discoveries
+
+- **The one "invalid" response is not a parse failure.** `bug_flicker_seizure_5`
+  under A3B1 repeat 2 returned well-formed JSON whose `reason` correctly
+  described the defect, but with the out-of-schema verdict string `"defect"`
+  instead of `"anomaly"`. `score_trial.py` counts anything outside
+  {normal, anomaly} as wrong. It changed no result — the other two repeats of
+  that clip both said `"normal"`, so the majority vote was already wrong — but it
+  means detection rate and schema-compliance rate are different quantities and
+  must not be conflated in the write-up.
+- **`summary.json` mixes two aggregation units.** `accuracy_mean` is the mean of
+  the three per-repeat accuracies; FPR, recall, Cochran's Q and every McNemar
+  test run on the per-clip **majority vote**. So A0B0 → A3B0 reads +0.003 on the
+  accuracy scale but +1/120 = +0.008 on the majority-vote scale, and A0B0's FPR
+  is 10/60 = 0.167 clip-level against 29/180 = 0.161 response-level. Any table
+  quoting these must say which unit it uses.
+- **Mean latency is unsafe for A3B1.** One clip took 39.97s, lifting the mean to
+  1.261s — above A0B0's 1.140s — while the median is 0.903s and the rank-based
+  Wilcoxon puts A3B1 *faster* than baseline at rank-biserial 0.86. Reporting the
+  mean would state the opposite of the test. Medians are used throughout.
+- **The A3 null is a net null, not an absence of effect.** A0B0 → A3B0 is
+  accuracy-neutral yet flips 23 of 120 clips, with large offsetting per-type
+  swings (blur_unreadable 10/10 → 6/10, skew_distortion 6/10 → 3/10,
+  flyaway_offset 6/10 → 8/10, vanish_invisible 9/10 → 10/10). "Contributes
+  nothing" would be the wrong summary; "no net accuracy effect at half the token
+  cost" is the accurate one.
+- **The observed A3 failure direction contradicts its design rationale.** The
+  fusion rule down-weights pixel transitions that coincide with DOM activity
+  specifically to *favour* CSS-only defects, which is where it now loses. No
+  verified mechanism yet — a frame-level comparison of what A1 and A3 select on
+  the 8 discordant clips is queued before the Results chapter is written.
+- **`statsmodels` is absent from the locked environment**, so Cochran's Q is
+  implemented directly in `stats_tests.py` while scipy 1.17.1 supplies Wilcoxon
+  and the chi-square tail. This deviates from `Satistic_Display_Rule.md` §2 and
+  is disclosed wherever Q is reported.
+- **Dispersion gap against the supervisor rule.** §1 requires mean ± SD [95% CI]
+  (n) for *every* metric, but `score_trial.py` currently emits SD and CI for
+  accuracy only — FPR, recall and defect_type_match are bare point estimates.
+  The missing figures were computed off the cache for the supervisor report;
+  folding them into the scorer is a follow-up (the frozen config lists
+  `score_trial.py` under `unfrozen_by_design`, so this needs no re-run).
+
+#### Decisions taken
+
+- **Thesis contribution reframed.** `config.frozen.json` designates A3B1 as "the
+  full proposed method" and A1B1 as "the pilot's 'ours'". Given findings 1 and 2,
+  the write-up will report **A1B1 as the proposed method and A3 as a falsified
+  design**. This is a post-hoc change of the designated contribution, recorded
+  here with a date rather than applied silently to the frozen file — anyone
+  comparing the frozen config against the thesis will see the switch and its
+  reason.
+- **A1B0 will not be run.** It would de-alias contrast 3 and cost roughly $0.32,
+  but it would be a post-hoc addition driven by the results, and the freeze
+  policy requires a new experiment id rather than an amendment. The
+  pre-registered design stays intact; the aliasing goes in Limitations, together
+  with its real consequence: **the evidence that fusion harms the method rests
+  solely on the B1 layer and is uncorroborated at B0.**
+- **Cross-model comparison with Qwen2.5-VL dropped.** The VLM is fixed as a
+  controlled variable across all conditions; the contribution is the keyframe
+  selection and decision layers, and holding the judge constant strengthens that
+  claim. Recorded as future work. Note this removes a comparison that
+  `Satistic_Display_Rule.md` §2 explicitly anticipates, and `README.md` still
+  describes Path A as using Qwen — that needs updating.
+
+#### Supervisor report
+
+Progress email sent to Dr Chen with the four tables (per-condition metrics,
+resource utilisation, Wilcoxon, McNemar), the three findings and the two open
+questions. Three reporting errors were caught during a line-by-line
+reconciliation against `summary.json` and the raw cache **before** it was sent:
+
+1. A per-type recall figure attributed to the wrong condition — "10/10 → 3/10 on
+   `skew_distortion`" is A1B1 vs **A3B0**, a cross-factor comparison; at fixed B1
+   the same type only goes 10/10 → 9/10. The real loss is `flicker_seizure`.
+2. The false-positive rate quoted against the wrong denominator ("0.167 across
+   180 normal responses"); 0.167 is 10/60 clip-level, and the response-level
+   figure is 0.161.
+3. The invalid response described as "unparseable" when it was a schema-
+   compliance failure (see above).
+
+#### GenAI record (CLAUDE.md documentation requirement)
+
+- **Tool**: Claude Code (Opus 5), 2026-08-02 to 2026-08-04.
+- **Prompts**: "check my email against what the experiment actually produced";
+  then requests to rewrite the affected passages, to build tables meeting
+  `Satistic_Display_Rule.md` §1/§3, and to judge what belonged in this commit.
+- **AI contribution**: the reconciliation that surfaced the three errors above
+  and the analysis-time discoveries in this section; drafting of the corrected
+  email passages and of the dispersion figures reported to the supervisor.
+- **Human ownership**: the contribution reframe, the decision not to run A1B0,
+  the decision to drop the cross-model comparison, and what was sent to the
+  supervisor were all decided here, not by the model. Several AI suggestions were
+  rejected — notably the proposal to run A1B0 as a declared supplementary
+  experiment.
+- **Verification**: every figure in this section was recomputed from
+  `results/exp002/raw/` and checked against `summary.json`; no statistic in the
+  repository was produced or edited by the model.
+
+### Next Steps
+
+- [ ] Frame-level comparison of A1 vs A3 selections on the 8 discordant clips —
+      needed before the mechanism for finding 2 can be asserted.
+- [ ] Extend `score_trial.py` to emit SD and bootstrap CI for FPR, recall and
+      defect_type_match, so §1 compliance is traceable in `summary.json` rather
+      than recomputed ad hoc. No re-run required.
+- [ ] Update `README.md`: Path A still lists Qwen2.5-VL as a judge.
+- [ ] Write Limitations around the contrast-3 aliasing, the B0-uncorroborated
+      fusion result, and the `displaynone_collapse` blind spot.
+- [ ] Decide whether `CLAUDE.md` should be untracked (`git rm --cached CLAUDE.md`).
+
 ---
 
 ## Appendix — MR description convention (reusable template)

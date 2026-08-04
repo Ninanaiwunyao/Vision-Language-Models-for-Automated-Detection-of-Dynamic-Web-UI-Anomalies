@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_57",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The screen recording shows the expected behavior of a TodoMVC application where items are added, completed, and managed correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The screen recording shows the expected behavior of a TodoMVC application where items are added, completed, and managed correctly.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 35,
+    "total_tokens": 6697
+  },
+  "latency_s": 1.31,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

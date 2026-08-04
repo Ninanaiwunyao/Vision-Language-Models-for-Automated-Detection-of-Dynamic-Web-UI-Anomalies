@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_4",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo item 'Read one chapter of the textbook' is rendered twice simultaneously, once in the input field and once in the list below it.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo item 'Read one chapter of the textbook' is rendered twice simultaneously, once in the input field and once in the list below it.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 41,
+    "total_tokens": 6703
+  },
+  "latency_s": 1.62,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

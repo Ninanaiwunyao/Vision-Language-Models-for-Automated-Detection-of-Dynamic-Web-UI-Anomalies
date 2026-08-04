@@ -1,0 +1,32 @@
+{
+  "id": "bug_flyaway_offset_9",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The entire to-do list component disappears from the screen, which contradicts the expected appearance of a persistent to-do list application.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The entire to-do list component disappears from the screen, which contradicts the expected appearance of a persistent to-do list application.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4038,
+    "candidates_tokens": 48,
+    "total_tokens": 4086
+  },
+  "latency_s": 1.0,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.12,
+    "dom": {
+      "available": true,
+      "total_mutations": 196,
+      "mutations_near_transition": 58,
+      "near_breakdown": {
+        "attributes:input": 53,
+        "childList:ul": 2,
+        "characterData:#text": 2,
+        "childList:body": 1
+      }
+    }
+  }
+}

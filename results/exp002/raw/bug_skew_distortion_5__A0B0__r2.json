@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_5",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container undergoes an abrupt and unnatural 3D rotation/skewing effect that appears to be a rendering glitch rather than an intended UI transition.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container undergoes an abrupt and unnatural 3D rotation/skewing effect that appears to be a rendering glitch rather than an intended UI transition.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 43,
+    "total_tokens": 6705
+  },
+  "latency_s": 0.89,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

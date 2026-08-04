@@ -1,0 +1,32 @@
+{
+  "id": "bug_blur_unreadable_3",
+  "condition": "A1B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the todo list items have vanished, leaving only a blank white card, which deviates from the expected functional appearance of the application.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the todo list items have vanished, leaving only a blank white card, which deviates from the expected functional appearance of the application.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3984,
+    "candidates_tokens": 51,
+    "total_tokens": 4035
+  },
+  "latency_s": 0.86,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 3.6,
+    "dom": {
+      "available": true,
+      "total_mutations": 190,
+      "mutations_near_transition": 60,
+      "near_breakdown": {
+        "attributes:input": 36,
+        "childList:ul": 15,
+        "attributes:a": 6,
+        "characterData:#text": 3
+      }
+    }
+  }
+}

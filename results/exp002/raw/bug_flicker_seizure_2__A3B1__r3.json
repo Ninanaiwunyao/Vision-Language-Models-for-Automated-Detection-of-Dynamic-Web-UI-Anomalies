@@ -1,0 +1,27 @@
+{
+  "id": "bug_flicker_seizure_2",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to a standard UI state change (likely a hover or selection effect on the todo list items) and the final state remains consistent with the expected application appearance.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to a standard UI state change (likely a hover or selection effect on the todo list items) and the final state remains consistent with the expected application appearance.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3993,
+    "candidates_tokens": 53,
+    "total_tokens": 4046
+  },
+  "latency_s": 0.89,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.44,
+    "dom": {
+      "available": true,
+      "total_mutations": 206,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

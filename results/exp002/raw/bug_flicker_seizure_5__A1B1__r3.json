@@ -1,0 +1,32 @@
+{
+  "id": "bug_flicker_seizure_5",
+  "condition": "A1B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits an unexpected and aggressive red color overlay on the todo list items that does not correspond to standard TodoMVC functionality, indicating a rendering defect.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits an unexpected and aggressive red color overlay on the todo list items that does not correspond to standard TodoMVC functionality, indicating a rendering defect.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3984,
+    "candidates_tokens": 54,
+    "total_tokens": 4038
+  },
+  "latency_s": 1.33,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 5.04,
+    "dom": {
+      "available": true,
+      "total_mutations": 166,
+      "mutations_near_transition": 58,
+      "near_breakdown": {
+        "attributes:input": 45,
+        "childList:ul": 8,
+        "attributes:a": 4,
+        "childList:body": 1
+      }
+    }
+  }
+}

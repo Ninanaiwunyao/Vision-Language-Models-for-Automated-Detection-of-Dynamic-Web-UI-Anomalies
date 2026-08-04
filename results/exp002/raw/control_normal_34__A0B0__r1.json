@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_34",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The screen recording shows the standard functionality of a TodoMVC application where items are added and marked as completed.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The screen recording shows the standard functionality of a TodoMVC application where items are added and marked as completed.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 33,
+    "total_tokens": 6695
+  },
+  "latency_s": 1.48,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

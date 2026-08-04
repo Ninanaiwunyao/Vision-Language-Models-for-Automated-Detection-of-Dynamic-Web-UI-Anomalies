@@ -1,0 +1,20 @@
+{
+  "id": "bug_displaynone_collapse_2",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard interaction with a todo list application where items are added and the UI updates accordingly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard interaction with a todo list application where items are added and the UI updates accordingly.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 33,
+    "total_tokens": 6695
+  },
+  "latency_s": 0.95,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

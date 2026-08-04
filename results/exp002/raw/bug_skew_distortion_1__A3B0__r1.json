@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_1",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component is unexpectedly tilted and distorted in the second and third frames, indicating a rendering or CSS transformation defect.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component is unexpectedly tilted and distorted in the second and third frames, indicating a rendering or CSS transformation defect.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 36,
+    "total_tokens": 3398
+  },
+  "latency_s": 1.37,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "control_normal_16",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual changes correspond to expected user interactions such as adding new to-do items and updating the list, which are supported by the recorded DOM mutations.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual changes correspond to expected user interactions such as adding new to-do items and updating the list, which are supported by the recorded DOM mutations.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3991,
+    "candidates_tokens": 48,
+    "total_tokens": 4039
+  },
+  "latency_s": 1.0,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 2.4,
+    "dom": {
+      "available": true,
+      "total_mutations": 215,
+      "mutations_near_transition": 70,
+      "near_breakdown": {
+        "attributes:input": 57,
+        "characterData:#text": 6,
+        "childList:ul": 5,
+        "attributes:li": 1,
+        "attributes:button": 1
+      }
+    }
+  }
+}

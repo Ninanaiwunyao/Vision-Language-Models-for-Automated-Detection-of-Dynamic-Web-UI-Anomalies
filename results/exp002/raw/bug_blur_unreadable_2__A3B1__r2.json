@@ -1,0 +1,33 @@
+{
+  "id": "bug_blur_unreadable_2",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the application content has vanished and the remaining elements are blurred, which deviates significantly from the expected appearance.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the application content has vanished and the remaining elements are blurred, which deviates significantly from the expected appearance.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4049,
+    "candidates_tokens": 46,
+    "total_tokens": 4095
+  },
+  "latency_s": 0.79,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 2.16,
+    "dom": {
+      "available": true,
+      "total_mutations": 175,
+      "mutations_near_transition": 48,
+      "near_breakdown": {
+        "attributes:input": 39,
+        "characterData:#text": 4,
+        "childList:ul": 3,
+        "attributes:li": 1,
+        "attributes:button": 1
+      }
+    }
+  }
+}

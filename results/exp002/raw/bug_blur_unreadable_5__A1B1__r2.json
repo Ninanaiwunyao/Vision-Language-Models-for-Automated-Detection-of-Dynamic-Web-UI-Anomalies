@@ -1,0 +1,30 @@
+{
+  "id": "bug_blur_unreadable_5",
+  "condition": "A1B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The to-do list content and input field have vanished from the card, leaving it blank and the heading blurred, which deviates from the expected functional state.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The to-do list content and input field have vanished from the card, leaving it blank and the heading blurred, which deviates from the expected functional state.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3962,
+    "candidates_tokens": 53,
+    "total_tokens": 4015
+  },
+  "latency_s": 0.98,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 3.84,
+    "dom": {
+      "available": true,
+      "total_mutations": 164,
+      "mutations_near_transition": 84,
+      "near_breakdown": {
+        "attributes:input": 83,
+        "childList:body": 1
+      }
+    }
+  }
+}

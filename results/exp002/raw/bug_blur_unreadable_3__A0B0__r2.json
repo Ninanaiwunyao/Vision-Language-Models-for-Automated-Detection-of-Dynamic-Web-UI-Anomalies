@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_3",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list content suddenly disappears and the header becomes blurred, indicating a rendering failure or state error.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list content suddenly disappears and the header becomes blurred, indicating a rendering failure or state error.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 32,
+    "total_tokens": 6694
+  },
+  "latency_s": 0.9,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

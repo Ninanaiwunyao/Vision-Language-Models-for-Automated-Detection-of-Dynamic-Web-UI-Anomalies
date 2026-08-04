@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_2",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard 3D transition effect for a todo list application, which is an intended design feature rather than a rendering defect.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard 3D transition effect for a todo list application, which is an intended design feature rather than a rendering defect.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 40,
+    "total_tokens": 6702
+  },
+  "latency_s": 1.44,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

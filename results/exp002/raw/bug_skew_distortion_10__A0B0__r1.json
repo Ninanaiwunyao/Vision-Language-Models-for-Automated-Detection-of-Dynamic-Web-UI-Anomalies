@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_10",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component is rendered with an extreme, distorted 3D perspective transformation that makes the text difficult to read and appears to be a rendering defect.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component is rendered with an extreme, distorted 3D perspective transformation that makes the text difficult to read and appears to be a rendering defect.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 43,
+    "total_tokens": 6705
+  },
+  "latency_s": 1.38,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

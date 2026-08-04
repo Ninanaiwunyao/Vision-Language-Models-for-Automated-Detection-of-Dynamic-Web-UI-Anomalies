@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_5",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component suddenly disappears from the screen, leaving only a blurred background element.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component suddenly disappears from the screen, leaving only a blurred background element.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 29,
+    "total_tokens": 6691
+  },
+  "latency_s": 1.1,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

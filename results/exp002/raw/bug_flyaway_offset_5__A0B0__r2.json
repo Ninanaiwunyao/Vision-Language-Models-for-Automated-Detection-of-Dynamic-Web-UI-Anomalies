@@ -1,0 +1,20 @@
+{
+  "id": "bug_flyaway_offset_5",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The main content area, which displays the todo list, disappears abruptly after the first frame.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The main content area, which displays the todo list, disappears abruptly after the first frame.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 30,
+    "total_tokens": 6692
+  },
+  "latency_s": 1.0,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

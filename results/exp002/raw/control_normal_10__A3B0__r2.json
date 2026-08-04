@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_10",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows standard user interactions with a TodoMVC application, including adding, completing, and filtering tasks.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows standard user interactions with a TodoMVC application, including adding, completing, and filtering tasks.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 33,
+    "total_tokens": 3395
+  },
+  "latency_s": 0.85,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

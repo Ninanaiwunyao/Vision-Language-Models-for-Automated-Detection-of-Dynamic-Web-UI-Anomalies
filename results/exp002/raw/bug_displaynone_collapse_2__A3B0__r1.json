@@ -1,0 +1,20 @@
+{
+  "id": "bug_displaynone_collapse_2",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is correctly updating the todo list view based on the selected filter (All, Active, or Completed) and the user's input.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is correctly updating the todo list view based on the selected filter (All, Active, or Completed) and the user's input.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 41,
+    "total_tokens": 3403
+  },
+  "latency_s": 1.25,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

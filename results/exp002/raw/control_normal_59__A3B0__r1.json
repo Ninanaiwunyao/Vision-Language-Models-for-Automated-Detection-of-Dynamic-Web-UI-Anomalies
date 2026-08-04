@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_59",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The input field incorrectly displays the text of an existing todo item instead of remaining empty or showing a placeholder after the item has been added.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The input field incorrectly displays the text of an existing todo item instead of remaining empty or showing a placeholder after the item has been added.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 39,
+    "total_tokens": 3401
+  },
+  "latency_s": 0.98,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

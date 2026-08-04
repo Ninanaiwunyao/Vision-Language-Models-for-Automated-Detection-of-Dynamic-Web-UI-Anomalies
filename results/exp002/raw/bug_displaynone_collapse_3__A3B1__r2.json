@@ -1,0 +1,31 @@
+{
+  "id": "bug_displaynone_collapse_3",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to a standard user interaction (switching filters or updating the list), which is supported by the recorded DOM mutations and results in a valid application state.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to a standard user interaction (switching filters or updating the list), which is supported by the recorded DOM mutations and results in a valid application state.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 4030,
+    "candidates_tokens": 51,
+    "total_tokens": 4081
+  },
+  "latency_s": 1.45,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.36,
+    "dom": {
+      "available": true,
+      "total_mutations": 145,
+      "mutations_near_transition": 31,
+      "near_breakdown": {
+        "attributes:input": 19,
+        "childList:ul": 6,
+        "attributes:a": 6
+      }
+    }
+  }
+}

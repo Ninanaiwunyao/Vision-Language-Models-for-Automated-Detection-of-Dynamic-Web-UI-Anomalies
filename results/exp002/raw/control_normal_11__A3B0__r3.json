@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_11",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows standard user interaction with a todo list application, including adding and removing items, which is expected behavior.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows standard user interaction with a todo list application, including adding and removing items, which is expected behavior.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 35,
+    "total_tokens": 3397
+  },
+  "latency_s": 0.98,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

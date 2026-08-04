@@ -1,0 +1,30 @@
+{
+  "id": "bug_flyaway_offset_8",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The main application card disappears entirely from the screen without any corresponding DOM removal mutations, indicating a rendering failure.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The main application card disappears entirely from the screen without any corresponding DOM removal mutations, indicating a rendering failure.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3964,
+    "candidates_tokens": 43,
+    "total_tokens": 4007
+  },
+  "latency_s": 1.25,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 5.04,
+    "dom": {
+      "available": true,
+      "total_mutations": 198,
+      "mutations_near_transition": 74,
+      "near_breakdown": {
+        "attributes:input": 73,
+        "childList:body": 1
+      }
+    }
+  }
+}

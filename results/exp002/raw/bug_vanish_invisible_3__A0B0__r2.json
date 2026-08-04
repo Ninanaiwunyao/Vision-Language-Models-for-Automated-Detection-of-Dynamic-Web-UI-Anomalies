@@ -1,0 +1,20 @@
+{
+  "id": "bug_vanish_invisible_3",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard user interaction where a todo list item is marked as completed and then removed from the view, which is expected behavior for a todo application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard user interaction where a todo list item is marked as completed and then removed from the view, which is expected behavior for a todo application.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 44,
+    "total_tokens": 6706
+  },
+  "latency_s": 1.19,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

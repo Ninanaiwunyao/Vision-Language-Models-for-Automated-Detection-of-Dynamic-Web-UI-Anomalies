@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_50",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard interaction of adding a new item to a to-do list application, which functions as expected.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard interaction of adding a new item to a to-do list application, which functions as expected.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 1.1,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

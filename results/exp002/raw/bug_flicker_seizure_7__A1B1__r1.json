@@ -1,0 +1,34 @@
+{
+  "id": "bug_flicker_seizure_7",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows an unexpected red overlay covering the list items, which deviates from the expected clean white card appearance.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows an unexpected red overlay covering the list items, which deviates from the expected clean white card appearance.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 4003,
+    "candidates_tokens": 47,
+    "total_tokens": 4050
+  },
+  "latency_s": 1.4,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 2.88,
+    "dom": {
+      "available": true,
+      "total_mutations": 207,
+      "mutations_near_transition": 62,
+      "near_breakdown": {
+        "attributes:input": 45,
+        "childList:ul": 6,
+        "characterData:#text": 4,
+        "attributes:a": 4,
+        "attributes:li": 2,
+        "attributes:button": 1
+      }
+    }
+  }
+}

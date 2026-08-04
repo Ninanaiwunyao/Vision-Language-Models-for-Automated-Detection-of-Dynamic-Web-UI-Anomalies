@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_5",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container undergoes an abrupt and unnatural 3D rotation/skewing transformation that appears to be a rendering glitch.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container undergoes an abrupt and unnatural 3D rotation/skewing transformation that appears to be a rendering glitch.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 37,
+    "total_tokens": 6699
+  },
+  "latency_s": 1.14,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_2",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording demonstrates a deliberate 3D rotation animation effect applied to the todo list component.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording demonstrates a deliberate 3D rotation animation effect applied to the todo list component.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 30,
+    "total_tokens": 3392
+  },
+  "latency_s": 0.92,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

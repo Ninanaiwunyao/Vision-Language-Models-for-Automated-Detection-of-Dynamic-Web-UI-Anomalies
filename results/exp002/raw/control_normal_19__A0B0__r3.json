@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_19",
+  "condition": "A0B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows the expected behavior of a todo list application where items are added and updated correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows the expected behavior of a todo list application where items are added and updated correctly.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 31,
+    "total_tokens": 6693
+  },
+  "latency_s": 1.03,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

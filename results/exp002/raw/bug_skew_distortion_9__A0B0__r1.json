@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_9",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard UI transition effect where the todo list component rotates and updates its content.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard UI transition effect where the todo list component rotates and updates its content.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 31,
+    "total_tokens": 6693
+  },
+  "latency_s": 1.47,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

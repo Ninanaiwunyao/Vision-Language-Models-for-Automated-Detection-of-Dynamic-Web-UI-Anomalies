@@ -1,0 +1,32 @@
+{
+  "id": "bug_displaynone_collapse_6",
+  "condition": "A1B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The list of to-do items unexpectedly disappears from the UI, leaving only the input field and footer, which deviates from the expected persistent list view.",
+  "defect_type": "displaynone_collapse",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The list of to-do items unexpectedly disappears from the UI, leaving only the input field and footer, which deviates from the expected persistent list view.\", \"defect_type\": \"displaynone_collapse\"}",
+  "usage": {
+    "prompt_tokens": 3985,
+    "candidates_tokens": 52,
+    "total_tokens": 4037
+  },
+  "latency_s": 0.86,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 3.84,
+    "dom": {
+      "available": true,
+      "total_mutations": 196,
+      "mutations_near_transition": 61,
+      "near_breakdown": {
+        "attributes:input": 56,
+        "childList:ul": 2,
+        "characterData:#text": 2,
+        "childList:body": 1
+      }
+    }
+  }
+}

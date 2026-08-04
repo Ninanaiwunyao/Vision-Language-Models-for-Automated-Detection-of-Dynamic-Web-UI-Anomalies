@@ -1,0 +1,30 @@
+{
+  "id": "bug_vanish_invisible_10",
+  "condition": "A1B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The primary todo list component disappears from the screen entirely without a corresponding user action or expected state change.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The primary todo list component disappears from the screen entirely without a corresponding user action or expected state change.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3963,
+    "candidates_tokens": 42,
+    "total_tokens": 4005
+  },
+  "latency_s": 0.84,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.44,
+    "dom": {
+      "available": true,
+      "total_mutations": 82,
+      "mutations_near_transition": 17,
+      "near_breakdown": {
+        "attributes:input": 16,
+        "childList:body": 1
+      }
+    }
+  }
+}
