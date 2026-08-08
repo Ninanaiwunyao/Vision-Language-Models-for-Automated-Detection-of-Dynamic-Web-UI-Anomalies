@@ -1,0 +1,64 @@
+\chapter{Methodology}
+\label{chap:methodology}
+
+\section{Outline}
+This chapter explains the proposed methodology for automated detection of web UI dynamic anomalies using Vision-Language Models (VLMs). In Section \ref{sec:overview}, we give an overview of the four main steps of our methodology. In Section \ref{sec:data_prep}, we describe the data preparation and dynamic fault injection phases. In Section \ref{sec:system_architecture}, we explore the pipeline design and dual-path filtering architecture. In Section \ref{sec:env_setup}, we list the server settings, libraries, and multimodal baseline models used to implement our methods. In Section \ref{sec:benchmarking}, we clarify how we evaluate the models through benchmarking and structured metrics. Lastly, in Section \ref{sec:summary}, we identify our contributions in the context of this methodology.
+
+\section{Overview of Proposed Methodology}
+\label{sec:overview}
+Our research aims to implement and evaluate an automated testing pipeline leveraging Large Vision-Language Models (VLMs) to excel in dynamic web UI anomaly detection in the software testing domain. To accomplish this, we created a novel methodology that can be divided into four main steps:
+\begin{enumerate}
+    \item \textbf{Automated Fault Injection and Dataset Generation}: Utilizing Playwright to render synthetic control and experimental UI interaction sequences.
+    \item \textbf{Quality Gate Pre-processing}: Filtering raw video assets via pixel-level difference analysis to ensure non-ambiguous ground truth.
+    \item \textbf{Dual-Path Anomaly Detection Pipeline}: Routing visual signals and DOM mutation events to specialized reasoning paths.
+    \item \textbf{Empirical Benchmarking}: Evaluating SOTA multimodal models using structured JSON responses under zero-shot settings.
+\end{enumerate}
+
+\section{Data Preparation and Generation}
+\label{sec:data_prep}
+The quality and quantity of testing data are critical factors for the evaluation of multimodal models. To ensure the relevance and validity of results while avoiding manual annotation overhead, we conducted automated fault injection to obtain structured, reproducible datasets.
+
+\subsection{Dataset Generation}
+The subsequent step in data preparation involved examining the presence and patterns of dynamic visual defects (e.g., layout shifts, unexpected opacity dampening, and element occlusions) across web interfaces. This step involved using Playwright script loops to record interactive sessions on standard web application benchmarks, specifically TodoMVC architectural variants (React, Vue, and VanillaJS). The objective was to capture deterministic sequences of nominal and defective UI states. To prevent environmental noise and external anti-bot mechanisms (such as CAPTCHA challenges), local host instances and isolated DOM environments were enforced during execution.
+
+\subsection{Feature Engineering and Data Pre-processing}
+Following data generation, feature engineering and pre-processing were undertaken on the raw video assets to improve model evaluation consistency and efficiency. Feature engineering involves extracting temporal keyframes and tracking DOM mutation records to enhance the model's predictive capability. Additional pre-processing steps included a dual-path automated Quality Gate using \texttt{pixelmatch} to verify zero-pixel-difference in control cases and validate mandatory visual deviation thresholds in injected defect cases before benchmark deployment.
+
+\section{System Architecture and Pipeline Design}
+\label{sec:system_architecture}
+This section details our method for building the dual-path filtering and comparison framework. We introduced a dedicated prompt template paired with structured JSON schema specifications to route the visual interaction frames and textual DOM trace logs to the appropriate validation path depending on the nature of the UI anomaly. This approach further simplified our system, offering a swifter way to benefit from combined multi-modal visual-spatial and structural knowledge, thereby mitigating VLM over-sensitivity and false positive rates.
+
+\section{Model Selection and Environment Setup}
+\label{sec:env_setup}
+
+\subsection{Model Selection}
+Transformer architectures have revolutionized machine learning by allowing models to selectively attend to multi-modal visual and spatial inputs. For our study, we selected two distinct models representing commercial and open-weight paradigms:
+\begin{itemize}
+    \item \textbf{Gemini 3 Flash}: A commercial multimodal model natively optimized for video input streams, serving as our primary closed-source baseline due to its high efficiency and cost-effectiveness.
+    \item \textbf{Qwen2.5-VL}: An advanced open-weight Vision-Language Model tailored for high-resolution UI comprehension, serving as our primary open-source baseline for local GPU inference.
+\end{itemize}
+
+\subsection{Server and Library Settings}
+To conduct our experiments, we prepared a virtual machine environment on the department's \texttt{vLab} infrastructure equipped with an NVIDIA T4 GPU. We installed and configured the necessary runtime libraries and frameworks, including \texttt{Playwright} for automated rendering, \texttt{pixelmatch} for Quality Gate validation, \texttt{OpenCV} and \texttt{Pandas} for video keyframe extraction, and \texttt{PyTorch} / \texttt{Transformers} for loading open-source VLM inference pipelines.
+
+\section{Evaluation Metrics and Benchmarking}
+\label{sec:benchmarking}
+Benchmarking is an essential process in the evaluation and comparative analysis of Vision-Language Models in software engineering. To ensure consistency, we selected standardized metrics tailored to binary anomaly classification and structured defect extraction.
+
+The evaluation metrics used in this research are Accuracy, Recall (True Positive Rate), and False Positive Rate (FPR):
+\begin{itemize}
+    \item \textbf{Accuracy}: Measures the proportion of correctly identified normal and defective UI sequences over the total dataset.
+    \item \textbf{Recall}: Computes the ratio of correctly identified anomalies out of all actual injected defects:
+    \begin{equation}
+        \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
+    \end{equation}
+    \item \textbf{False Positive Rate (FPR)}: Assesses the rate at which nominal UI transitions are misclassified as bugs, calculated as:
+    \begin{equation}
+        \text{FPR} = \frac{\text{False Positives}}{\text{False Positives} + \text{True Negatives}}
+    \end{equation}
+\end{itemize}
+All VLM outputs are constrained via JSON Schema to log binary status (\texttt{is\_buggy}), defect category (\texttt{bug\_type}), and explanatory reasoning for transparent analysis.
+
+\section{Summary}
+\label{sec:summary}
+In this chapter, we took proactive actions toward designing an automated web UI testing pipeline and evaluating multimodal Vision-Language Models under dynamic interaction scenarios. To our knowledge, this is among the first methodologies applying a dual-path filtering architecture with automated fault injection for dynamic web UI anomaly detection. Our methodology refined the visual input pre-processing phase and unlocked the potential of modern VLMs as automated visual quality assurance partners.
