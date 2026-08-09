@@ -1,15 +1,228 @@
-% chapters/introduction.tex
+% =====================================================================
+% Chapter 1: Introduction  --  DRAFT v2 (reframed for actual results)
 %
-% Copyright 2022 Alexander Lyttle.
+% ⚠️ 與 v1 的差別：v1 把 A3（融合選幀）寫成貢獻一。實驗證偽了 A3，
+%    因此貢獻清單、RQ、範圍全部重寫。現在的定位是：
+%      - proposed method = A1B1（像素選幀 + 雙路決策）
+%      - A3 = 被證偽的設計，作為帶機制的負面結果呈現
 %
-% This work may be distributed and/or modified under the conditions of the
-% LaTeX Project Public License (LPPL) version 1.3 or later.
-%
-% The latest version of this license is in
-% https://www.latex-project.org/lppl.txt and version 1.3 or later is part of
-% all distributions of LaTeX version 2005/12/01 or later.
-%
-%
+% 標註等級：[OK] / [DERIVED] / [VERIFY] / [FILL]
+% =====================================================================
+
 \chapter{Introduction}
 \label{chap:introduction}
-This is the introduction chapter.
+
+
+\section{Background and Motivation}
+\label{sec:motivation}
+
+Modern web applications are increasingly defined by their dynamic
+behaviour. Interface state is no longer a sequence of discrete page loads
+but a continuous flow of transitions: menus that slide, skeleton screens
+that resolve into content, components that re-render in response to
+asynchronous data. This shift has introduced a class of defect that is
+poorly served by existing quality assurance practice. A dropdown whose
+transition stutters, a component that flickers during re-rendering, or a
+layout that shifts as content loads and causes a user to click the wrong
+control are all failures a user experiences directly, yet none is reliably
+captured by the tools currently used to test web interfaces.
+
+Two established approaches exist, and each misses this class of defect for
+a different reason. Functional testing frameworks such as Playwright and
+Selenium assert over the document object model (DOM), and therefore pass
+whenever the structural state eventually converges on the expected value,
+irrespective of how the interface behaved on the way there. Visual
+regression testing (VRT) compares rendered screenshots against approved
+baselines, and therefore observes appearance rather than structure, but
+does so at isolated instants and with an oracle that cannot distinguish
+meaningful change from rendering noise.
+
+The severity of this second limitation is now quantified.
+\citet{zhang2026beyond} evaluate pixel-level comparison on a benchmark of
+human-verified Web UI changes and find that a naive pixel diff suppresses
+none of the non-meaningful changes at all, and that adding a difference
+threshold with anti-aliasing tolerance raises suppression only to
+\SI{6.72}{\percent} --- a false-positive rate above \SI{93}{\percent}.
+The practical consequence is alert fatigue: reviewers confronted with
+large volumes of spurious differences at every release cycle come to
+distrust the signal.
+% [OK] 數字出自 Zhang et al. (2026) Table VI，Claude 已核對。
+% [VERIFY] "alert fatigue" 這句目前沒有引用支撐。建議補一筆工業案例研究，
+%   或維持這種較保守的措辭。
+
+Vision-language models (VLMs) appear to offer the semantic discrimination
+the pixel oracle lacks. A model that can recognise that a button has
+shrunk because the viewport narrowed, rather than because a stylesheet
+broke, would address the false-positive problem at its source. Yet the
+evidence to date suggests that supplying a VLM with raw video and asking
+whether a defect is present does not work. TempGlitch reports that VLMs
+given temporally sampled video perform close to chance on defect
+detection, falling into one of two extremes: flagging almost everything or
+almost nothing~\citep{tempglitch}. The same bimodal failure has been
+observed in the static web UI setting, where one off-the-shelf model
+suppressed \SI{99.63}{\percent} of visual noise but detected only
+\SI{65.68}{\percent} of genuine changes, while another failed in the
+opposite direction~\citep{zhang2026beyond}.
+% [!! RED] ★ TempGlitch 這一筆 Claude 完全沒有查證過 —— 沒有作者、年份、
+%   venue、DOI。這是你整篇論文的出發點，必須在提交前親自讀過原文，
+%   確認上述結論確實出自該文。詳見 Chapter 2 的說明。
+% [OK] Zhang et al. 的兩個數字已核對。
+
+This dissertation proceeds from the hypothesis that the problem lies less
+in the model than in what the model is shown and what it is asked. If a
+VLM is given a sequence of largely redundant frames sampled without regard
+to when anything happened, and asked an unanchored question with no
+reference point, poor performance is unsurprising. The intervention
+proposed here is therefore not a new model but a new way of constructing
+the evidence a model receives and the decision it is asked to make.
+
+
+\section{Problem Statement}
+\label{sec:problem}
+
+The problem addressed by this dissertation may be stated as follows.
+Given a recording of a user interacting with a web interface, together
+with the structural events emitted by that interface during the
+interaction, determine whether the interaction exhibited a dynamic visual
+defect, and if so of what kind, at a false positive rate low enough for
+the result to be actionable and at a computational cost low enough for the
+method to run on every release.
+
+Three properties of this problem make it difficult. First, the evidence is
+temporal: a defect may be visible for a fraction of a second within a
+recording of several seconds, so the moment of sampling determines whether
+it is observed at all. Second, the negative class is not empty of change:
+a correctly functioning interface also moves, so an oracle cannot treat
+motion as evidence of failure. Third, the cost of inference scales with
+the number of frames supplied, so any approach that improves coverage by
+supplying more frames trades accuracy against expense.
+
+
+\section{Research Questions}
+\label{sec:rqs}
+
+This dissertation addresses four research questions, each corresponding to
+a contrast within the experimental design set out in
+Chapter~\ref{chap:methodology}.
+
+\begin{description}
+  \item[RQ1] Does adaptive keyframe selection improve detection accuracy
+    over uniform temporal sampling, when the reasoning model and the
+    prompt are held constant?
+
+  \item[RQ2] Does a dual-path decision procedure, in which the model's
+    semantic judgement is combined with structural evidence, reduce the
+    false positive rate relative to an unanchored prompt, when the
+    keyframe selection strategy is held constant?
+
+  \item[RQ3] Does incorporating DOM mutation events into the keyframe
+    selection criterion improve upon selection by pixel difference alone?
+
+  \item[RQ4] What is the resource cost of each condition, measured in
+    tokens, latency and monetary terms, relative to the uniform-sampling
+    baseline?
+\end{description}
+% [VERIFY] 這四個 RQ 對應到你的四格：
+%   RQ1 = A0B0 vs A3B0（選幀，prompt 固定）
+%   RQ2 = A3B0 vs A3B1（決策，選幀固定）
+%   RQ3 = A1B1 vs A3B1（融合 vs 純像素，prompt 固定）
+%   RQ4 = 全部條件的資源比較
+%   請確認這個對應與 Chapter 3、Chapter 4 完全一致。
+
+
+\section{Contributions}
+\label{sec:contributions}
+
+The contributions of this dissertation are as follows. Two are positive
+findings and one is a negative finding; all three are reported as
+obtained.
+
+\begin{enumerate}
+  \item A \textbf{dual-path decision procedure} that treats the model's
+    semantic judgement and the interface's structural signals as separate
+    lines of evidence and fuses them at the point of decision. This
+    procedure eliminated false positives entirely, from 10 of 60 nominal
+    clips under the baseline to 0 of 60, in every repetition and under
+    both keyframe selectors tested, while raising rather than lowering
+    anomaly recall.
+
+  \item A demonstration that \textbf{adaptive keyframe selection is a cost
+    intervention rather than an accuracy intervention}. Replacing uniform
+    six-frame sampling with three selected frames reduced token
+    consumption by between 39 and 49 per cent with no measurable effect on
+    accuracy in either direction, a null result of practical value in
+    itself.
+
+  \item A \textbf{negative result concerning structural signals in
+    selection}. Incorporating DOM mutation events into the keyframe
+    selection criterion, which was the design this study originally set
+    out to validate, conferred no benefit over pixel-only selection and
+    produced a statistically supported degradation when combined with the
+    dual-path prompt (all eight discordant clips favouring pixel-only
+    selection, $p_{\text{Holm}} = 0.031$, Cohen's $g = 0.500$). The
+    finding motivates a distinction between the value of structural
+    evidence at the point of decision, where it proved effective, and at
+    the point of selection, where it proved harmful.
+
+  \item A \textbf{fully automated fault injection pipeline} that produces
+    labelled recordings of dynamic web UI defects without manual
+    annotation, together with a quality gate that verifies each injected
+    defect is visually manifest before the recording enters the dataset.
+
+  \item An \textbf{empirical evaluation} under a predefined statistical
+    protocol, comprising 1{,}440 model invocations across four conditions
+    with three repetitions, reporting dispersion, bootstrap interval
+    estimates, omnibus and corrected pairwise testing, and effect sizes
+    throughout.
+\end{enumerate}
+% [OK] 第 1、2、3、5 點的數字皆取自 summary.json，Claude 已核對。
+% [VERIFY] 第 3 點是本論文最不尋常也最有價值的一點。請確認你願意
+%   把「證偽自己原本的設計」明確列為貢獻 —— 這是正確且加分的做法，
+%   但你必須在 Demo 面談時能自信地說明為什麼它是貢獻。
+
+
+\section{Scope and Delimitations}
+\label{sec:scope}
+
+Three boundaries are set explicitly at the outset.
+
+The reasoning model is held constant across all experimental conditions. A
+single model, \texttt{gemini-3.1-flash-lite}, was used throughout with
+temperature fixed at zero. The contribution claimed here concerns the
+construction of evidence supplied to a model rather than the relative
+capability of models, and holding the model fixed isolates the effect of
+interest. Cross-model comparison is identified as future work in
+Section~\ref{sec:futurework}.
+% [VERIFY] ⚠️ 一致性檢查：你在第二次會議的信裡向教授提過 Qwen2.5-VL，
+%   並用它申請了 vLab GPU；你已在 8/2 的信裡主動說明砍掉這一項。
+%   請確認 Chapter 3 §3.4 與 Chapter 5 §5.5 的措辭與此處一致，
+%   且 Chapter 3 已移除「兩個模型」的舊敘述。
+
+The evaluation is conducted on synthetically generated recordings of a
+controlled application served locally. This affords exact ground truth and
+reproducible defect timing, both necessary for the paired comparisons
+undertaken here, at the cost of external validity. The extent to which the
+findings transfer to production interfaces is not established and is
+discussed in Section~\ref{sec:limitations}.
+
+The defect taxonomy covers six classes of dynamic visual anomaly
+observable within a short interaction recording. Defects that manifest
+only over longer sessions, that depend on backend state, or that are
+purely functional rather than visual are out of scope.
+
+
+\section{Dissertation Structure}
+\label{sec:structure}
+
+The remainder of this dissertation is organised as follows.
+Chapter~\ref{ch:litreview} reviews work on visual regression testing, the
+characterisation of web UI defects, the application of vision-language
+models to visual software engineering tasks, and the construction of video
+input for such models, concluding with an explicit statement of the
+research gap. Chapter~\ref{chap:methodology} sets out the methodology,
+covering dataset generation by automated fault injection, the keyframe
+selection and dual-path decision components, the four-condition ablation
+design, and the statistical protocol.
+Chapter~\ref{chap:results_and_discussion} reports and discusses the
+results. Chapter~\ref{chap:conclusion} concludes and identifies directions
+for further work.

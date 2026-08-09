@@ -1,3 +1,641 @@
+% =====================================================================
+% Chapter 4: Results and Discussion  --  DRAFT v2 (with real data)
+%
+% 所有數字均取自你的 summary.json (EXP002)，Claude 已逐格核對。
+% 由我推導出來的數字標成 [DERIVED]，請你自己驗算一次。
+% 缺資料的地方標成 [FILL]。
+%
+% 標註等級：
+%   [OK]      = 直接來自 summary.json，已核對
+%   [DERIVED] = Claude 從 summary.json 推導，請驗算
+%   [VERIFY]  = 需要你確認的事實或詮釋
+%   [FILL]    = 缺資料，你必須補
+% =====================================================================
+
 \chapter{Results and Discussion}
 \label{chap:results_and_discussion}
-This chapter presents the experimental setup and empirical evaluation.
+
+
+\section{Overview}
+\label{sec:r-overview}
+
+Having set out the methodology in Chapter~\ref{chap:methodology}, this
+chapter reports the results obtained. Section~\ref{sec:pilot} summarises a
+pilot study that motivated the design of the main experiment.
+Section~\ref{sec:mainresults} reports overall performance across the four
+experimental conditions and the associated hypothesis tests.
+Section~\ref{sec:attribution} attributes the observed effects to the
+individual components, answering RQ1 to RQ3.
+Section~\ref{sec:cost} reports the resource analysis, answering RQ4.
+Section~\ref{sec:failure} examines the cases in which the methods failed
+and advances a mechanistic account of the principal negative result.
+Section~\ref{sec:discussion} discusses the implications.
+
+It should be stated at the outset that two of the three principal findings
+are negative. The fused pixel-and-DOM keyframe selector, originally
+conceived as the primary technical contribution of this work, provides no
+accuracy benefit over the uniform-sampling baseline, and actively degrades
+performance when combined with the dual-path decision procedure. These
+results are reported in full, and the design is presented as falsified
+rather than reframed.
+% [VERIFY] 這一段是全章的定調。Dr Chen 已回信認可此 framing。
+%   建議在 Methodology 或 Acknowledgements 註明此決定經指導教授確認。
+
+
+\section{Pilot Study}
+\label{sec:pilot}
+
+A pilot study was conducted before the main experiment to establish
+whether the pipeline could separate conditions at all, and to surface
+implementation problems before committing to a full run. The pilot used 16
+recordings, balanced between eight nominal and eight defective cases, and
+compared uniform six-frame sampling under a naive prompt against
+three-frame pixel-difference selection under a dual-path prompt --- that
+is, the conditions later designated A0B0 and A1B1.
+
+Accuracy rose from 0.750 to 0.938, false positive rate fell from 0.125 to
+0.000, and anomaly recall rose from 0.625 to 0.875. The paired comparison
+was more informative than these aggregates: three recordings were
+corrected by the proposed method and none was degraded by it. The McNemar
+exact test nevertheless returned $p = 0.25$, reflecting insufficient power
+at $n = 16$ rather than absence of effect. The pilot therefore achieved
+its purpose --- establishing separability and a consistent direction of
+effect --- and motivated the main experiment at larger scale.
+% [VERIFY] 這些數字取自你的 PoC 紀錄，請對照 poc/results/summary.json 核對。
+% [VERIFY] 我在第一段末尾點明「pilot 的 proposed method 就是後來的 A1B1」。
+%   這一點在論文中很重要：它讓主實驗中 A1B1 的優異表現不是意外，
+%   而是預試結果的獨立重現，強化了 A1B1 作為 proposed method 的正當性。
+
+
+\section{Main Results}
+\label{sec:mainresults}
+
+\subsection{Experimental scope}
+
+The main experiment comprised 1{,}440 model invocations: 120 recordings,
+evenly divided between 60 nominal clips and 60 defective clips spanning
+six defect classes at ten clips each, evaluated under four conditions and
+repeated three times. A single model, \texttt{gemini-3.1-flash-lite}, was
+used throughout with temperature fixed at zero. One response out of
+1{,}440 failed schema validation and was scored as incorrect.
+% [OK] 全數取自 summary.json。
+
+\subsection{Overall performance}
+
+Table~\ref{tab:mainresults} reports performance across the four
+conditions.
+
+\begin{table}[htbp]
+\centering
+\caption{Performance across the four experimental conditions. Values are
+the mean across three independent executions with the between-run standard
+deviation; bracketed intervals are 95\% bootstrap percentile confidence
+intervals over recordings, from 10{,}000 resamples with a fixed seed.
+Accuracy is computed over all 120 clips, false positive rate over the 60
+nominal clips, and recall over the 60 defective clips. Lower is better for
+false positive rate and higher for all other columns. A1B1 attains the
+highest accuracy and recall of the four conditions, and both dual-path
+conditions attain a false positive rate of exactly zero.}
+\label{tab:mainresults}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Condition & Accuracy & FPR & Recall & Type match \\
+          & ($n{=}120$) & ($n{=}60$) & ($n{=}60$) & \\
+\midrule
+A0B0 (baseline)
+  & $0.753 \pm 0.005$ & $0.167$ & $0.667$ & --- \\
+  & \footnotesize[0.675, 0.828] & & & \\
+A1B1 (proposed)
+  & $\mathbf{0.908} \pm 0.000$ & $\mathbf{0.000}$ & $\mathbf{0.817}$ & $0.633$ \\
+  & \footnotesize[0.850, 0.958] & & & \footnotesize(31/49) \\
+A3B0
+  & $0.756 \pm 0.005$ & $0.117$ & $0.633$ & --- \\
+  & \footnotesize[0.678, 0.831] & & & \\
+A3B1
+  & $0.842 \pm 0.008$ & $\mathbf{0.000}$ & $0.683$ & $0.512$ \\
+  & \footnotesize[0.775, 0.903] & & & \footnotesize(21/41) \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [OK] 全部數字取自 summary.json，Claude 已逐格核對。
+% [VERIFY] Type match 只有 B1 條件有值，推測是因為 B0 的 prompt
+%   不要求輸出 bug_type。請確認這個理解正確，並在 Chapter 3 §3.3.3 交代。
+
+Table~\ref{tab:mainresults} shows that the two conditions employing the
+dual-path decision procedure attain a false positive rate of exactly zero,
+with zero between-run variance, whereas both conditions employing the
+naive prompt produce false positives at rates of 0.167 and 0.117
+respectively. The effect is therefore associated with the decision layer
+rather than the keyframe selector, since it holds under both selectors
+tested.
+
+Accuracy separates the conditions less cleanly. A1B1 attains the highest
+accuracy at 0.908, followed by A3B1 at 0.842, with the two naive-prompt
+conditions indistinguishable from one another at 0.753 and 0.756. Notably,
+the condition employing the fused selector with the dual-path prompt
+(A3B1) performs worse than the condition employing pixel-only selection
+with the same prompt (A1B1), a result examined in
+Section~\ref{sec:attr-harm}.
+
+\subsection{Omnibus and pairwise testing on accuracy}
+
+A Cochran's Q test across the four conditions rejects the hypothesis of
+equal performance, $Q = 23.30$, $\mathrm{df} = 3$, $n = 120$,
+$p = 3.5 \times 10^{-5}$. Post-hoc pairwise comparisons using the exact
+McNemar test with Holm--Bonferroni correction are reported in
+Table~\ref{tab:mcnemar}.
+
+\begin{table}[htbp]
+\centering
+\caption{Pairwise exact McNemar tests on accuracy with Holm--Bonferroni
+correction across the six comparisons. The split column gives the number
+of clips correct under the first condition only against the number correct
+under the second condition only; only discordant pairs contribute to the
+test. Three comparisons survive correction, two of which involve the fused
+selector performing worse than the alternative.}
+\label{tab:mcnemar}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Contrast & $n_{\text{disc}}$ & Split & $p$ & $p_{\text{Holm}}$ & Cohen's $g$ \\
+\midrule
+A0B0 vs A1B1 & 21 & 1 / 20  & $2.1\times10^{-5}$ & $0.000126$ & 0.452 \\
+A0B0 vs A3B0 & 23 & 11 / 12 & $1.000$            & $1.000$    & 0.022 \\
+A0B0 vs A3B1 & 25 & 7 / 18  & $0.043$            & $0.130$    & 0.220 \\
+A1B1 vs A3B0 & 24 & 21 / 3  & $0.000277$         & $0.001385$ & 0.375 \\
+A1B1 vs A3B1 & 8  & 8 / 0   & $0.0078$           & $0.031$    & 0.500 \\
+A3B0 vs A3B1 & 24 & 7 / 17  & $0.064$            & $0.130$    & 0.208 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [OK] 全部取自 summary.json 的 posthoc_accuracy_mcnemar_holm。
+
+Three comparisons survive correction. The baseline is outperformed by
+A1B1 ($p_{\text{Holm}} = 0.000126$, $g = 0.452$). A1B1 outperforms A3B0
+($p_{\text{Holm}} = 0.001385$, $g = 0.375$). And, contrary to the design
+hypothesis, A1B1 outperforms A3B1 ($p_{\text{Holm}} = 0.031$,
+$g = 0.500$), with all eight discordant clips favouring A1B1 and none
+favouring A3B1.
+
+Two comparisons of design interest do not survive correction. The
+selector-only contrast A0B0 against A3B0 is not merely non-significant but
+essentially null, with a near-even discordant split of 11 against 12 and
+an effect size of $g = 0.022$. The prompt-only contrast A3B0 against A3B1
+yields $p_{\text{Holm}} = 0.130$ on accuracy, notwithstanding a discordant
+split of 7 against 17 favouring A3B1.
+
+\subsection{False positive rate}
+\label{sec:fprtest}
+
+False positive rate was designated the headline metric of this study prior
+to data collection, on the grounds set out in Section~\ref{sec:metrics},
+and is therefore reported here as a pre-specified analysis in its own
+right rather than as a post-hoc exploration. The analysis is restricted to
+the 60 nominal clips, using the majority verdict across the three runs.
+
+Under the baseline, 10 of 60 nominal clips were incorrectly flagged as
+defective. Under A3B0 the figure was 7 of 60. Under both dual-path
+conditions it was 0 of 60, in every one of the three runs. Because the
+dual-path conditions produce no false positives at all, every discordant
+pair in a comparison against them necessarily favours the dual-path
+condition, and the exact McNemar test reduces to a two-sided sign test.
+Table~\ref{tab:fpr} reports the results.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact McNemar tests on false positive rate over the 60 nominal
+clips. Because both dual-path conditions produce zero false positives,
+every discordant pair favours the dual-path condition. The adjusted values
+apply Holm--Bonferroni correction over the same six-comparison family used
+for accuracy in Table~\ref{tab:mcnemar}, which is the conservative choice.}
+\label{tab:fpr}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Contrast & FP counts & Split & $p$ & $p_{\text{Holm}}$ \\
+\midrule
+A0B0 vs A1B1 & 10 $\to$ 0 & 10 / 0 & $0.00195$ & FILL \\
+A0B0 vs A3B1 & 10 $\to$ 0 & 10 / 0 & $0.00195$ & FILL \\
+A3B0 vs A1B1 & 7 $\to$ 0  & 7 / 0  & $0.01563$ & FILL \\
+A3B0 vs A3B1 & 7 $\to$ 0  & 7 / 0  & $0.01563$ & FILL \\
+A1B1 vs A3B1 & 0 $\to$ 0  & 0 / 0  & $1.000$   & FILL \\
+A0B0 vs A3B0 & 10 $\to$ 7 & FILL   & FILL      & FILL \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [DERIVED] ★ 上表的 p 值由 Claude 從 summary.json 的 FPR 推導：
+%   b = 誤報數，c = 0（因 B1 條件誤報為 0，不可能有反向不一致）。
+%   精確 McNemar 退化為雙尾符號檢定：p = 2 x 0.5^b
+%   b=10 -> 0.001953；b=7 -> 0.015625
+% [FILL] ★ 你必須做兩件事：
+%   1. 從逐支原始結果算出 A0B0 vs A3B0 的配對表 (b/c)。
+%      注意 10 -> 7 不代表修好 3 支，可能是修好 5 支又弄壞 2 支。
+%   2. 用完整六組跑一次 Holm 校正，填入 p_holm 欄。
+%   ⚠️ 我試算過：六組一起校正時，A3B0 vs A3B1 的 p_holm 約 0.06，
+%      在 0.05 邊緣但不顯著。請照實報告，不要為了讓它顯著而縮小家族。
+%      你的 Statistic Display Rule 明文禁止「挑最好看的檢定回報」。
+%      主動說「這一格在校正後未達顯著」反而會加分。
+
+The pattern is unambiguous descriptively even where correction leaves
+individual contrasts short of conventional significance: the dual-path
+decision procedure eliminated false positives entirely under both
+selectors and in every repetition, whereas the naive prompt did not.
+
+\subsection{Performance by defect class}
+
+Table~\ref{tab:bybug} disaggregates anomaly recall by defect class.
+
+\begin{table}[htbp]
+\centering
+\caption{Anomaly recall disaggregated by injected defect class, given as
+correct detections out of ten clips per class under the majority verdict.
+Disaggregation reveals that the aggregate figures conceal substantial
+heterogeneity: one class is detected almost never under any condition,
+while the relative ordering of conditions reverses between classes.}
+\label{tab:bybug}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Defect class & A0B0 & A1B1 & A3B0 & A3B1 \\
+\midrule
+\texttt{blur\_unreadable}      & 10/10 & 10/10 & 6/10  & 9/10 \\
+\texttt{vanish\_invisible}     & 9/10  & 10/10 & 10/10 & 10/10 \\
+\texttt{flicker\_seizure}      & 9/10  & 8/10  & 10/10 & 5/10 \\
+\texttt{flyaway\_offset}       & 6/10  & 10/10 & 8/10  & 8/10 \\
+\texttt{skew\_distortion}      & 6/10  & 10/10 & 3/10  & 9/10 \\
+\texttt{displaynone\_collapse} & 0/10  & 1/10  & 1/10  & 0/10 \\
+\midrule
+Total                          & 40/60 & 49/60 & 38/60 & 41/60 \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [OK] 全部取自 summary.json 的 recall_by_bug_type。四欄總計已由
+%   Claude 驗算，與 anomaly_recall 相符 (40/60, 49/60, 38/60, 41/60)。
+
+Three observations follow. First, \texttt{displaynone\_collapse} is
+detected in only 2 of 40 clip-conditions and constitutes a blind spot
+common to every condition; it is analysed in
+Section~\ref{sec:failure-blindspot}. Second, A1B1 attains perfect recall
+on four of the six classes, more than any other condition. Third, the
+losses that distinguish A3B1 from A1B1 are not evenly distributed but
+concentrated in \texttt{flicker\_seizure} (8/10 to 5/10) and, to a lesser
+extent, \texttt{blur\_unreadable} and \texttt{flyaway\_offset}, while
+\texttt{vanish\_invisible} is unaffected. This concentration is the basis
+of the mechanistic account offered in Section~\ref{sec:failure-mechanism}.
+
+
+\section{Component Attribution}
+\label{sec:attribution}
+
+\subsection{RQ1: keyframe selection alone confers no accuracy benefit}
+\label{sec:attr-rq1}
+
+The contrast A0B0 against A3B0 isolates the keyframe selector, since the
+prompt is held constant. The result is null: accuracy 0.753 against 0.756,
+a discordant split of 11 against 12, $p_{\text{Holm}} = 1.000$ and
+$g = 0.022$. So far as accuracy is concerned, the answer to RQ1 is
+therefore negative. Selecting frames by change rather than uniformly does
+not by itself make the model more accurate.
+
+This finding is worth stating plainly because it contradicts the
+expectation on which the selector was designed. The reasoning behind
+adaptive selection was that uniform sampling wastes the model's limited
+input budget on redundant frames and may miss the defect interval
+entirely. The data support the first half of that reasoning but not the
+second: as Section~\ref{sec:cost} shows, selection halves the token cost,
+but the frames it substitutes do not yield better decisions.
+
+\subsection{RQ2: the dual-path procedure eliminates false positives}
+\label{sec:attr-rq2}
+
+The contrast A3B0 against A3B1 isolates the decision procedure, since the
+selector is held constant. On accuracy the improvement is substantial in
+magnitude but does not survive correction: 0.756 to 0.842, a discordant
+split of 7 against 17 favouring A3B1, $p_{\text{Holm}} = 0.130$,
+$g = 0.208$.
+
+On the headline metric the picture is sharper. False positive rate falls
+from 0.117 to exactly 0.000 in all three runs, with the seven false
+positives produced under the naive prompt all corrected and none
+introduced. The same pattern holds for the other selector: A1B1 likewise
+produces zero false positives. The dual-path decision procedure therefore
+achieves what it was designed to achieve, and does so independently of
+which selector supplies its frames.
+
+Importantly, this suppression is not bought at the cost of sensitivity.
+Recall rises rather than falls when the decision procedure is introduced,
+from 0.633 to 0.683 under the fused selector. The only class in which
+recall declines is \texttt{flicker\_seizure}, and that decline is
+implicated in the fusion problem discussed below rather than in the
+decision procedure itself, since the same procedure under pixel-only
+selection attains 0.817 overall recall.
+
+\subsection{RQ3: fusing the structural signal degrades performance}
+\label{sec:attr-harm}
+
+The contrast A1B1 against A3B1 isolates the effect of adding the DOM
+signal to the selector, with the prompt held constant. The result is
+negative and statistically supported: accuracy falls from 0.908 to 0.842,
+all eight discordant clips favour A1B1 and none favours A3B1,
+$p_{\text{Holm}} = 0.031$ and $g = 0.500$ --- the largest effect size in
+Table~\ref{tab:mcnemar}.
+
+The answer to RQ3 is therefore that fusion does not improve upon
+pixel-only selection; it is actively harmful under the dual-path prompt.
+The consistency of the discordant split, with no clip whatever favouring
+the fused selector, indicates a systematic rather than a stochastic
+degradation. A mechanistic account is offered in
+Section~\ref{sec:failure-mechanism}.
+
+\subsection{The aliased headline contrast}
+\label{sec:attr-alias}
+
+The largest single improvement observed, A0B0 to A1B1, changes both
+factors simultaneously and is therefore aliased: the gain cannot be
+partitioned between selector and prompt by that contrast alone. The
+condition A1B0, which would resolve the aliasing directly, was not
+executed. This was a deliberate decision taken after the results were
+known, on the grounds that adding a cell post hoc in order to improve the
+interpretability of a favourable result would compromise the pre-specified
+design. The aliasing is instead declared as a limitation in
+Section~\ref{sec:limitations}.
+
+A partial de-aliasing argument is nevertheless available from the cells
+that were run. The selector-only contrast A0B0 to A3B0 is null
+($g = 0.022$), indicating that substituting adaptive selection for uniform
+sampling does not by itself improve accuracy. If that finding generalises
+from the fused selector to the pixel-only selector, the A0B0 to A1B1 gain
+is attributable principally to the decision layer. This inference is
+suggestive rather than conclusive, since A1 and A3 are different selectors
+and the argument assumes precisely what it cannot test.
+% [VERIFY] ★ 這一段是全文最需要小心的推論。措辭已寫得很保守
+%   ("suggestive rather than conclusive")，請不要在別處把它講得更強。
+%   審查員極可能就此提問，你要能明確說出「我知道這是推論不是檢定」。
+
+
+\section{Resource Analysis}
+\label{sec:cost}
+
+Table~\ref{tab:cost} reports resource consumption per clip.
+
+\begin{table}[htbp]
+\centering
+\caption{Resource consumption per clip. Token counts and cost are means
+across all runs with between-run standard deviation; latency is reported
+as both mean and median because the two diverge materially for A3B1.
+Percentages give the reduction relative to the A0B0 baseline. All token
+and cost contrasts against the baseline are significant at
+$p_{\text{Holm}} < 10^{-6}$ by Wilcoxon signed-rank test with
+rank-biserial correlation of 1.00, indicating that the reduction holds for
+every clip without exception.}
+\label{tab:cost}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Condition & Tokens & vs.\ base & Cost (USD) & Latency mean / median (s) \\
+\midrule
+A0B0 & $6697.07 \pm 0.04$ & ---         & $0.00172$ & $1.140$ / $1.097$ \\
+A1B1 & $4030.81 \pm 0.02$ & $-39.8\,\%$ & $0.00107$ & $1.027$ / $0.983$ \\
+A3B0 & $3396.45 \pm 0.18$ & $-49.3\,\%$ & $0.00089$ & $0.994$ / $0.952$ \\
+A3B1 & $4072.17 \pm 0.08$ & $-39.2\,\%$ & $0.00108$ & $1.261$ / $0.903$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [OK] token / cost / latency 取自 summary.json。
+% [DERIVED] 百分比由 Claude 計算：(6697.07 - x) / 6697.07。請驗算。
+
+The answer to RQ4 is that adaptive selection reduces token consumption
+substantially. Replacing uniform six-frame sampling with three selected
+frames reduces tokens by between 39 and 49 per cent depending on
+condition, and this reduction is significant against the baseline for
+every condition at $p_{\text{Holm}} < 10^{-6}$.
+
+Two qualifications are required. First, the saving attributable to fusion
+specifically is nil. The dual-path prompt adds approximately 676 tokens of
+overhead, inferred from the difference between A3B1 and A3B0; applying
+that overhead to A1B1 implies that pixel-only selection under a naive
+prompt would consume approximately 3{,}355 tokens, marginally fewer than
+the 3{,}396 consumed by fused selection. The fused selector is therefore
+no cheaper than the pixel-only selector, and the token reduction reported
+above is attributable to reducing the frame count from six to three, which
+both selectors achieve equally.
+% [DERIVED] ★ 這一段的推算是 Claude 做的，請務必自己驗算：
+%   B1 prompt overhead = A3B1 - A3B0 = 4072.17 - 3396.45 = 675.72
+%   implied A1B0     = A1B1 - 675.72 = 4030.81 - 675.72 = 3355.08
+%   3355.08 < 3396.45 -> A3 並不比 A1 省 token。
+%   ⚠️ 此推算假設 B1 的 prompt overhead 在兩個選幀器下相同。
+%      這個假設合理但未經檢驗，已在正文用 "inferred" 保留餘地，
+%      建議另加一個註腳明說。
+%   ⚠️ 這一點很重要：它切斷了「A3 準確度沒贏但至少比較省」
+%      這條最後的辯護路線。誠實報告它會加分。
+
+Second, latency behaves inconsistently for A3B1, whose median of
+\SI{0.903}{\second} is the lowest of the four conditions while its mean of
+\SI{1.261}{\second} is the highest. This divergence indicates a small
+number of substantially delayed responses rather than a uniform slowdown.
+Reporting the median alone would misrepresent the condition, and both are
+therefore given.
+% [DERIVED] ★ 這個矛盾是 Claude 從 summary.json 發現的：
+%   A3B1 mean_latency_s = 1.261 是四個條件裡最高，
+%   但你 8/2 信裡 Table 2 只報了 median 0.903（最低）。
+%   ⚠️ 那封信因此讓 A3B1 看起來比實際好。論文兩個都報是正確做法，
+%      建議在下一封給 Dr Chen 的信裡主動補充說明這一點。
+% [FILL] 建議去 raw 結果確認那幾筆特別慢的呼叫是什麼情況
+%   （API 重試？特定影片？），能解釋的話寫進來會更完整。
+
+
+\section{Failure Analysis}
+\label{sec:failure}
+
+Aggregate metrics conceal the boundary of a method's applicability. This
+section examines where the methods failed and why.
+
+\subsection{A blind spot common to all conditions}
+\label{sec:failure-blindspot}
+
+The defect class \texttt{displaynone\_collapse}, in which a content block
+is removed from the layout by setting its display property to none, was
+detected in only 2 of 40 clip-conditions. No condition detected more than
+one of the ten clips in this class, and both the baseline and the
+best-performing condition detected none at all.
+
+The pilot study identified the mechanism. When the list block is hidden,
+the remaining interface consists of an input field and a footer, which is
+visually indistinguishable from a legitimate empty list. The defect is not
+subtle in the sense of being small or low-contrast; it is subtle in the
+sense of producing a state that the application could plausibly have
+reached correctly. A detector reasoning about appearance alone therefore
+has no basis on which to reject it.
+
+This is the case that most clearly motivates a structural signal, and it
+is instructive that the fused selector did not help here either. The
+structural evidence available in the recording was not the absence of the
+block but the presence of unrelated DOM activity from concurrent typing,
+which the dual-path procedure read as evidence of legitimate user-driven
+change. The signal was present but was the wrong signal.
+% [VERIFY] 這段機制說明取自你 PoC 的 displaynone_collapse 分析。
+%   請確認主實驗的 raw 結果也是同樣的失敗模式，而不只是 pilot。
+%   若能引用主實驗中某一支的模型原話（一句即可），說服力會強很多。
+
+\subsection{A mechanistic account of the fusion failure}
+\label{sec:failure-mechanism}
+
+The degradation caused by fusion is systematic, with all eight discordant
+clips favouring pixel-only selection, and is concentrated by defect class.
+Any adequate explanation must account for that concentration.
+
+% =====================================================================
+% [FILL] ★★★ 全章最重要的空缺 ★★★
+%
+% 你在 8/2 給 Dr Chen 的信裡承諾過："I will run a frame comparison to
+% investigate the mechanism before writing the chapter."
+% 這一段就是那個分析的位置。沒有它，A3 的失敗只是「就是變差了」；
+% 有了它，才構成 "falsified design with a mechanistic explanation"。
+%
+% ---------------------------------------------------------------------
+% Claude 從你的數據推出一個可檢驗的假說，你可以拿去驗證或推翻：
+%
+% 【假說】A3 把 DOM mutation 納入選幀準則，會把選出的幀拉向
+%   「結構變動的時刻」，而那不等於「視覺缺陷發生的時刻」。
+%   對於純粹以 CSS 屬性注入的缺陷（opacity 震盪、transform 位移、
+%   skew 變形），DOM 結構可能根本沒有變動，因此 DOM 訊號不但沒有
+%   幫助，還會把有限的選幀預算分配給使用者輸入所產生的無關 DOM 事件。
+%
+% 【數據上的支持】A3B1 相對 A1B1 損失最大的是 flicker_seizure
+%   (8/10 -> 5/10)，其次是 blur_unreadable 與 flyaway_offset；
+%   而 vanish_invisible 完全沒有損失 (10/10 -> 10/10)。
+%
+% 【你要做的驗證，兩步就夠】
+%   1. 打開注入腳本，逐類確認：哪幾類缺陷的注入方式「不會」產生
+%      DOM mutation record？若 flicker / flyaway / skew 屬於這一類，
+%      而 vanish 會產生，假說就得到支持。
+%   2. 對 2--3 支 discordant 的 clip，把 A1 與 A3 選出的幀的時間戳
+%      印出來對照，看 A3 選的幀是否系統性地偏離缺陷發生區間。
+%      不需要全部影片都做。
+%
+% 【呈現方式】建議放一張圖：同一支 clip 的時間軸，標出缺陷區間、
+%   A1 選的幀、A3 選的幀。這一張圖能一眼說完整個機制，
+%   在 8/17--8/28 的 Demo 面談會非常有用。
+%
+% ⚠️ 如果驗證後發現假說是錯的，照實寫你實際發現的機制。
+%    不要為了讓假說成立而挑選證據。
+% =====================================================================
+
+\subsection{Defect type identification}
+
+Among clips correctly identified as defective, the predicted defect class
+matched the ground truth in 31 of 49 cases under A1B1 and 21 of 41 under
+A3B1. Correct detection therefore does not imply correct characterisation
+in roughly a third of cases.
+% [OK] 取自 summary.json 的 defect_type_match。
+
+% [FILL] 建議補一段混淆分析：哪些類別最常被互相混淆？
+%   你的 PoC 觀察到 flyaway 被標成 vanish —— 兩者都是「元件從畫面上
+%   不見了」，這反映的是分類邊界模糊，而非模型判斷錯誤。
+%   若主實驗也是這個模式，寫出來很有價值：它說明部分 type-match
+%   的失敗其實是分類法的問題，不是方法的問題。
+%   做法：從 raw 結果做一張 6x6 混淆矩陣。
+
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Where the improvement comes from}
+
+The results converge on a single interpretation. The component that
+produces the improvement is the decision layer, not the selection layer.
+Selection reduces cost by roughly half without affecting accuracy in
+either direction; the dual-path decision procedure eliminates false
+positives entirely under both selectors tested and raises accuracy from
+approximately 0.75 to between 0.84 and 0.91.
+
+This locates the difficulty precisely. The failure of an off-the-shelf
+model given raw frames is not primarily a failure to see. Under uniform
+sampling the baseline already achieved 0.667 recall, and on two defect
+classes it achieved 9 or 10 detections out of 10. What it lacked was a
+basis on which to judge that an observed difference was legitimate. The
+qualitative evidence from the pilot supports this reading: the baseline's
+false positives were not misperceptions but confabulations, in which the
+model constructed a plausible defect narrative for a nominal recording
+because nothing in its input licensed the alternative conclusion.
+
+\subsection{Relation to the literature}
+
+\citet{zhang2026beyond} report that off-the-shelf vision-language models
+applied to web UI change detection trade suppression against sensitivity:
+one model suppressed \SI{99.63}{\percent} of non-meaningful changes while
+detecting only \SI{65.68}{\percent} of genuine ones, and another failed in
+the opposite direction. The results reported here depart from that pattern
+in an important respect. The dual-path procedure eliminated false
+positives completely while recall rose rather than fell. The trade-off
+reported in the literature therefore appears not to be intrinsic to the
+use of vision-language models for this task, but attributable to the
+manner in which such models are prompted and grounded.
+
+It must be emphasised that these figures are not directly comparable. The
+suppression rates reported by \citet{zhang2026beyond} are computed over
+synthetically injected non-meaningful changes between static image pairs,
+whereas the false positive rate reported here is computed over nominal
+interaction recordings; the populations and the operational definitions
+differ. The comparison supports a claim about direction and mechanism, not
+a claim of superior measured performance.
+% [VERIFY] ★ 這第二段是我特別加的防守。審查員一定會問
+%   「你的 0% 和他們的 93% 能比嗎」。主動先講清楚，
+%   會從弱點變成優點。請不要刪掉這一段。
+
+The same qualification applies to the motivating figure for this study.
+\citet{zhang2026beyond} measure pixel-level comparison at a false-positive
+rate above \SI{93}{\percent} on non-meaningful changes, while the present
+study measures a false-positive rate of zero on nominal recordings. The
+direction and magnitude of the difference are consistent with the argument
+that a semantic decision layer addresses what threshold tuning cannot, but
+the two quantities are not measurements of the same thing.
+
+\subsection{The status of the fused selector}
+
+The fused selector was the design this study set out to validate, and the
+data do not support it. It confers no accuracy benefit over uniform
+sampling, no cost benefit over pixel-only selection, and a statistically
+supported accuracy penalty when combined with the decision layer it was
+designed to serve.
+
+The appropriate conclusion is not that structural signals are useless for
+this task. The dual-path decision procedure, which also consumes
+structural evidence, is the component that worked. What the data indicate
+is that the structural signal is valuable at the point of decision, where
+it can be weighed against a semantic judgement, and harmful at the point
+of selection, where it competes with the visual signal for a fixed frame
+budget. Structural evidence answers the question of whether an observed
+change was legitimate; it does not answer the question of when to look.
+% [VERIFY] ★ 這一段是整篇論文最有價值的一句洞見，也是「證偽」得以
+%   轉化為貢獻的關鍵。請確認你認同這個詮釋，且它與 §4.6.2 你實際
+%   驗證出來的機制一致。若 §4.6.2 的驗證推翻了假說，這裡必須跟著改。
+
+\subsection{Practical implications}
+
+For a practitioner, the operational reading is that the cheapest available
+intervention is also the effective one. Replacing an unanchored prompt
+with a procedure that supplies an expectation and structural evidence
+eliminated false positives at a cost of approximately 676 additional input
+tokens per clip. Reducing the frame count from six to three halved token
+consumption without measurable accuracy cost. Neither intervention
+requires model training, fine-tuning or specialised infrastructure, and
+the total inference cost per clip remained below
+\num{0.0011} US dollars throughout.
+
+
+\section{Summary}
+\label{sec:r-summary}
+
+This chapter has reported the results of an experiment comprising 1{,}440
+model invocations across four conditions. The dual-path decision procedure
+eliminated false positives entirely under both keyframe selectors tested,
+while adaptive keyframe selection reduced token consumption by
+approximately half without affecting accuracy. The fused pixel-and-DOM
+selector, originally conceived as the principal contribution of this work,
+was falsified: it provided no accuracy benefit over uniform sampling, no
+cost benefit over pixel-only selection, and a statistically supported
+penalty when combined with the dual-path prompt. One defect class remained
+undetected across all conditions. The following chapter draws conclusions
+from these findings and sets out the limitations that qualify them.
