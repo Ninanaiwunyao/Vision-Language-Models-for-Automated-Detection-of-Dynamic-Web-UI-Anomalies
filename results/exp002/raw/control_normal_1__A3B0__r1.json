@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_1",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual presentation of the TodoMVC application is consistent across all frames and appears to be functioning as intended.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual presentation of the TodoMVC application is consistent across all frames and appears to be functioning as intended.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 33,
+    "total_tokens": 3395
+  },
+  "latency_s": 0.91,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

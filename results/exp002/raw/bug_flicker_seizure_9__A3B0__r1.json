@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_9",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list items are rendered with an incorrect, jarring red background color that obscures the text and deviates from standard UI design.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list items are rendered with an incorrect, jarring red background color that obscures the text and deviates from standard UI design.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 37,
+    "total_tokens": 3399
+  },
+  "latency_s": 1.12,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

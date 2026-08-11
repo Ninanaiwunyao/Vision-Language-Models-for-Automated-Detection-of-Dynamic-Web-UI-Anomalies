@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_9",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard interaction where a user adds a new todo item to the list, which is expected behavior for a TodoMVC application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard interaction where a user adds a new todo item to the list, which is expected behavior for a TodoMVC application.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 40,
+    "total_tokens": 6702
+  },
+  "latency_s": 1.53,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

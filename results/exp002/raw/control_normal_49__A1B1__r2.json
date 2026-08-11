@@ -1,0 +1,33 @@
+{
+  "id": "control_normal_49",
+  "condition": "A1B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to expected DOM mutations as the application updates the to-do list state, and the final appearance matches the expected TodoMVC layout.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to expected DOM mutations as the application updates the to-do list state, and the final appearance matches the expected TodoMVC layout.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3996,
+    "candidates_tokens": 48,
+    "total_tokens": 4044
+  },
+  "latency_s": 0.74,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 3.96,
+    "dom": {
+      "available": true,
+      "total_mutations": 191,
+      "mutations_near_transition": 56,
+      "near_breakdown": {
+        "attributes:input": 41,
+        "childList:ul": 7,
+        "attributes:a": 6,
+        "characterData:#text": 1,
+        "childList:body": 1
+      }
+    }
+  }
+}

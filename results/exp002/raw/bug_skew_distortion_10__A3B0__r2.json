@@ -1,0 +1,20 @@
+{
+  "id": "bug_skew_distortion_10",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component undergoes an unexpected 3D rotation and perspective shift during the interaction.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component undergoes an unexpected 3D rotation and perspective shift during the interaction.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 30,
+    "total_tokens": 3392
+  },
+  "latency_s": 1.07,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

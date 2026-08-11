@@ -1,0 +1,32 @@
+{
+  "id": "control_normal_30",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to a user-initiated filter change (switching to 'Completed' view), which is confirmed by the observed DOM mutations and results in the expected application state.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to a user-initiated filter change (switching to 'Completed' view), which is confirmed by the observed DOM mutations and results in the expected application state.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 4039,
+    "candidates_tokens": 53,
+    "total_tokens": 4092
+  },
+  "latency_s": 1.05,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 2.4,
+    "dom": {
+      "available": true,
+      "total_mutations": 125,
+      "mutations_near_transition": 48,
+      "near_breakdown": {
+        "attributes:input": 34,
+        "childList:ul": 8,
+        "attributes:a": 4,
+        "characterData:#text": 2
+      }
+    }
+  }
+}

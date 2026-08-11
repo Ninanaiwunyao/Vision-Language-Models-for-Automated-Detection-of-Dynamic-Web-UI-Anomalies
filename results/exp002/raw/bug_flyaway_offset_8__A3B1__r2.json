@@ -1,0 +1,32 @@
+{
+  "id": "bug_flyaway_offset_8",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application UI disappears entirely from the screen after the transition, which is not an expected behavior for a standard TodoMVC interaction.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application UI disappears entirely from the screen after the transition, which is not an expected behavior for a standard TodoMVC interaction.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4041,
+    "candidates_tokens": 47,
+    "total_tokens": 4088
+  },
+  "latency_s": 0.99,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.0,
+    "dom": {
+      "available": true,
+      "total_mutations": 198,
+      "mutations_near_transition": 47,
+      "near_breakdown": {
+        "attributes:input": 27,
+        "childList:ul": 12,
+        "attributes:a": 6,
+        "characterData:#text": 2
+      }
+    }
+  }
+}

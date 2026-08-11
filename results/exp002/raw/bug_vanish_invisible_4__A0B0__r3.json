@@ -1,0 +1,20 @@
+{
+  "id": "bug_vanish_invisible_4",
+  "condition": "A0B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list component unexpectedly disappears from the screen after the first frame, indicating a rendering defect.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list component unexpectedly disappears from the screen after the first frame, indicating a rendering defect.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 31,
+    "total_tokens": 6693
+  },
+  "latency_s": 0.94,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

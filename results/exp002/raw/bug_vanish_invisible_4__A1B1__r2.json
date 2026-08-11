@@ -1,0 +1,30 @@
+{
+  "id": "bug_vanish_invisible_4",
+  "condition": "A1B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The primary to-do list component unexpectedly disappears from the screen without any corresponding DOM removal mutations.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The primary to-do list component unexpectedly disappears from the screen without any corresponding DOM removal mutations.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3961,
+    "candidates_tokens": 41,
+    "total_tokens": 4002
+  },
+  "latency_s": 0.97,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.92,
+    "dom": {
+      "available": true,
+      "total_mutations": 90,
+      "mutations_near_transition": 17,
+      "near_breakdown": {
+        "attributes:input": 16,
+        "childList:body": 1
+      }
+    }
+  }
+}

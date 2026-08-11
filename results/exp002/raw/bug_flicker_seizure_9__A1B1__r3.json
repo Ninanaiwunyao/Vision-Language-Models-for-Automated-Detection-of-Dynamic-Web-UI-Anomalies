@@ -1,0 +1,34 @@
+{
+  "id": "bug_flicker_seizure_9",
+  "condition": "A1B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to the addition of a new todo item, which is a standard user action supported by the observed DOM mutations.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to the addition of a new todo item, which is a standard user action supported by the observed DOM mutations.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 4002,
+    "candidates_tokens": 44,
+    "total_tokens": 4046
+  },
+  "latency_s": 0.79,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 1.92,
+    "dom": {
+      "available": true,
+      "total_mutations": 142,
+      "mutations_near_transition": 62,
+      "near_breakdown": {
+        "attributes:input": 53,
+        "childList:ul": 3,
+        "characterData:#text": 3,
+        "attributes:main": 1,
+        "attributes:footer": 1,
+        "childList:body": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "bug_vanish_invisible_3",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The entire to-do list component disappears from the screen without a corresponding user action or logical state change, leaving the page incomplete.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The entire to-do list component disappears from the screen without a corresponding user action or logical state change, leaving the page incomplete.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4019,
+    "candidates_tokens": 48,
+    "total_tokens": 4067
+  },
+  "latency_s": 1.0,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 5.76,
+    "dom": {
+      "available": true,
+      "total_mutations": 107,
+      "mutations_near_transition": 21,
+      "near_breakdown": {
+        "attributes:input": 20,
+        "childList:body": 1
+      }
+    }
+  }
+}

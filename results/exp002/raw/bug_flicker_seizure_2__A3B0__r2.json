@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_2",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container has an inconsistent and broken layout where the red background extends beyond the bounds of the list items, creating a visual misalignment.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container has an inconsistent and broken layout where the red background extends beyond the bounds of the list items, creating a visual misalignment.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 40,
+    "total_tokens": 3402
+  },
+  "latency_s": 0.75,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

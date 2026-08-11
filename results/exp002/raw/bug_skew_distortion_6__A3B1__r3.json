@@ -1,0 +1,31 @@
+{
+  "id": "bug_skew_distortion_6",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the todo list card in a skewed, rotated orientation that deviates from the expected upright, centered layout.",
+  "defect_type": "skew_distortion",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the todo list card in a skewed, rotated orientation that deviates from the expected upright, centered layout.\", \"defect_type\": \"skew_distortion\"}",
+  "usage": {
+    "prompt_tokens": 4028,
+    "candidates_tokens": 45,
+    "total_tokens": 4073
+  },
+  "latency_s": 0.9,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.84,
+    "dom": {
+      "available": true,
+      "total_mutations": 162,
+      "mutations_near_transition": 22,
+      "near_breakdown": {
+        "attributes:input": 14,
+        "childList:ul": 4,
+        "attributes:a": 4
+      }
+    }
+  }
+}

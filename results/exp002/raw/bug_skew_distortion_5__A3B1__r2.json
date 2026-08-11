@@ -1,0 +1,27 @@
+{
+  "id": "bug_skew_distortion_5",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application displays a severe geometric distortion where the entire todo list card is rendered at an extreme perspective angle, which deviates significantly from the expected flat, centered appearance.",
+  "defect_type": "skew_distortion",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application displays a severe geometric distortion where the entire todo list card is rendered at an extreme perspective angle, which deviates significantly from the expected flat, centered appearance.\", \"defect_type\": \"skew_distortion\"}",
+  "usage": {
+    "prompt_tokens": 3990,
+    "candidates_tokens": 53,
+    "total_tokens": 4043
+  },
+  "latency_s": 0.96,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.08,
+    "dom": {
+      "available": true,
+      "total_mutations": 206,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

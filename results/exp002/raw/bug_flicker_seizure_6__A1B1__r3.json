@@ -1,0 +1,32 @@
+{
+  "id": "bug_flicker_seizure_6",
+  "condition": "A1B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits an unexpected and jarring red background color swap on the input field and list items that deviates from the expected white/grey color scheme.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits an unexpected and jarring red background color swap on the input field and list items that deviates from the expected white/grey color scheme.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3985,
+    "candidates_tokens": 53,
+    "total_tokens": 4038
+  },
+  "latency_s": 1.01,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 5.04,
+    "dom": {
+      "available": true,
+      "total_mutations": 158,
+      "mutations_near_transition": 39,
+      "near_breakdown": {
+        "attributes:input": 31,
+        "attributes:a": 4,
+        "childList:ul": 3,
+        "childList:body": 1
+      }
+    }
+  }
+}

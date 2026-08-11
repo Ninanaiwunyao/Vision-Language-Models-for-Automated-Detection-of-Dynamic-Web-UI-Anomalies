@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_31",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is functioning as expected, showing the standard behavior of a TodoMVC list where items are filtered and added correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is functioning as expected, showing the standard behavior of a TodoMVC list where items are filtered and added correctly.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 36,
+    "total_tokens": 3398
+  },
+  "latency_s": 0.77,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

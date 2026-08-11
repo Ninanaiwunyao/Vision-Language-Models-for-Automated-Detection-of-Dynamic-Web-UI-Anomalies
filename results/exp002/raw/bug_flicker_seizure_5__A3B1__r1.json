@@ -1,0 +1,27 @@
+{
+  "id": "bug_flicker_seizure_5",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition is consistent with the expected application state and no rendering defects or deviations from the TodoMVC layout are present.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition is consistent with the expected application state and no rendering defects or deviations from the TodoMVC layout are present.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3993,
+    "candidates_tokens": 42,
+    "total_tokens": 4035
+  },
+  "latency_s": 1.33,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.2,
+    "dom": {
+      "available": true,
+      "total_mutations": 166,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

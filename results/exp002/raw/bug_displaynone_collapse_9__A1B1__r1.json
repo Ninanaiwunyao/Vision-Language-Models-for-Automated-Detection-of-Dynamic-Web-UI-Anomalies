@@ -1,0 +1,30 @@
+{
+  "id": "bug_displaynone_collapse_9",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition corresponds to expected user interaction (inputting text into the todo list), supported by 85 attribute mutations on the input element.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition corresponds to expected user interaction (inputting text into the todo list), supported by 85 attribute mutations on the input element.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3962,
+    "candidates_tokens": 47,
+    "total_tokens": 4009
+  },
+  "latency_s": 1.46,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.92,
+    "dom": {
+      "available": true,
+      "total_mutations": 185,
+      "mutations_near_transition": 86,
+      "near_breakdown": {
+        "attributes:input": 85,
+        "childList:body": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_32",
+  "condition": "A0B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows a standard interaction with a todo list application where a user adds a new item and the interface updates correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows a standard interaction with a todo list application where a user adds a new item and the interface updates correctly.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 0.77,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

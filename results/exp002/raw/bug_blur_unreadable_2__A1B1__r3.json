@@ -1,0 +1,33 @@
+{
+  "id": "bug_blur_unreadable_2",
+  "condition": "A1B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final state shows the application content becoming completely blurred and unreadable, which deviates from the expected crisp appearance.",
+  "defect_type": "blur_unreadable",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final state shows the application content becoming completely blurred and unreadable, which deviates from the expected crisp appearance.\", \"defect_type\": \"blur_unreadable\"}",
+  "usage": {
+    "prompt_tokens": 3993,
+    "candidates_tokens": 44,
+    "total_tokens": 4037
+  },
+  "latency_s": 1.0,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 2.16,
+    "dom": {
+      "available": true,
+      "total_mutations": 175,
+      "mutations_near_transition": 48,
+      "near_breakdown": {
+        "attributes:input": 39,
+        "characterData:#text": 4,
+        "childList:ul": 3,
+        "attributes:li": 1,
+        "attributes:button": 1
+      }
+    }
+  }
+}

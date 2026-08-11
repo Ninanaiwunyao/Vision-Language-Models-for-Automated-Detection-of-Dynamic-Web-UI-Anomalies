@@ -1,0 +1,32 @@
+{
+  "id": "bug_blur_unreadable_3",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application state transitions to a blank, empty card after the user interaction, indicating that the list items have unexpectedly vanished from the view.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application state transitions to a blank, empty card after the user interaction, indicating that the list items have unexpectedly vanished from the view.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4041,
+    "candidates_tokens": 49,
+    "total_tokens": 4090
+  },
+  "latency_s": 0.79,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.72,
+    "dom": {
+      "available": true,
+      "total_mutations": 190,
+      "mutations_near_transition": 49,
+      "near_breakdown": {
+        "attributes:input": 27,
+        "childList:ul": 14,
+        "attributes:a": 6,
+        "characterData:#text": 2
+      }
+    }
+  }
+}

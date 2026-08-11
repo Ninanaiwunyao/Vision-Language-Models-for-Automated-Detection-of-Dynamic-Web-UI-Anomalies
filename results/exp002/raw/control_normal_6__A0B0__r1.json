@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_6",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows standard user interaction with a TodoMVC application, where a user adds a new task and the interface updates correctly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows standard user interaction with a TodoMVC application, where a user adds a new task and the interface updates correctly.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 37,
+    "total_tokens": 6699
+  },
+  "latency_s": 1.27,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

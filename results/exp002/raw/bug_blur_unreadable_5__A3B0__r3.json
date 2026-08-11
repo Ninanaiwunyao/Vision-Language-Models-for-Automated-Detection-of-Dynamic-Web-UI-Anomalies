@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_5",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The screen recording shows a static TodoMVC example page which is functioning as intended.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The screen recording shows a static TodoMVC example page which is functioning as intended.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 28,
+    "total_tokens": 3390
+  },
+  "latency_s": 1.11,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

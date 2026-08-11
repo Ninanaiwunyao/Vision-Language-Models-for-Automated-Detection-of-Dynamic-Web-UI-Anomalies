@@ -1,0 +1,32 @@
+{
+  "id": "bug_flyaway_offset_9",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The main application card containing the to-do list disappears entirely from the screen, which is not an expected behavior for a standard user interaction.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The main application card containing the to-do list disappears entirely from the screen, which is not an expected behavior for a standard user interaction.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3982,
+    "candidates_tokens": 50,
+    "total_tokens": 4032
+  },
+  "latency_s": 1.25,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 3.12,
+    "dom": {
+      "available": true,
+      "total_mutations": 196,
+      "mutations_near_transition": 58,
+      "near_breakdown": {
+        "attributes:input": 53,
+        "childList:ul": 2,
+        "characterData:#text": 2,
+        "childList:body": 1
+      }
+    }
+  }
+}

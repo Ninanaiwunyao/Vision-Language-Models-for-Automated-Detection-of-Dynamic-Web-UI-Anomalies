@@ -1,0 +1,20 @@
+{
+  "id": "bug_displaynone_collapse_10",
+  "condition": "A0B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows the expected behavior of a TodoMVC application where items are added, marked as completed, and filtered.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows the expected behavior of a TodoMVC application where items are added, marked as completed, and filtered.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 35,
+    "total_tokens": 6697
+  },
+  "latency_s": 1.11,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

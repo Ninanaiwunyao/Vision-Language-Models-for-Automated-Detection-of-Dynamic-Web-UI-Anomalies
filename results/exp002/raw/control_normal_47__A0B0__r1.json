@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_47",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo item text is duplicated, appearing both in the input field and as a list item simultaneously.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo item text is duplicated, appearing both in the input field and as a list item simultaneously.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 32,
+    "total_tokens": 6694
+  },
+  "latency_s": 1.21,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

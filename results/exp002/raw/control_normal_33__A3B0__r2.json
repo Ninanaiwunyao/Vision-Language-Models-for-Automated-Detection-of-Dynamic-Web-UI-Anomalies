@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_33",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The frames show the expected behavior of a to-do list application where items are added, marked as complete, and the UI updates accordingly.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The frames show the expected behavior of a to-do list application where items are added, marked as complete, and the UI updates accordingly.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 40,
+    "total_tokens": 3402
+  },
+  "latency_s": 0.79,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

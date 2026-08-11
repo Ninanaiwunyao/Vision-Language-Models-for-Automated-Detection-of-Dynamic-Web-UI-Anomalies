@@ -1,0 +1,20 @@
+{
+  "id": "bug_flyaway_offset_8",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The main todo list component disappears abruptly from the screen after the first frame, which is an unexpected behavior for this application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The main todo list component disappears abruptly from the screen after the first frame, which is an unexpected behavior for this application.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 1.58,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_1",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container is incorrectly rendered with a red background that extends beyond the list items, creating a visual misalignment.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container is incorrectly rendered with a red background that extends beyond the list items, creating a visual misalignment.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 35,
+    "total_tokens": 3397
+  },
+  "latency_s": 1.17,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

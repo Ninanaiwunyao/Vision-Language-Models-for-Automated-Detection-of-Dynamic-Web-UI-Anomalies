@@ -1,0 +1,27 @@
+{
+  "id": "bug_flicker_seizure_1",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container undergoes a significant horizontal shift (offset) without any corresponding DOM mutations, indicating an unintended rendering layout shift.",
+  "defect_type": "flyaway_offset",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container undergoes a significant horizontal shift (offset) without any corresponding DOM mutations, indicating an unintended rendering layout shift.\", \"defect_type\": \"flyaway_offset\"}",
+  "usage": {
+    "prompt_tokens": 3994,
+    "candidates_tokens": 47,
+    "total_tokens": 4041
+  },
+  "latency_s": 1.21,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.2,
+    "dom": {
+      "available": true,
+      "total_mutations": 202,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

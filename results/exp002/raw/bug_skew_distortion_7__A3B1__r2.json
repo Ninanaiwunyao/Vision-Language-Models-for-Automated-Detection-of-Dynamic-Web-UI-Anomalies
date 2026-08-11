@@ -1,0 +1,27 @@
+{
+  "id": "bug_skew_distortion_7",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application is rendered with a persistent 3D perspective skew distortion that deviates from the expected flat, upright appearance of the TodoMVC interface.",
+  "defect_type": "skew_distortion",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application is rendered with a persistent 3D perspective skew distortion that deviates from the expected flat, upright appearance of the TodoMVC interface.\", \"defect_type\": \"skew_distortion\"}",
+  "usage": {
+    "prompt_tokens": 3993,
+    "candidates_tokens": 49,
+    "total_tokens": 4042
+  },
+  "latency_s": 0.85,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.08,
+    "dom": {
+      "available": true,
+      "total_mutations": 202,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

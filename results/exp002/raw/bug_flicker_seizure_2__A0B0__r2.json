@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_2",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits a visual defect where the todo list items are incorrectly highlighted in red and duplicated during interaction.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits a visual defect where the todo list items are incorrectly highlighted in red and duplicated during interaction.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 33,
+    "total_tokens": 6695
+  },
+  "latency_s": 1.14,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

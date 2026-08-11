@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_3",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list items suddenly disappear, leaving only a blank white box, which indicates a rendering failure or state management error.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list items suddenly disappear, leaving only a blank white box, which indicates a rendering failure or state management error.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 1.29,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

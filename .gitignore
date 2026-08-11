@@ -16,6 +16,10 @@ dataset_v3/
 # outputs and belong in git as the experiment's evidence.
 results/*/raw/DRY__*
 
+# API keys. The trial reads GOOGLE_API_KEY from the environment; the key itself
+# must never enter the repository.
+.env.local
+
 # Local-only notes. NOTE: CLAUDE.md was already tracked before this rule was
 # added, and .gitignore does not untrack an existing file — it is still in the
 # repo. Run `git rm --cached CLAUDE.md` if it should really be local-only.

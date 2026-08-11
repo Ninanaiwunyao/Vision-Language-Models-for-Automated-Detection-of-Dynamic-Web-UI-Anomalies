@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_42",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The '3 items left!' counter is mathematically incorrect given that there are 2 completed items and 4 uncompleted items in the list, totaling 6 items.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The '3 items left!' counter is mathematically incorrect given that there are 2 completed items and 4 uncompleted items in the list, totaling 6 items.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 45,
+    "total_tokens": 3407
+  },
+  "latency_s": 0.84,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

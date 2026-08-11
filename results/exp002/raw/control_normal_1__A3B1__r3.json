@@ -1,0 +1,27 @@
+{
+  "id": "control_normal_1",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The visual transition is negligible and the final state matches the expected appearance of the TodoMVC application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The visual transition is negligible and the final state matches the expected appearance of the TodoMVC application.\", \"defect_type\": null}",
+  "usage": {
+    "prompt_tokens": 3994,
+    "candidates_tokens": 37,
+    "total_tokens": 4031
+  },
+  "latency_s": 0.91,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.08,
+    "dom": {
+      "available": true,
+      "total_mutations": 182,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

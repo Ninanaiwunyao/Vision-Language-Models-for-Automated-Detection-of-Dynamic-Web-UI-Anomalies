@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_47",
+  "condition": "A0B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo item remains visible in the main list even after it has been moved to the input field for editing, resulting in a duplicate entry.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo item remains visible in the main list even after it has been moved to the input field for editing, resulting in a duplicate entry.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 40,
+    "total_tokens": 6702
+  },
+  "latency_s": 0.94,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

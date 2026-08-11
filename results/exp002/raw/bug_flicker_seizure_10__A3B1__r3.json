@@ -1,0 +1,27 @@
+{
+  "id": "bug_flicker_seizure_10",
+  "condition": "A3B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application displays a severe rendering defect where the todo list items are incorrectly rendered with a solid red background, obscuring the text and deviating from the expected white card appearance.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application displays a severe rendering defect where the todo list items are incorrectly rendered with a solid red background, obscuring the text and deviating from the expected white card appearance.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3994,
+    "candidates_tokens": 59,
+    "total_tokens": 4053
+  },
+  "latency_s": 0.85,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.2,
+    "dom": {
+      "available": true,
+      "total_mutations": 221,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

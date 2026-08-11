@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_40",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The frames show a standard TodoMVC application interface with no visible rendering defects or anomalies.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The frames show a standard TodoMVC application interface with no visible rendering defects or anomalies.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 29,
+    "total_tokens": 3391
+  },
+  "latency_s": 0.86,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

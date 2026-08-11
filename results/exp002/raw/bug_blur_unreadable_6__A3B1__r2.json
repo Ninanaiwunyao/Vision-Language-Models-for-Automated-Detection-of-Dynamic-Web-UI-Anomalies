@@ -1,0 +1,33 @@
+{
+  "id": "bug_blur_unreadable_6",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final frame shows the todo list content has vanished and the heading has become blurred, which deviates significantly from the expected appearance.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final frame shows the todo list content has vanished and the heading has become blurred, which deviates significantly from the expected appearance.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4049,
+    "candidates_tokens": 47,
+    "total_tokens": 4096
+  },
+  "latency_s": 0.76,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 2.4,
+    "dom": {
+      "available": true,
+      "total_mutations": 170,
+      "mutations_near_transition": 42,
+      "near_breakdown": {
+        "attributes:input": 35,
+        "childList:ul": 2,
+        "characterData:#text": 2,
+        "attributes:button": 2,
+        "attributes:li": 1
+      }
+    }
+  }
+}

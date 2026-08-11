@@ -1,0 +1,32 @@
+{
+  "id": "bug_flicker_seizure_10",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits an unexpected and aggressive red background overlay on the todo list items that deviates from the expected white card appearance.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits an unexpected and aggressive red background overlay on the todo list items that deviates from the expected white card appearance.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3984,
+    "candidates_tokens": 48,
+    "total_tokens": 4032
+  },
+  "latency_s": 1.0,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 5.16,
+    "dom": {
+      "available": true,
+      "total_mutations": 221,
+      "mutations_near_transition": 68,
+      "near_breakdown": {
+        "attributes:input": 55,
+        "childList:ul": 8,
+        "attributes:a": 4,
+        "childList:body": 1
+      }
+    }
+  }
+}

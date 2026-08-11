@@ -1,0 +1,20 @@
+{
+  "id": "bug_flicker_seizure_4",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list container is incorrectly rendered with a bright red background and misaligned, overlapping elements, which deviates from the standard TodoMVC styling.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list container is incorrectly rendered with a bright red background and misaligned, overlapping elements, which deviates from the standard TodoMVC styling.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 40,
+    "total_tokens": 3402
+  },
+  "latency_s": 0.97,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

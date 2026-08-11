@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_44",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The sequence shows standard user interaction with a todo list application, where items are added and completed as expected.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The sequence shows standard user interaction with a todo list application, where items are added and completed as expected.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 33,
+    "total_tokens": 3395
+  },
+  "latency_s": 0.9,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

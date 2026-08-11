@@ -1,0 +1,31 @@
+{
+  "id": "bug_blur_unreadable_4",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final frame shows the application content has vanished, leaving only a blurred heading and an empty white card, which deviates from the expected functional state.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final frame shows the application content has vanished, leaving only a blurred heading and an empty white card, which deviates from the expected functional state.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4029,
+    "candidates_tokens": 51,
+    "total_tokens": 4080
+  },
+  "latency_s": 2.12,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 4.2,
+    "dom": {
+      "available": true,
+      "total_mutations": 199,
+      "mutations_near_transition": 34,
+      "near_breakdown": {
+        "attributes:input": 23,
+        "attributes:a": 6,
+        "childList:ul": 5
+      }
+    }
+  }
+}

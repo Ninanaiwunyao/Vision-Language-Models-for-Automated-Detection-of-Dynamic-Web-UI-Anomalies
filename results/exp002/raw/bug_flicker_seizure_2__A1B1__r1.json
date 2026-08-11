@@ -1,0 +1,32 @@
+{
+  "id": "bug_flicker_seizure_2",
+  "condition": "A1B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits an unexpected and aggressive color swap to red across the list items that deviates from the expected white/grey theme, indicating a rendering defect.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits an unexpected and aggressive color swap to red across the list items that deviates from the expected white/grey theme, indicating a rendering defect.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3983,
+    "candidates_tokens": 54,
+    "total_tokens": 4037
+  },
+  "latency_s": 1.15,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.8,
+    "dom": {
+      "available": true,
+      "total_mutations": 206,
+      "mutations_near_transition": 49,
+      "near_breakdown": {
+        "attributes:input": 44,
+        "childList:ul": 2,
+        "attributes:a": 2,
+        "childList:body": 1
+      }
+    }
+  }
+}

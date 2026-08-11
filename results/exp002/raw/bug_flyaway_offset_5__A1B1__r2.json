@@ -1,0 +1,30 @@
+{
+  "id": "bug_flyaway_offset_5",
+  "condition": "A1B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The entire to-do list component disappears from the screen without any corresponding DOM removal mutations, indicating a rendering failure.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The entire to-do list component disappears from the screen without any corresponding DOM removal mutations, indicating a rendering failure.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3962,
+    "candidates_tokens": 45,
+    "total_tokens": 4007
+  },
+  "latency_s": 0.78,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.92,
+    "dom": {
+      "available": true,
+      "total_mutations": 214,
+      "mutations_near_transition": 64,
+      "near_breakdown": {
+        "attributes:input": 63,
+        "childList:body": 1
+      }
+    }
+  }
+}

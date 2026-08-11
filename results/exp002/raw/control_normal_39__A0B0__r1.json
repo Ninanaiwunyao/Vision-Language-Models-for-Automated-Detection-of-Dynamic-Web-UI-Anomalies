@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_39",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application incorrectly displays an editing input field for a todo item while simultaneously keeping the original item visible in the list, resulting in a duplicate entry.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application incorrectly displays an editing input field for a todo item while simultaneously keeping the original item visible in the list, resulting in a duplicate entry.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 41,
+    "total_tokens": 6703
+  },
+  "latency_s": 1.17,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

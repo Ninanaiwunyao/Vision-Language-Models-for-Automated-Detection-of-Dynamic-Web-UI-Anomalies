@@ -1,0 +1,27 @@
+{
+  "id": "bug_blur_unreadable_5",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application content is missing or rendered as a blank white card, failing to display the expected to-do list interface.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application content is missing or rendered as a blank white card, failing to display the expected to-do list interface.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 3992,
+    "candidates_tokens": 46,
+    "total_tokens": 4038
+  },
+  "latency_s": 1.41,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 10.08,
+    "dom": {
+      "available": true,
+      "total_mutations": 164,
+      "mutations_near_transition": 0,
+      "near_breakdown": {}
+    }
+  }
+}

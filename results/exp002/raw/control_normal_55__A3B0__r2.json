@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_55",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is functioning as expected, showing the correct filtering of todo items and the addition of a new task.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is functioning as expected, showing the correct filtering of todo items and the addition of a new task.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 34,
+    "total_tokens": 3396
+  },
+  "latency_s": 0.94,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_31",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The recording shows the standard functionality of a todo list application where a user adds a new item.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The recording shows the standard functionality of a todo list application where a user adds a new item.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 31,
+    "total_tokens": 6693
+  },
+  "latency_s": 1.57,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

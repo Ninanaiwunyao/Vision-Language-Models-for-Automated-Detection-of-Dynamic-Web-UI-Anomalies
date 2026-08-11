@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_52",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is functioning as expected, with the todo list correctly updating its display based on the selected filter and user input.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is functioning as expected, with the todo list correctly updating its display based on the selected filter and user input.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 36,
+    "total_tokens": 3398
+  },
+  "latency_s": 1.14,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

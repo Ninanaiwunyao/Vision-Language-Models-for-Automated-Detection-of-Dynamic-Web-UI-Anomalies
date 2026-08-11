@@ -1,0 +1,33 @@
+{
+  "id": "bug_flicker_seizure_1",
+  "condition": "A1B1",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application exhibits an unexpected and jarring color swap to bright red across the entire todo list area, which deviates from the expected white card appearance.",
+  "defect_type": "flicker_seizure",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application exhibits an unexpected and jarring color swap to bright red across the entire todo list area, which deviates from the expected white card appearance.\", \"defect_type\": \"flicker_seizure\"}",
+  "usage": {
+    "prompt_tokens": 3994,
+    "candidates_tokens": 52,
+    "total_tokens": 4046
+  },
+  "latency_s": 1.31,
+  "meta": {
+    "selection": "A1",
+    "n_images": 3,
+    "transition_time_s": 4.68,
+    "dom": {
+      "available": true,
+      "total_mutations": 202,
+      "mutations_near_transition": 63,
+      "near_breakdown": {
+        "attributes:input": 59,
+        "attributes:li": 1,
+        "characterData:#text": 1,
+        "attributes:button": 1,
+        "childList:body": 1
+      }
+    }
+  }
+}

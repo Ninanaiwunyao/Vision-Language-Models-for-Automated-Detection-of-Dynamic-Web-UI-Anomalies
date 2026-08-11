@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_1",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The final frame shows the todo list content completely disappearing, leaving only a blank white box.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The final frame shows the todo list content completely disappearing, leaving only a blank white box.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 30,
+    "total_tokens": 3392
+  },
+  "latency_s": 1.05,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

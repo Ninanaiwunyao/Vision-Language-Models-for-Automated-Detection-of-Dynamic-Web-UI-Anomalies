@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_54",
+  "condition": "A3B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is functioning as expected, showing the standard behavior of a todo list where items can be added, checked off, and managed.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is functioning as expected, showing the standard behavior of a todo list where items can be added, checked off, and managed.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 39,
+    "total_tokens": 3401
+  },
+  "latency_s": 0.79,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

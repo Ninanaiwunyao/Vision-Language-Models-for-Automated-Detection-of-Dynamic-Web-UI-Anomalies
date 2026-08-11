@@ -1,0 +1,30 @@
+{
+  "id": "bug_vanish_invisible_8",
+  "condition": "A3B1",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The main todo list component unexpectedly disappears from the screen, leaving only the background and sidebar, which constitutes a rendering failure.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The main todo list component unexpectedly disappears from the screen, leaving only the background and sidebar, which constitutes a rendering failure.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4017,
+    "candidates_tokens": 46,
+    "total_tokens": 4063
+  },
+  "latency_s": 0.8,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 3.96,
+    "dom": {
+      "available": true,
+      "total_mutations": 90,
+      "mutations_near_transition": 21,
+      "near_breakdown": {
+        "attributes:input": 20,
+        "childList:body": 1
+      }
+    }
+  }
+}

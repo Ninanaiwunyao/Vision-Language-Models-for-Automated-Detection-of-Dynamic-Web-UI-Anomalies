@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_2",
+  "condition": "A3B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "normal",
+  "reason": "The application is displaying a standard TodoMVC interface, and the repetition of the task 'Schedule dentist appointment' is expected behavior for this specific demo application.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"normal\", \"reason\": \"The application is displaying a standard TodoMVC interface, and the repetition of the task 'Schedule dentist appointment' is expected behavior for this specific demo application.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 42,
+    "total_tokens": 3404
+  },
+  "latency_s": 0.71,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

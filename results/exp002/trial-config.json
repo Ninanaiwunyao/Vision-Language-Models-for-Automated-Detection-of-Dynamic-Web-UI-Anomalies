@@ -1,0 +1,22 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "conditions": [
+    "A0B0",
+    "A1B1",
+    "A3B0",
+    "A3B1"
+  ],
+  "repeats": 3,
+  "generation_config": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 1,
+    "max_output_tokens": 512,
+    "candidate_count": 1
+  },
+  "baseline_frames": 6,
+  "frame_width": 640,
+  "dom_window_ms": 1200,
+  "config_source": "/Users/yaonaiwen/Desktop/MSc_Project/experiments/exp002/config.frozen.json",
+  "manifest_total": 120
+}

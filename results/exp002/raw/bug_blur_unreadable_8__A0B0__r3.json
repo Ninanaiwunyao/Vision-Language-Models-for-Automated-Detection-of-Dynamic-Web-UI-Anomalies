@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_8",
+  "condition": "A0B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list content suddenly disappears and becomes a blank white box, indicating a rendering failure or state error.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list content suddenly disappears and becomes a blank white box, indicating a rendering failure or state error.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 33,
+    "total_tokens": 6695
+  },
+  "latency_s": 2.23,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

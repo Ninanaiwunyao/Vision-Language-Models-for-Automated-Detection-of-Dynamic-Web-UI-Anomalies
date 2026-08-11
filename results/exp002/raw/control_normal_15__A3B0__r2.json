@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_15",
+  "condition": "A3B0",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The input field at the top of the todo list incorrectly displays an existing todo item ('Schedule dentist appointment') instead of the expected placeholder text.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The input field at the top of the todo list incorrectly displays an existing todo item ('Schedule dentist appointment') instead of the expected placeholder text.\"}",
+  "usage": {
+    "prompt_tokens": 3362,
+    "candidates_tokens": 40,
+    "total_tokens": 3402
+  },
+  "latency_s": 0.78,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3
+  }
+}

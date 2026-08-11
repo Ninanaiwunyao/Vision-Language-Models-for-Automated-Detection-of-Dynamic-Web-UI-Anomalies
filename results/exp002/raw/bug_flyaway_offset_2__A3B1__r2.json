@@ -1,0 +1,30 @@
+{
+  "id": "bug_flyaway_offset_2",
+  "condition": "A3B1",
+  "repeat": 2,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The entire todo list component disappears from the screen without a corresponding user action or valid state change, leaving the page incomplete.",
+  "defect_type": "vanish_invisible",
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The entire todo list component disappears from the screen without a corresponding user action or valid state change, leaving the page incomplete.\", \"defect_type\": \"vanish_invisible\"}",
+  "usage": {
+    "prompt_tokens": 4017,
+    "candidates_tokens": 46,
+    "total_tokens": 4063
+  },
+  "latency_s": 0.89,
+  "meta": {
+    "selection": "A3",
+    "n_images": 3,
+    "transition_time_s": 5.88,
+    "dom": {
+      "available": true,
+      "total_mutations": 214,
+      "mutations_near_transition": 71,
+      "near_breakdown": {
+        "attributes:input": 70,
+        "childList:body": 1
+      }
+    }
+  }
+}

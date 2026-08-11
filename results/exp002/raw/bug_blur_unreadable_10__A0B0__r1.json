@@ -1,0 +1,20 @@
+{
+  "id": "bug_blur_unreadable_10",
+  "condition": "A0B0",
+  "repeat": 1,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The todo list items disappear from the screen, leaving an empty container, which indicates a rendering defect or state management error.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The todo list items disappear from the screen, leaving an empty container, which indicates a rendering defect or state management error.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 36,
+    "total_tokens": 6698
+  },
+  "latency_s": 3.93,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}

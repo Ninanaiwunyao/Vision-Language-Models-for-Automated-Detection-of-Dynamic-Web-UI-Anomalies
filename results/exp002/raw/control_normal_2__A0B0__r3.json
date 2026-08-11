@@ -1,0 +1,20 @@
+{
+  "id": "control_normal_2",
+  "condition": "A0B0",
+  "repeat": 3,
+  "model": "gemini-3.1-flash-lite",
+  "verdict": "anomaly",
+  "reason": "The application fails to remove the original todo item from the list after adding it, resulting in a duplicate entry.",
+  "defect_type": null,
+  "raw": "{\"verdict\": \"anomaly\", \"reason\": \"The application fails to remove the original todo item from the list after adding it, resulting in a duplicate entry.\"}",
+  "usage": {
+    "prompt_tokens": 6662,
+    "candidates_tokens": 34,
+    "total_tokens": 6696
+  },
+  "latency_s": 0.94,
+  "meta": {
+    "selection": "A0",
+    "n_images": 6
+  }
+}
