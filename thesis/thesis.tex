@@ -1,0 +1,71 @@
+% thesis.tex
+% UoB MSc Dissertation Main File
+
+%% PREAMBLE ===================================================================
+\documentclass[a4paper,12pt]{uobthesis}
+
+%% PACKAGES -------------------------------------------------------------------
+\usepackage{packages}
+
+%% RESOURCES ------------------------------------------------------------------
+\addbibresource{references.bib}
+
+% 如果暫時沒用到縮寫/術語表，可以先把這兩行註解掉或留著
+\input{glossary/acronyms}
+\input{glossary/terms}
+
+%% TITLEPAGE DETAILS ----------------------------------------------------------
+% 已為你填入你的論文資訊：
+\author{Nai wun Yao} % 填寫你的英文姓名
+\title{Vision-Language Models for Automated Detection of Dynamic Web UI Anomalies}
+\school{Computer Science}
+\college{Engineering and Physical Sciences}
+\submitted{August}{2026} % 提交月份與年份
+
+\logo{uob-logo.eps} % 伯明罕大學 Logo
+
+%% DEDICATION & ACKNOWLEDGEMENTS ----------------------------------------------
+\dedication{To my family and everyone who supported me throughout this dissertation.}
+
+\abstract{
+Visual regression testing in modern web applications faces challenges in detecting dynamic, temporally dependent anomalies such as element flickering, layout shifts, and broken animations. While Recent Large Vision-Language Models (VLMs) have shown promising results in static UI understanding, their performance in dynamic GUI defect detection remains underexplored. This dissertation proposes a novel dual-path automated testing framework...
+% (這裏先放簡短 Abstract 草稿，之後可再修正)
+}
+
+\acknowledgements{
+I would like to express my sincere gratitude to my supervisor, Dr. Chen, for his invaluable guidance, support, and feedback throughout this project...
+}
+
+%% DOCUMENT ===================================================================
+\begin{document}
+
+  \maketitle  % 生成論文封面
+
+  \frontmatter
+  \makefrontmatter  % 生成 Abstract, Dedication, Acknowledgements
+
+  %% CONTENTS -----------------------------------------------------------------
+  \tableofcontents
+  \listoffigures
+  \listoftables
+  \printglossary[type=\acronymtype,title={List of Acronyms}]
+  \printglossary[title={List of Terms}]
+
+  \mainmatter
+
+  %% CHAPTERS -----------------------------------------------------------------
+  % 這裡就是論文的核心章節檔案連結區：
+  \include{chapters/01_introduction}
+  \include{chapters/02_literature_review}
+  \include{chapters/03_methodology}
+  \include{chapters/04_results_and_discussion}
+  \include{chapters/05_conclusion}
+  
+  %% BIBLIOGRAPHY -------------------------------------------------------------
+  \printbibliography[title=References,heading=bibintoc]
+
+  %% APPENDICES ---------------------------------------------------------------
+  \appendix
+  \include{appendices/ai_usage_log}
+
+\end{document}

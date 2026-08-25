@@ -1,0 +1,432 @@
+% =====================================================================
+% Chapter 2: Literature Review  --  DRAFT v1
+% Project: Vision-Language Models for Automated Testing of Dynamic
+%          Interactive UI and Animation Anomalies
+%
+% ---------------------------------------------------------------------
+% 【使用說明 / HOW TO USE】
+%
+% 標註等級 (annotation levels):
+%   % [OK]      = Claude 已親自讀過原文並確認，數字/主張可信
+%   % [VERIFY]  = 引用資訊來自二手來源（他人參考書目 / 你的專案筆記），
+%                 書目細節大致可信但你必須點開原文確認
+%   % [!! RED]  = Claude 完全沒有查證過，可能根本不存在或名稱有誤，
+%                 在你親自確認之前，絕對不要送出
+%
+% 中文註解若造成 pdflatex 編譯問題（極少見），可用下列指令一次刪除：
+%   sed -i '' '/^% \[/d' chapter2_literature_review.tex
+% =====================================================================
+
+\chapter{Literature Review}
+\label{ch:litreview}
+
+% ---------------------------------------------------------------------
+% 2.1 Chapter roadmap
+% 依「論文書寫語料」要求：章節開頭必須有明確的引導語
+% ---------------------------------------------------------------------
+\section{Overview}
+\label{sec:lit-overview}
+
+This chapter reviews the body of work on which the present study builds.
+Before turning to the use of vision-language models (VLMs) for user
+interface (UI) defect detection, it is important first to introduce some
+of the key concepts relating to visual regression testing (VRT) and the
+oracle problem it inherits, since the limitations of the conventional
+pixel-level oracle constitute the practical motivation for this work.
+Section~\ref{sec:vrt} therefore examines VRT and the false-positive
+problem associated with pixel-level comparison. Section~\ref{sec:temporal}
+then considers how the field has characterised web UI visual defects, and
+argues that the temporal class of defects remains inadequately covered.
+Section~\ref{sec:vlm-se} surveys the emerging application of VLMs to
+visual software engineering tasks and identifies a recurring failure mode.
+Section~\ref{sec:input} reviews how video input is constructed for such
+models, and Section~\ref{sec:datasets} discusses the datasets and
+synthetic fault injection techniques available for evaluation.
+Section~\ref{sec:metrics} addresses evaluation criteria. Finally,
+Section~\ref{sec:gap} synthesises these strands into an explicit statement
+of the research gap that this dissertation addresses.
+
+
+% ---------------------------------------------------------------------
+% 2.2 VRT and the pixel oracle
+% ---------------------------------------------------------------------
+\section{Visual Regression Testing and the Pixel-Level Oracle}
+\label{sec:vrt}
+
+\subsection{The pixel-diff oracle}
+\label{sec:vrt-oracle}
+
+Visual regression testing is a standard quality assurance step in modern
+software release pipelines. On each change, UI screenshots are re-rendered
+and compared against an approved baseline image, and any detected
+difference is routed to a human reviewer who decides whether it represents
+an intended update or an unintended regression~\citep{zhang2026beyond}.
+% [OK] Zhang et al. 2026 — Claude 已讀過全文，此段落敘述與原文一致。
+
+The dominant comparison strategy, particularly in open-source and
+continuous-integration pipelines, is pixel-level comparison. Its appeal is
+that it requires no specification of expected appearance and no
+instrumentation of the application under test; its weakness is that it is
+semantically blind. It flags any deviation, treating sub-pixel rendering
+jitter, anti-aliasing differences and dynamic content updates identically
+to genuine structural regressions such as missing components or layout
+restructuring~\citep{zhang2026beyond}.
+
+The consequence is a false-positive rate high enough to threaten the
+practical viability of the technique. \citet{zhang2026beyond}
+quantify this directly on WUICC-bench, a benchmark of 9{,}906
+human-verified Web UI change samples of which 1{,}323 represent
+non-meaningful visual noise. A naive pixel diff correctly reports
+``no change'' on \SI{0}{\percent} of the non-meaningful samples,
+corresponding to a false-positive rate of \SI{100}{\percent}; adding a
+0.1 difference threshold with anti-aliasing tolerance raises suppression
+only to \SI{6.72}{\percent}, a false-positive rate of
+\SI{93.28}{\percent}, while already beginning to miss genuine changes.
+By contrast, trained image-difference-captioning models on the same
+benchmark suppress between \SI{85.82}{\percent} and \SI{97.39}{\percent}
+of non-meaningful changes while still reporting over \SI{93}{\percent} of
+genuine ones. These figures establish that the deficiency of the pixel
+oracle is not a matter of parameter tuning but of the representation
+itself: a single fixed threshold cannot separate noise from signal.
+% [OK] 上述所有數字皆出自 Zhang et al. 2026, Table VI, Claude 已核對。
+% [VERIFY] 但請注意兩點必須在正文或註腳交代：
+%   (a) 該文為 arXiv preprint (v1, 2026-07-02)，尚未經同儕審查；
+%   (b) 此處 FPR 定義為「在人工注入之非實質變更上未回報 no change 的比例」，
+%       與產線 CI 中「工程師實際分流掉的告警比例」並非同一操作型定義。
+%       審查員很可能會問這一題，你必須能區分。
+
+\subsection{Attempts to suppress false positives}
+\label{sec:vrt-suppression}
+
+Much of the research in this area has focused on reducing the manual
+confirmation burden that pixel comparison imposes rather than on replacing
+the oracle. \citet{adachi2018reducing} group identical
+differences so that a reviewer confirms each distinct difference only once.
+\citet{tanno2020region} propose region-based matching to
+distinguish essential from inessential differences. A subsequent method by
+\citet{adachi2020masking} masks dynamic content areas by
+exploiting the positional relationships between screen elements, and
+MIXVRT~\citep{amano2021mixvrt} combines image comparison with HTML code
+comparison.
+% [VERIFY] 上述四筆的作者/年份/會議名稱，我是從 Zhang et al. 2026 的
+%   參考書目轉抄的，沒有親自讀過任何一篇。你必須：
+%   1. 上 IEEE Xplore / J-STAGE 確認書目資訊正確
+%   2. 確認我對每一篇「做了什麼」的一句話描述沒有寫錯
+%   3. adachi2018reducing 是 2 頁 poster，內容可能比我描述的更薄，
+%      引用時語氣要保守
+% [!! RED] "amano2021mixvrt" 這個 key 的第一作者我是猜的 —— Zhang et al.
+%   的參考書目編號 [7] 我沒有取到完整作者名。請務必查出真正作者再引用，
+%   或直接刪掉這一句。
+
+Two observations follow. First, all of these techniques output a binary
+flag or a highlighted region, and therefore reduce rather than eliminate
+the reviewer's interpretive burden. Second, and more importantly for the
+present study, all of them operate on pairs of static screenshots. None
+addresses defects whose evidence exists only across time.
+
+
+% ---------------------------------------------------------------------
+% 2.3 Temporal defects
+% ---------------------------------------------------------------------
+\section{From Static Screenshots to Temporal UI Defects}
+\label{sec:temporal}
+
+\subsection{Taxonomies of web UI visual defects}
+\label{sec:temporal-taxonomy}
+
+Having discussed the mechanics of VRT, the following section considers
+what is actually being detected. There is some agreement in the literature
+that web UI visual defects fall into a small number of recurring
+categories. \citet{zhang2026beyond} operationalise a 37-rule
+taxonomy comprising nine meaningful categories --- missing elements,
+added elements, attribute modification, layout changes, reordering,
+resizing, content update, thematic changes and replacement --- and three
+non-meaningful categories representing visual noise, namely geometric
+shifts, dynamic content changes and pure style changes.
+% [OK] 此分類法我已從原文 Table I 核對。
+
+A complementary industrial taxonomy distinguishes layout regression,
+colour or style change, content truncation, interactive state anomalies,
+typography errors and responsive layout failures~\citep{vrtatscale}.
+Behavioural anomaly taxonomies, which characterise interruptions to a task
+flow rather than to a rendered page, add categories such as action
+failure, unexpected authentication interruption, obstructive pop-ups,
+loading delay and network disconnection~\citep{guirobust}.
+% [!! RED] 這兩筆是本章最高風險的引用。
+%   - "Visual Regression Testing at Scale"：這個標題只出現在你的第二次
+%     會議筆記裡，我在網路上完全沒有查證過。作者、年份、發表場域全部未知，
+%     連這篇論文是否存在、標題是否正確我都不能確定。
+%   - "GUIRobust (KDD 2026)"：同樣只出現在你的筆記裡。你的筆記還提到它
+%     宣稱把標註成本降低 19 倍 —— 這個數字我也沒查證。
+%   → 這兩篇是你自己找到的，請你直接把 PDF 或 DOI 找出來核對書目，
+%     並確認我上面複述的「六類」與「七類」內容沒有被筆記轉述時扭曲。
+%     若查不到原文，寧可整段刪掉，改成「本研究自行定義之缺陷分類」。
+
+\subsection{Why temporal defects escape existing oracles}
+\label{sec:temporal-gap}
+
+The taxonomies above share a common assumption: that a defect is
+observable in a single rendered state. Yet an important class of modern
+web UI defects is not. Cumulative layout shift during asynchronous
+loading, component flickering caused by redundant re-rendering,
+transition stuttering and animations that freeze mid-flight all manifest
+as a discontinuity between states rather than as a property of any one
+state. Two consequences follow for automated testing. First, a
+screenshot-based oracle sampled at an arbitrary instant may capture the
+interface either before or after the anomalous moment and report nothing
+wrong. Second, DOM-based assertions in tools such as Playwright or
+Selenium may pass, because the structural state eventually converges on
+the correct value even when the visual trajectory towards it is defective.
+It is important that studies into this class of defect be carried out
+because web applications, unlike the entertainment software in which
+temporal glitch detection has principally been studied, incur direct
+commercial cost when interaction is disrupted.
+% [VERIFY] 這一小節是論證，不是文獻回顧，因此沒有引用。這是可以的，
+%   但審查員可能會要求你替「DOM 斷言會通過但視覺仍然壞掉」這句話補一個
+%   引用或一個具體例子。建議你用自己資料集裡的 displaynone_collapse
+%   或 skew_distortion 當例子，並在此處前向引用 Chapter 4。
+
+
+% ---------------------------------------------------------------------
+% 2.4 VLMs
+% ---------------------------------------------------------------------
+\section{Vision-Language Models for Visual Software Engineering}
+\label{sec:vlm-se}
+
+\subsection{Static visual tasks}
+\label{sec:vlm-static}
+
+One branch of the literature has begun applying VLMs to visual software
+engineering tasks. Recent work has targeted the detection of cross-browser
+visual inconsistencies~\citep{xbidetective} and the repair of visual
+software issues through cross-modal reasoning~\citep{seeingisfixing}.
+\citet{zhang2026beyond} extend this direction by reframing
+regression checking as a change captioning problem, so that the tester is
+told what changed in natural language rather than being handed a
+highlighted region to interpret.
+% [VERIFY] xbidetective 與 seeingisfixing 兩筆同樣是從 Zhang et al. 的
+%   參考書目轉抄，我沒讀過原文，且沒有取到完整的作者與年份。
+%   請查出完整書目，或若與你的論述關聯不強，直接刪除。
+
+\subsection{The sensitivity--conservatism failure mode}
+\label{sec:vlm-failure}
+
+A consistent finding across this literature is that off-the-shelf VLMs do
+not resolve the false-positive problem by themselves; they relocate it.
+\citet{zhang2026beyond} evaluate two open general-purpose VLMs
+zero-shot on WUICC-bench and report sharply asymmetric failures.
+Qwen2-VL-7B-Instruct suppresses almost all non-meaningful changes,
+reaching \SI{99.63}{\percent} no-change accuracy, but achieves this by
+under-reporting genuine ones, with change accuracy falling to
+\SI{65.68}{\percent}. Llama-3.2-11B-Vision-Instruct fails in the opposite
+direction, with no-change accuracy of only \SI{21.64}{\percent}. Both
+change accuracies fall well below those of the trained methods,
+indicating that off-the-shelf VLMs do not yet provide the selective
+suppression that VRT requires.
+% [OK] 數字出自 Zhang et al. 2026 Table VI，已核對。
+
+This pattern --- a model that is either excessively sensitive or
+excessively conservative, but not appropriately calibrated --- has also
+been reported in the temporal setting. TempGlitch, a benchmark for
+temporal defect detection in gameplay video, concludes that VLMs supplied
+with raw video perform close to chance and fall into precisely these two
+extremes, and that denser uniform sampling does not remedy the
+problem~\citep{tempglitch}.
+% [!! RED] ★★★ 本章最關鍵、也最危險的一筆引用 ★★★
+%   "TempGlitch" 是你整篇論文的出發點，但你給我的所有專案檔案裡，
+%   從頭到尾都只有這個名字 —— 沒有作者、沒有年份、沒有發表場域、沒有 DOI。
+%   我沒有查證過它，也不確定這是正式論文標題還是你筆記裡的簡稱。
+%   你必須做的事（今天就做）：
+%     1. 找出原始 PDF，確認正式標題、作者、年份、venue
+%     2. 親自確認「near chance」「overly sensitive / overly conservative」
+%        「denser sampling 無效」這三個結論是否真的出自該文，
+%        以及它是否真的只做 gameplay
+%     3. 確認它是不是 benchmark-only（你的筆記說是，但要自己看過）
+%   → 這一筆若在 Demo 面談被問到而你答不出來，殺傷力極大，
+%     因為你的整個 research gap 都架在它上面。
+
+
+% ---------------------------------------------------------------------
+% 2.5 Input construction
+% ---------------------------------------------------------------------
+\section{Input Construction for Video-Language Models}
+\label{sec:input}
+
+\subsection{Uniform sampling and its limitations}
+\label{sec:input-uniform}
+
+Because current VLMs accept a bounded number of image tokens, video must
+be reduced to a frame sequence before it can be analysed. The simplest
+strategy, and the one adopted by TempGlitch, is uniform temporal sampling
+at a fixed rate~\citep{tempglitch}.
+% [!! RED] 同上，TempGlitch 的取樣策略（你的筆記說是 FFmpeg 1 FPS / 5 FPS）
+%   我完全沒有查證。請確認後再寫死具體幀率。
+
+Uniform sampling is attractive for its simplicity but is poorly matched to
+the statistics of UI interaction video, in which long static intervals are
+punctuated by brief transitions. The majority of uniformly sampled frames
+are therefore redundant, consuming tokens without contributing evidence,
+while the short interval in which a temporal defect is observable may be
+missed entirely.
+
+\subsection{Keyframe selection}
+\label{sec:input-keyframe}
+
+An alternative is to select frames adaptively according to a measure of
+inter-frame change. Classical approaches compute frame differencing or
+optical flow to identify moments of significant motion. Applying such
+measures to UI video is attractive because rendering is deterministic and
+the background is static, so a change signal is comparatively
+unambiguous compared with camera-captured footage.
+% [VERIFY] 這一段目前完全沒有引用，太薄。你需要補 2--3 筆關鍵幀擷取 /
+%   video summarisation 的經典文獻（例如 shot boundary detection 或
+%   長影片 VLM 的 frame selection 研究）。這是我完全沒有替你查過的區塊。
+
+\subsection{Structural signals as a complementary modality}
+\label{sec:input-dom}
+
+A property peculiar to the web domain is that a second, non-visual
+description of the same interface is available at no cost: the DOM.
+Hybrid approaches that combine image comparison with HTML comparison have
+been explored in the VRT setting~\citep{amano2021mixvrt}, but principally
+as a means of localising differences rather than as evidence supplied to a
+reasoning model. The present study treats structural mutation events as a
+first-class signal, used both to select frames and to constrain the final
+decision.
+% [VERIFY] 見前述 amano2021mixvrt 的紅旗。若查不到，改寫為
+%   「hybrid image--HTML comparison has been explored」並引用 Zhang et al.
+%   的 related work 二手轉述（但這是次佳做法，審查員可能會扣分）。
+
+
+% ---------------------------------------------------------------------
+% 2.6 Datasets
+% ---------------------------------------------------------------------
+\section{Datasets and Synthetic Fault Injection}
+\label{sec:datasets}
+
+Evaluating a UI anomaly detector requires paired normal and defective
+interaction recordings with reliable ground truth, and such data is
+scarce. GUI-World provides a large corpus of real GUI interaction videos
+with annotations, but is oriented towards agent capability evaluation
+rather than defect detection, and consequently contains few labelled
+defective samples~\citep{guiworld}.
+% [VERIFY] GUI-World 我沒有讀過原文，只有你筆記裡的 URL
+%   (https://gui-world.github.io/) 與 2,499 支影片的數字。
+%   請查出正式書目（作者、年份、venue、arXiv ID）並確認
+%   「2,499 支正常網頁互動影片」這個數字的正確定義。
+
+Manual production of defective recordings is prohibitively
+labour-intensive, and this has motivated synthetic fault injection, in
+which defects are introduced programmatically into a working application.
+Recent work has demonstrated that automated pipelines can reduce
+annotation cost by a substantial factor relative to manual
+labelling~\citep{guirobust}, and \citet{zhang2026beyond}
+construct their benchmark by an LLM-driven mutation pipeline that applies
+exactly one atomic change per sample, retaining \SI{78.09}{\percent} of
+generated samples after human verification with inter-annotator agreement
+of $\kappa \approx 0.722$.
+% [OK] 78.09% 與 kappa=0.722 出自 Zhang et al. 2026，已核對。
+% [!! RED] 我刻意把你筆記裡的「19 倍」寫成模糊的 "a substantial factor"，
+%   因為 GUIRobust 與那個數字我都沒查證。你查證後再決定要不要寫死數字。
+
+The approach adopted in the present study differs from both. Rather than
+mutating static HTML, defects are injected into a live application during
+recorded interaction, so that the resulting anomaly is temporal in nature.
+% [VERIFY] 請確認這句話準確描述你 Playwright 腳本實際做的事。
+
+
+% ---------------------------------------------------------------------
+% 2.7 Metrics
+% ---------------------------------------------------------------------
+\section{Evaluation Criteria}
+\label{sec:metrics}
+
+There is some agreement in the literature that overall accuracy is an
+inadequate summary for detection tasks of this kind, and that the false
+alarm rate on the negative class is the metric that governs practical
+adoption. This position is well established in vision-based anomaly
+detection more broadly: \citet{tao2023psnet}, for instance,
+identify high false alarm rates as one of the two principal obstacles to
+deployment in their domain, and report false alarm rate alongside
+detection rate and F1-score rather than accuracy alone.
+% [VERIFY] Tao et al. 2023 (Pattern Recognition, 森林煙霧辨識) 我已讀過，
+%   書目與該主張皆正確。但這是跨領域類比，與 Web UI 沒有直接關係。
+%   ※ 這一段是「可選」的。如果你覺得跨領域引用會讓審查員覺得牽強，
+%     整段刪掉不影響論證。若保留，務必寫成「跨領域的方法論慣例」，
+%     絕對不要用它去支撐任何關於 pixel-diff 誤報率的數字。
+
+Accordingly, this study adopts false positive rate on the normal class as
+its headline metric, reported alongside anomaly recall to guard against a
+degenerate detector that suppresses everything. Following the reporting
+convention adopted throughout this project, every metric is reported with
+a measure of dispersion and an accompanying interval estimate.
+% [VERIFY] 這句話對應你的 Statistic Display Rule。請確認 Chapter 4
+%   的實際呈現方式與此處承諾一致（mean ± SD [95% CI] (n = N)），
+%   否則審查員會抓到前後不一致。
+
+
+% ---------------------------------------------------------------------
+% 2.8 Gap
+% ---------------------------------------------------------------------
+\section{Research Gap}
+\label{sec:gap}
+
+The preceding sections permit the gap to be stated precisely. Existing
+VRT research operates on static screenshot pairs and outputs a binary
+flag, leaving temporal defects uncovered and the reviewer's interpretive
+burden intact. Temporal defect detection with VLMs has been benchmarked in
+the gameplay domain, but as a demonstration of failure rather than as a
+proposed remedy, and its conclusions do not transfer directly to web UIs,
+whose defects are structured, whose backgrounds are static and whose DOM
+provides a parallel non-visual description unavailable in rendered game
+footage. The most closely related recent work, WUICC-bench, addresses the
+web UI domain and demonstrates that semantic models suppress visual noise
+far more selectively than pixel comparison, but operates on static image
+pairs containing exactly one atomic change, relies on purely visual
+evidence, and requires task-specific model training.
+
+Table~\ref{tab:gap} positions the present study against this prior work.
+
+\begin{table}[htbp]
+\centering
+\caption{Positioning of the present study relative to the most closely
+related prior work. The present study is distinguished by its temporal
+input, its use of structural evidence alongside visual evidence, and its
+reliance on zero-shot inference rather than task-specific training.}
+\label{tab:gap}
+\begin{tabular}{@{}llll@{}}
+\toprule
+ & Conventional VRT & WUICC-bench & Present study \\
+\midrule
+Input          & Screenshot pair   & Screenshot pair   & Interaction video \\
+Defect class   & Static            & Static, atomic    & Temporal \\
+Evidence       & Pixels            & Pixels (learned)  & Pixels + DOM \\
+Output         & Binary flag       & Caption           & Label + type + rationale \\
+Model          & None              & Trained IDC       & Zero-shot VLM \\
+Cost concern   & Not applicable    & Not addressed     & Explicit objective \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [VERIFY] 這張表的最後一欄請對照你 Chapter 3 的實際設計逐格確認，
+%   特別是 "Zero-shot VLM" 與 "Label + type + rationale"
+%   （後者對應你的 JSON schema: is_buggy / bug_type / confidence / explanation）。
+
+
+% ---------------------------------------------------------------------
+% 2.9 Summary
+% ---------------------------------------------------------------------
+\section{Summary}
+\label{sec:lit-summary}
+
+This chapter has established three things. First, the pixel-level oracle
+on which mainstream visual regression testing depends produces
+false-positive rates that recent benchmarking places above
+\SI{93}{\percent} on non-meaningful changes, and this deficiency is
+representational rather than a matter of threshold tuning. Second, while
+vision-language models offer the semantic discrimination that the pixel
+oracle lacks, applying them naively reproduces the problem in a different
+form, with off-the-shelf models oscillating between excessive sensitivity
+and excessive conservatism. Third, no existing work addresses the
+temporal class of web UI defects with an approach that combines selective
+visual input construction with structural evidence. The following chapter
+sets out a methodology designed to address this gap.
